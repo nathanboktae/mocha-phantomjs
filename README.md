@@ -1,11 +1,16 @@
 # PhantomJS Runners for Mocha
 
 
+# TODO
+
+Inspiration
+
+https://github.com/jamescarr/jasmine-tool
 
 
 # Playing Around
 
-    $ phantomjs mocha-phantomjs.coffee example/test.html
+    $ phantomjs lib/mocha-phantomjs.coffee test/array.html
 
 
 
