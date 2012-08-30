@@ -10,7 +10,7 @@ task 'build', 'Build project', ->
   build()
 
 task 'test', 'Run tests', ->
-  build -> test
+  build -> test()
 
 build = (callback) ->
   builder = (src, dest) ->
@@ -27,20 +27,15 @@ build = (callback) ->
 test = (callback) ->
   testDir = './test'
   testFiles = (file for file in fs.readdirSync testDir when /.*\.html$/.test(file))
-  remaining = testFiles.length
-  for file in testFiles
-    filePath = fs.realpathSync "#{testDir}/#{file}"
-    phantomjs = spawn 'phantomjs', ['test/lib/run-jasmine.phantom.js', "file://#{filePath}"]
-    phantomjs.stdout.on 'data', (data) -> 
-      print data.toString()
-    phantomjs.on 'exit', (code) ->
-      testCodes.push code
-      callback?() if --remaining is 0
-  exitWithTestsCode()
+  tester = (file) ->
+    (callback) ->
+      filePath = fs.realpathSync "#{testDir}/#{file}"
+      phantomjs = spawn 'phantomjs', ['lib/mocha-phantomjs.coffee', "file://#{filePath}"]
+      phantomjs.stdout.on 'data', (data) -> print data.toString()
+      phantomjs.on 'exit', (code) -> callback?(code,code)
+  testers = (tester file for file in testFiles)
+  async.series testers, (err, results) -> 
+    passed = results.every (code) -> code is 0
+    process.exit if passed then 0 else 1
 
-exitWithTestsCode = ->
-  process.once 'exit', ->
-    passed = testCodes.every (code) -> code is 0
-    process.exit if passed then 0 else 1  
-  exitWithTestsCode = ->
 
