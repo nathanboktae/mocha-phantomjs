@@ -32,9 +32,9 @@ fail = ->
   phantom.exit()
 
 run = ->
-  page.injectJs 'lib/bind.js'
-  page.injectJs 'lib/console.js'
-  page.injectJs 'lib/process.stdout.write.js'
+  page.injectJs 'src/bind.js'
+  page.injectJs 'src/console.js'
+  page.injectJs 'src/process.stdout.write.js'
   page.evaluate ->
     mocha.setup ui: 'bdd', reporter: mocha.reporters.Spec
     mocha.run().on 'end', -> mocha.end = true
