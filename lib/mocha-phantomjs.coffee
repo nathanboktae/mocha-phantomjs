@@ -1,9 +1,12 @@
 system  = require 'system'
 webpage = require 'webpage'
 
-if system.args.length < 1
+fail   = -> phantom.exit 1
+finish = (failures) -> phantom.exit failures
+
+if system.args.length < 2
   console.log 'Usage: phantomjs run-mocha.coffee URL [timeout]'
-  phantom.exit()
+  fail()
 
 url     = system.args[1]
 timeout = system.args[2] or 6000
@@ -21,15 +24,11 @@ defer = (test) ->
     else
       if !condition
         console.log 'Timeout passed before the tests finished.'
-        phantom.exit()
+        fail()
       else
         clearInterval(interval)
-        phantom.exit()
+        finish page.evaluate -> mocha.failures
   interval = setInterval(func, 100)
-
-fail = ->
-  console.log 'Failed to load the page. Check the url'
-  phantom.exit()
 
 run = ->
   page.injectJs '../src/bind.js'
@@ -37,11 +36,18 @@ run = ->
   page.injectJs '../src/process.stdout.write.js'
   page.evaluate ->
     mocha.setup ui: 'bdd', reporter: mocha.reporters.Spec
-    mocha.run().on 'end', -> mocha.end = true
-  defer -> page.evaluate -> mocha.end
+    mocha.phantomjs = failures: 0, ended: false
+    mocha.run().on 'end', ->
+      mocha.phantomjs.failures = @failures
+      mocha.phantomjs.ended = true
+  defer -> page.evaluate -> mocha.phantomjs.ended
 
 page.open(url)
 page.onLoadFinished = (status) ->
-  if status isnt 'success' then fail() else run()
+  if status isnt 'success' 
+    console.log 'Failed to load the page. Check the url'
+    fail()
+  else 
+    run()
 
 
