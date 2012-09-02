@@ -13,15 +13,15 @@ task 'test', 'Run tests', ->
   build -> test()
 
 build = (callback) ->
-  builder = (src, dest) ->
+  builder = (args...) ->
     (callback) ->
-      coffee = spawn 'coffee', ['-c', '-o', dest, src]
+      coffee = spawn 'coffee', args
       coffee.stderr.on 'data', (data) -> process.stderr.write data.toString()
       coffee.stdout.on 'data', (data) -> print data.toString()
       coffee.on 'exit', (code) -> callback?(code,code)
   async.parallel [
-    builder('src','lib'),
-    builder('test/src','test/lib')
+    builder('-c', '-o', 'lib',      'src'),
+    builder('-c', '-o', 'test/lib', 'test/src')
   ], (err, results) -> callback?() unless err
 
 test = (callback) ->

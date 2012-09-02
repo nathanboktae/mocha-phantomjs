@@ -13,6 +13,13 @@ timeout = system.args[2] or 6000
 
 page = webpage.create()
 page.onConsoleMessage = (msg) -> console.log(msg)
+page.onInitialized = -> page.evaluate -> window.mochaPhantomJS = true
+  
+# page.onInitialized = ->
+#   page.injectJs '../src/bind.js'
+#   page.injectJs '../src/console.js'
+#   page.injectJs '../src/process.stdout.write.js'
+# page.onResourceRequested = (resource) -> console.log(JSON.stringify(resource))
 
 defer = (test) ->
   start = new Date().getTime()
@@ -35,7 +42,7 @@ run = ->
   page.injectJs '../src/console.js'
   page.injectJs '../src/process.stdout.write.js'
   page.evaluate ->
-    mocha.setup ui: 'bdd', reporter: mocha.reporters.Spec
+    mocha.setup ui: 'bdd', reporter: 'spec' # dot, spec
     mocha.phantomjs = failures: 0, ended: false
     mocha.run().on 'end', ->
       mocha.phantomjs.failures = @failures
