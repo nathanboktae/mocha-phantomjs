@@ -20,7 +20,6 @@ build = (callback) ->
       coffee.stdout.on 'data', (data) -> print data.toString()
       coffee.on 'exit', (code) -> callback?(code,code)
   async.parallel [
-    builder('-c', '-o', 'lib',      'src'),
     builder('-c', '-o', 'test/lib', 'test/src')
   ], (err, results) -> callback?() unless err
 

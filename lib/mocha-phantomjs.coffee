@@ -38,9 +38,7 @@ defer = (test) ->
   interval = setInterval(func, 100)
 
 run = ->
-  page.injectJs '../src/bind.js'
-  page.injectJs '../src/console.js'
-  page.injectJs '../src/process.stdout.write.js'
+  page.injectJs 'mocha-phantomjs.js'
   page.evaluate ->
     mocha.setup ui: 'bdd', reporter: 'spec' # dot, spec
     mocha.phantomjs = failures: 0, ended: false
