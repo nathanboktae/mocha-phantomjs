@@ -15,11 +15,11 @@
 # Playing Around
   
     $ cake test
-    $ phantomjs lib/mocha-phantomjs.coffee test/bdd.html
+    $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
 
 
     $ cake build
-    $ mocha -r chai/chai.js -u bdd -R spec test/lib/bdd-spec-passing.js
+    $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-passing.js
 
 
       bdd-spec-passing
