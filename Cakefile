@@ -26,7 +26,7 @@ build = (callback) ->
 test = ->
   tester = (file) ->
     (callback) ->
-      mocha = spawn 'mocha',  ['-u', 'bdd', '-R', 'spec', '-t', '5000', '--colors', "test/lib/#{file}"]
+      mocha = spawn 'mocha',  ['-u', 'bdd', '-R', 'spec', '-t', '3000', '--colors', "test/lib/#{file}"]
       mocha.stdout.pipe process.stdout, end: false
       mocha.stderr.pipe process.stderr, end: false
       mocha.on 'exit', (code) -> callback?(code,code)

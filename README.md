@@ -12,31 +12,6 @@
 * Talk about `window.mochaPhantomJS` being set to true by PhantomJS on page initialization.
 
 
-# Playing Around
-
-    $ cake test
-    $ mocha -u bdd -R spec test/lib/mocha-phantomjs.js
-
-    $ cake test
-    $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
-
-
-    $ cake build
-    $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-passing.js
-
-
-      bdd-spec-passing
-        ✓ passes 1 
-        ✓ passes 2 
-        ✓ passes 3 
-        - skips 1
-        - skips 2
-        - skips 3
-
-
-      ✔ 6 tests complete (4ms)
-      • 3 tests pending
-
 
 # Exit Code
 

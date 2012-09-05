@@ -47,7 +47,7 @@ class Reporter
     @runMocha()
 
   onLoadFailed: ->
-    @fail 'Failed to load the page. Check the url'
+    @fail "Failed to load the page. Check the url: #{@url}"
 
   runMocha: ->
     @page.evaluate @runner, @ui, @reporter
