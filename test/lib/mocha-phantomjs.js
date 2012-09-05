@@ -2,13 +2,31 @@
 (function() {
 
   describe('mocha-phantomjs', function() {
-    var expect, spawn;
+    var expect, failComplete, failRegExp, htmlFile, passComplete, passRegExp, pendComplete, skipRegExp, spawn;
     expect = require('chai').expect;
     spawn = require('child_process').spawn;
+    htmlFile = function(file) {
+      return "file://" + (process.cwd()) + "/test/" + file + ".html";
+    };
+    passRegExp = function(n) {
+      return RegExp("\\u001b\\[32m\\s\\s✓\\u001b\\[0m\\u001b\\[90m\\spasses\\s" + n);
+    };
+    skipRegExp = function(n) {
+      return RegExp("\\u001b\\[36m\\s\\s-\\sskips\\s" + n + "\\u001b\\[0m");
+    };
+    failRegExp = function(n) {
+      return RegExp("\\u001b\\[31m\\s\\s" + n + "\\)\\sfails\\s" + n + "\\u001b\\[0m");
+    };
+    passComplete = function(n) {
+      return RegExp("\\u001b\\[0m\\n\\n\\n\\u001b\\[92m\\s\\s✔\\u001b\\[0m\\u001b\\[32m\\s" + n + "\\stests\\scomplete");
+    };
+    pendComplete = function(n) {
+      return RegExp("\\u001b\\[36m\\s+•\\u001b\\[0m\\u001b\\[36m\\s" + n + "\\stests\\spending");
+    };
+    failComplete = function(x, y) {
+      return RegExp("\\u001b\\[91m\\s\\s✖\\u001b\\[0m\\u001b\\[31m\\s" + x + "\\sof\\s" + y + "\\stests\\sfailed");
+    };
     before(function() {
-      this.htmlFile = function(file) {
-        return "file://" + (process.cwd()) + "/test/" + file + ".html";
-      };
       return this.runner = function(done, args, callback) {
         var phantomArgs, phantomjs, stderr, stdout;
         stdout = '';
@@ -44,13 +62,13 @@
         return expect(stdout).to.match(/foo\/bar.html/i);
       });
     });
-    return describe('bdd-spec-passing', function() {
+    describe('bdd-spec-passing', function() {
       /*
           $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
           $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-passing.js
       */
       before(function() {
-        return this.args = [this.htmlFile('bdd-spec-passing')];
+        return this.args = [htmlFile('bdd-spec-passing')];
       });
       it('returns a passing code', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
@@ -60,9 +78,40 @@
       return it('writes all output in color', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           expect(stdout).to.match(/BDD Spec Passing/);
-          expect(stdout).to.match(/\u001b\[32m\s+✓\u001b\[0m\u001b\[90m passes [1-3]/);
-          expect(stdout).to.match(/\u001b\[0m\n\n\n\u001b\[92m\s+✔\u001b\[0m\u001b\[32m 6 tests complete/);
-          return expect(stdout).to.match(/\u001b\[36m\s+•\u001b\[0m\u001b\[36m 3 tests pending/);
+          expect(stdout).to.match(passRegExp(1));
+          expect(stdout).to.match(passRegExp(2));
+          expect(stdout).to.match(passRegExp(3));
+          expect(stdout).to.match(skipRegExp(1));
+          expect(stdout).to.match(skipRegExp(2));
+          expect(stdout).to.match(skipRegExp(3));
+          expect(stdout).to.match(passComplete(6));
+          return expect(stdout).to.match(pendComplete(3));
+        });
+      });
+    });
+    return describe('bdd-spec-failing', function() {
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-failing.html
+          $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-failing.js
+      */
+      before(function() {
+        return this.args = [htmlFile('bdd-spec-failing')];
+      });
+      it('returns a failing code equal to the number of mocha failures', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          return expect(code).to.equal(3);
+        });
+      });
+      return it('writes all output in color', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          expect(stdout).to.match(/BDD Spec Failing/);
+          expect(stdout).to.match(passRegExp(1));
+          expect(stdout).to.match(passRegExp(2));
+          expect(stdout).to.match(passRegExp(3));
+          expect(stdout).to.match(failRegExp(1));
+          expect(stdout).to.match(failRegExp(2));
+          expect(stdout).to.match(failRegExp(3));
+          return expect(stdout).to.match(failComplete(3, 6));
         });
       });
     });

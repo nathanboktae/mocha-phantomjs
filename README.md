@@ -10,6 +10,7 @@
 # Details
 
 * Talk about `window.mochaPhantomJS` being set to true by PhantomJS on page initialization.
+  - Used so you can manually run HTML files as well as avoid run() in PhantomJS.
 * Talk about `process.stdout.write` done right!
 
 
