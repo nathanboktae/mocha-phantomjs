@@ -10,7 +10,7 @@
 # Details
 
 * Talk about `window.mochaPhantomJS` being set to true by PhantomJS on page initialization.
-
+* Talk about `process.stdout.write` done right!
 
 
 # Exit Code

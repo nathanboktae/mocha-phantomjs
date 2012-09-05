@@ -44,21 +44,11 @@
         return expect(stdout).to.match(/foo\/bar.html/i);
       });
     });
-    /*
-      $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
-      $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-passing.js
-      BDD Spec Passing
-        ✓ passes 1 
-        ✓ passes 2 
-        ✓ passes 3 
-        - skips 1
-        - skips 2
-        - skips 3
-      ✔ 6 tests complete (4ms)
-      • 3 tests pending
-    */
-
     return describe('bdd-spec-passing', function() {
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
+          $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-passing.js
+      */
       before(function() {
         return this.args = [this.htmlFile('bdd-spec-passing')];
       });
