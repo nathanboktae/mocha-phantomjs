@@ -1,11 +1,9 @@
 system  = require 'system'
 webpage = require 'webpage'
-fs      = require 'fs'
 
 USAGE = """
         Usage: phantomjs run-mocha.coffee URL [timeout]
         """
-
 
 class Reporter
 
@@ -76,24 +74,17 @@ class Reporter
       mocha.phantomjs.failures = @failures
       mocha.phantomjs.ended = true
 
-
 class Spec extends Reporter
 
   constructor: ->
     super 'bdd', 'spec'
 
+class Dot extends Reporter
 
-# fs.write "/dev/stdout", "Hello!", "w"
-# fs.write "/dev/stdout", '\u001b[2K', "w"
-# fs.write "/dev/stdout", '\u001b[0G', "w"
-# fs.write "/dev/stdout", "Hello, world!", "w"
+  constructor: ->
+    super 'bdd', 'dot'
 
-reporter = new Spec
+reporter = new Dot
 reporter.run()
-
-# @page.onInitialized = =>
-#   @page.injectJs 'mocha-phantomjs/core_extensions.js'
-# @page.onResourceRequested = (resource) -> 
-#   console.log(JSON.stringify(resource))
 
 
