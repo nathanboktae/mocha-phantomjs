@@ -13,7 +13,10 @@
 
 
 # Playing Around
-  
+
+    $ cake test
+    $ mocha -u bdd -R spec test/lib/mocha-phantomjs.js
+
     $ cake test
     $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
 

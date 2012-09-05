@@ -23,18 +23,18 @@ build = (callback) ->
     builder('-c', '-o', 'test/lib', 'test/src')
   ], (err, results) -> callback?() unless err
 
-test = (callback) ->
-  testDir = './test'
-  testFiles = (file for file in fs.readdirSync testDir when /.*\.html$/.test(file))
+test = ->
   tester = (file) ->
     (callback) ->
-      filePath = fs.realpathSync "#{testDir}/#{file}"
-      phantomjs = spawn 'phantomjs', ['lib/mocha-phantomjs.coffee', "file://#{filePath}"]
-      phantomjs.stdout.on 'data', (data) -> print data.toString()
-      phantomjs.on 'exit', (code) -> callback?(code,code)
+      mocha = spawn 'mocha',  ['-u', 'bdd', '-R', 'spec', '-t', '5000', '--colors', "test/lib/#{file}"]
+      mocha.stdout.pipe process.stdout, end: false
+      mocha.stderr.pipe process.stderr, end: false
+      mocha.on 'exit', (code) -> callback?(code,code)
+  testFiles = ['mocha-phantomjs.js']
   testers = (tester file for file in testFiles)
   async.series testers, (err, results) -> 
     passed = results.every (code) -> code is 0
     process.exit if passed then 0 else 1
+
 
 
