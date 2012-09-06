@@ -42,7 +42,7 @@ describe 'mocha-phantomjs', ->
 
       ###
       $ phantomjs lib/mocha-phantomjs.coffee test/passing.html
-      $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/passing.js
+      $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/passing.js
       ###
 
       before ->
@@ -68,7 +68,7 @@ describe 'mocha-phantomjs', ->
       
       ###
       $ phantomjs lib/mocha-phantomjs.coffee test/failing.html
-      $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/failing.js
+      $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing.js
       ###
 
       before ->
@@ -89,7 +89,20 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match failRegExp(3)
           expect(stdout).to.match failComplete(3,6)
 
-    
+  describe 'dot', ->
 
+     ###
+     $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html -R dot
+     $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
+     ###
+
+    before ->
+      @args = [htmlFile('mixed'), 'dot']
+
+    it 'uses dot reporter', (done) ->
+      @runner done, @args, (code, stdout, stderr) ->
+        expect(stdout).to.match /\u001b\[90m\․\u001b\[0m/ # grey
+        expect(stdout).to.match /\u001b\[36m\․\u001b\[0m/ # cyan
+        expect(stdout).to.match /\u001b\[31m\․\u001b\[0m/ # red
 
 

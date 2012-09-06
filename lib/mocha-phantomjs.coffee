@@ -2,14 +2,14 @@ system  = require 'system'
 webpage = require 'webpage'
 
 USAGE = """
-        Usage: phantomjs run-mocha.coffee URL [timeout]
+        Usage: phantomjs run-mocha.coffee URL REPORTER
         """
 
 class Reporter
 
   constructor: (@reporter) ->
     @url      = system.args[1]
-    @timeout  = system.args[2] or 6000
+    @timeout  = 6000
     @fail(USAGE) unless @url
 
   run: ->
@@ -84,7 +84,9 @@ class Spec extends Reporter
     super 'spec'
 
   didInjectCoreExtensions: ->
-    @page.evaluate -> process.cursor.needsCrMatcher = /\s+◦\s\w/
+    @page.evaluate -> 
+      process.cursor.CRMatcher = /\s+◦\s\w/
+      process.cursor.CRCleaner = process.cursor.up + process.cursor.deleteLine
 
 class Dot extends Reporter
 
@@ -92,9 +94,19 @@ class Dot extends Reporter
     super 'dot'
 
   didInjectCoreExtensions: ->
-    @page.evaluate -> process.cursor.needsCrMatcher = undefined
+    @page.evaluate ->
+      process.stdout.write = (string) ->
+        if string.match /\u001b\[\d\dm\․\u001b\[0m/
+          ++process.cursor.count
+          forward = process.cursor.count + 2
+          string = process.cursor.up + process.cursor.forwardN(forward) + string
+        console.log string
 
-reporter = new Spec
+reporterString = system.args[2] || 'spec'
+reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
+reporterKlass  = eval(reporterString)
+
+reporter = new reporterKlass
 reporter.run()
 
 

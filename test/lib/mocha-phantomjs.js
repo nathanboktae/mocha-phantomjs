@@ -62,11 +62,11 @@
         return expect(stdout).to.match(/foo\/bar.html/i);
       });
     });
-    return describe('spec', function() {
+    describe('spec', function() {
       describe('passing', function() {
         /*
               $ phantomjs lib/mocha-phantomjs.coffee test/passing.html
-              $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/passing.js
+              $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/passing.js
         */
         before(function() {
           return this.args = [htmlFile('passing')];
@@ -93,7 +93,7 @@
       return describe('failing', function() {
         /*
               $ phantomjs lib/mocha-phantomjs.coffee test/failing.html
-              $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/failing.js
+              $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing.js
         */
         before(function() {
           return this.args = [htmlFile('failing')];
@@ -115,6 +115,23 @@
             return expect(stdout).to.match(failComplete(3, 6));
           });
         });
+      });
+    });
+    describe('dot', function() {
+      /*
+           $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html -R dot
+           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
+      */
+
+    });
+    before(function() {
+      return this.args = [htmlFile('mixed'), 'dot'];
+    });
+    return it('uses dot reporter', function(done) {
+      return this.runner(done, this.args, function(code, stdout, stderr) {
+        expect(stdout).to.match(/\u001b\[90m\․\u001b\[0m/);
+        expect(stdout).to.match(/\u001b\[36m\․\u001b\[0m/);
+        return expect(stdout).to.match(/\u001b\[31m\․\u001b\[0m/);
       });
     });
   });
