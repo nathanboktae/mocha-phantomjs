@@ -7,7 +7,7 @@ USAGE = """
 
 class Reporter
 
-  constructor: (@ui, @reporter) ->
+  constructor: (@reporter) ->
     @url      = system.args[1]
     @timeout  = system.args[2] or 6000
     @fail(USAGE) unless @url
@@ -18,8 +18,8 @@ class Reporter
 
   # Subclass Hooks
 
-  injectJS: ->
-    @page.injectJs 'mocha-phantomjs/core_extensions.js'
+  didInjectCoreExtensions: ->
+    undefined
 
   # Private
 
@@ -48,8 +48,12 @@ class Reporter
   onLoadFailed: ->
     @fail "Failed to load the page. Check the url: #{@url}"
 
+  injectJS: ->
+    @page.injectJs 'mocha-phantomjs/core_extensions.js'
+    @didInjectCoreExtensions()
+
   runMocha: ->
-    @page.evaluate @runner, @ui, @reporter
+    @page.evaluate @runner, @reporter
     @defer => @page.evaluate -> mocha.phantomjs?.ended    
 
   defer: (test) ->
@@ -67,8 +71,8 @@ class Reporter
           @finish()
     interval = setInterval(func, 100)
 
-  runner: (ui, reporter) ->
-    mocha.setup ui: ui, reporter: reporter
+  runner: (reporter) ->
+    mocha.setup reporter: reporter
     mocha.phantomjs = failures: 0, ended: false
     mocha.run().on 'end', ->
       mocha.phantomjs.failures = @failures
@@ -77,14 +81,20 @@ class Reporter
 class Spec extends Reporter
 
   constructor: ->
-    super 'bdd', 'spec'
+    super 'spec'
+
+  didInjectCoreExtensions: ->
+    @page.evaluate -> process.cursor.needsCrMatcher = /\s+◦\s\w/
 
 class Dot extends Reporter
 
   constructor: ->
-    super 'bdd', 'dot'
+    super 'dot'
 
-reporter = new Dot
+  didInjectCoreExtensions: ->
+    @page.evaluate -> process.cursor.needsCrMatcher = undefined
+
+reporter = new Spec
 reporter.run()
 
 
