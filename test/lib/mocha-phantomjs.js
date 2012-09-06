@@ -62,56 +62,58 @@
         return expect(stdout).to.match(/foo\/bar.html/i);
       });
     });
-    describe('bdd-spec-passing', function() {
-      /*
-          $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-passing.html
-          $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-passing.js
-      */
-      before(function() {
-        return this.args = [htmlFile('bdd-spec-passing')];
-      });
-      it('returns a passing code', function(done) {
-        return this.runner(done, this.args, function(code, stdout, stderr) {
-          return expect(code).to.equal(0);
+    return describe('spec', function() {
+      describe('passing', function() {
+        /*
+              $ phantomjs lib/mocha-phantomjs.coffee test/passing.html
+              $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/passing.js
+        */
+        before(function() {
+          return this.args = [htmlFile('passing')];
+        });
+        it('returns a passing code', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            return expect(code).to.equal(0);
+          });
+        });
+        return it('writes all output in color', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            expect(stdout).to.match(/Tests Passing/);
+            expect(stdout).to.match(passRegExp(1));
+            expect(stdout).to.match(passRegExp(2));
+            expect(stdout).to.match(passRegExp(3));
+            expect(stdout).to.match(skipRegExp(1));
+            expect(stdout).to.match(skipRegExp(2));
+            expect(stdout).to.match(skipRegExp(3));
+            expect(stdout).to.match(passComplete(6));
+            return expect(stdout).to.match(pendComplete(3));
+          });
         });
       });
-      return it('writes all output in color', function(done) {
-        return this.runner(done, this.args, function(code, stdout, stderr) {
-          expect(stdout).to.match(/BDD Spec Passing/);
-          expect(stdout).to.match(passRegExp(1));
-          expect(stdout).to.match(passRegExp(2));
-          expect(stdout).to.match(passRegExp(3));
-          expect(stdout).to.match(skipRegExp(1));
-          expect(stdout).to.match(skipRegExp(2));
-          expect(stdout).to.match(skipRegExp(3));
-          expect(stdout).to.match(passComplete(6));
-          return expect(stdout).to.match(pendComplete(3));
+      return describe('failing', function() {
+        /*
+              $ phantomjs lib/mocha-phantomjs.coffee test/failing.html
+              $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/failing.js
+        */
+        before(function() {
+          return this.args = [htmlFile('failing')];
         });
-      });
-    });
-    return describe('bdd-spec-failing', function() {
-      /*
-          $ phantomjs lib/mocha-phantomjs.coffee test/bdd-spec-failing.html
-          $ mocha -r chai/chai.js -u bdd -R spec --globals chai.expect test/lib/bdd-spec-failing.js
-      */
-      before(function() {
-        return this.args = [htmlFile('bdd-spec-failing')];
-      });
-      it('returns a failing code equal to the number of mocha failures', function(done) {
-        return this.runner(done, this.args, function(code, stdout, stderr) {
-          return expect(code).to.equal(3);
+        it('returns a failing code equal to the number of mocha failures', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            return expect(code).to.equal(3);
+          });
         });
-      });
-      return it('writes all output in color', function(done) {
-        return this.runner(done, this.args, function(code, stdout, stderr) {
-          expect(stdout).to.match(/BDD Spec Failing/);
-          expect(stdout).to.match(passRegExp(1));
-          expect(stdout).to.match(passRegExp(2));
-          expect(stdout).to.match(passRegExp(3));
-          expect(stdout).to.match(failRegExp(1));
-          expect(stdout).to.match(failRegExp(2));
-          expect(stdout).to.match(failRegExp(3));
-          return expect(stdout).to.match(failComplete(3, 6));
+        return it('writes all output in color', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            expect(stdout).to.match(/Tests Failing/);
+            expect(stdout).to.match(passRegExp(1));
+            expect(stdout).to.match(passRegExp(2));
+            expect(stdout).to.match(passRegExp(3));
+            expect(stdout).to.match(failRegExp(1));
+            expect(stdout).to.match(failRegExp(2));
+            expect(stdout).to.match(failRegExp(3));
+            return expect(stdout).to.match(failComplete(3, 6));
+          });
         });
       });
     });

@@ -4,7 +4,7 @@
 
   expect = (typeof chai !== "undefined" && chai !== null ? chai.expect : void 0) || require('chai').expect;
 
-  describe('BDD Spec Failing', function() {
+  describe('Tests Failing', function() {
     it('passes 1', function() {
       return expect(1).to.be.ok;
     });
