@@ -104,9 +104,16 @@ class Dot extends Reporter
 
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
-reporterKlass  = eval(reporterString)
+reporterKlass  = try
+                   eval(reporterString)
+                 catch error
+                   undefined
 
-reporter = new reporterKlass
-reporter.run()
+if reporterKlass
+  reporter = new reporterKlass
+  reporter.run()
+else
+  console.log "Reporter class not implemented: #{reporterString}"
+  phantom.exit 1
 
 

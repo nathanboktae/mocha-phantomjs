@@ -2,29 +2,11 @@
 (function() {
 
   describe('mocha-phantomjs', function() {
-    var expect, failComplete, failRegExp, htmlFile, passComplete, passRegExp, pendComplete, skipRegExp, spawn;
+    var expect, htmlFile, spawn;
     expect = require('chai').expect;
     spawn = require('child_process').spawn;
     htmlFile = function(file) {
       return "file://" + (process.cwd()) + "/test/" + file + ".html";
-    };
-    passRegExp = function(n) {
-      return RegExp("\\u001b\\[32m\\s\\s✓\\u001b\\[0m\\u001b\\[90m\\spasses\\s" + n);
-    };
-    skipRegExp = function(n) {
-      return RegExp("\\u001b\\[36m\\s\\s-\\sskips\\s" + n + "\\u001b\\[0m");
-    };
-    failRegExp = function(n) {
-      return RegExp("\\u001b\\[31m\\s\\s" + n + "\\)\\sfails\\s" + n + "\\u001b\\[0m");
-    };
-    passComplete = function(n) {
-      return RegExp("\\u001b\\[0m\\n\\n\\n\\u001b\\[92m\\s\\s✔\\u001b\\[0m\\u001b\\[32m\\s" + n + "\\stests\\scomplete");
-    };
-    pendComplete = function(n) {
-      return RegExp("\\u001b\\[36m\\s+•\\u001b\\[0m\\u001b\\[36m\\s" + n + "\\stests\\spending");
-    };
-    failComplete = function(x, y) {
-      return RegExp("\\u001b\\[91m\\s\\s✖\\u001b\\[0m\\u001b\\[31m\\s" + x + "\\sof\\s" + y + "\\stests\\sfailed");
     };
     before(function() {
       return this.runner = function(done, args, callback) {
@@ -62,7 +44,32 @@
         return expect(stdout).to.match(/foo\/bar.html/i);
       });
     });
+    it('returns a failure code and notifies of no such runner class', function(done) {
+      return this.runner(done, [htmlFile('passing'), 'nonesuch'], function(code, stdout, stderr) {
+        expect(code).to.equal(1);
+        return expect(stdout).to.equal("Reporter class not implemented: Nonesuch\n");
+      });
+    });
     describe('spec', function() {
+      var failComplete, failRegExp, passComplete, passRegExp, pendComplete, skipRegExp;
+      passRegExp = function(n) {
+        return RegExp("\\u001b\\[32m\\s\\s✓\\u001b\\[0m\\u001b\\[90m\\spasses\\s" + n);
+      };
+      skipRegExp = function(n) {
+        return RegExp("\\u001b\\[36m\\s\\s-\\sskips\\s" + n + "\\u001b\\[0m");
+      };
+      failRegExp = function(n) {
+        return RegExp("\\u001b\\[31m\\s\\s" + n + "\\)\\sfails\\s" + n + "\\u001b\\[0m");
+      };
+      passComplete = function(n) {
+        return RegExp("\\u001b\\[0m\\n\\n\\n\\u001b\\[92m\\s\\s✔\\u001b\\[0m\\u001b\\[32m\\s" + n + "\\stests\\scomplete");
+      };
+      pendComplete = function(n) {
+        return RegExp("\\u001b\\[36m\\s+•\\u001b\\[0m\\u001b\\[36m\\s" + n + "\\stests\\spending");
+      };
+      failComplete = function(x, y) {
+        return RegExp("\\u001b\\[91m\\s\\s✖\\u001b\\[0m\\u001b\\[31m\\s" + x + "\\sof\\s" + y + "\\stests\\sfailed");
+      };
       describe('passing', function() {
         /*
               $ phantomjs lib/mocha-phantomjs.coffee test/passing.html
@@ -117,21 +124,20 @@
         });
       });
     });
-    describe('dot', function() {
+    return describe('dot', function() {
       /*
-           $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html -R dot
-           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
+          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html -R dot
+          $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
       */
-
-    });
-    before(function() {
-      return this.args = [htmlFile('mixed'), 'dot'];
-    });
-    return it('uses dot reporter', function(done) {
-      return this.runner(done, this.args, function(code, stdout, stderr) {
-        expect(stdout).to.match(/\u001b\[90m\․\u001b\[0m/);
-        expect(stdout).to.match(/\u001b\[36m\․\u001b\[0m/);
-        return expect(stdout).to.match(/\u001b\[31m\․\u001b\[0m/);
+      before(function() {
+        return this.args = [htmlFile('mixed'), 'dot'];
+      });
+      return it('uses dot reporter', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          expect(stdout).to.match(/\u001b\[90m\․\u001b\[0m/);
+          expect(stdout).to.match(/\u001b\[36m\․\u001b\[0m/);
+          return expect(stdout).to.match(/\u001b\[31m\․\u001b\[0m/);
+        });
       });
     });
   });
