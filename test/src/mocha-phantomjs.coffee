@@ -3,7 +3,7 @@ describe 'mocha-phantomjs', ->
   expect = require('chai').expect
   spawn  = require('child_process').spawn
 
-  htmlFile = (file) -> "file://#{process.cwd()}/test/#{file}.html"
+  fileURL = (file) -> "file://#{process.cwd()}/test/#{file}.html"
   
   before ->
     @runner = (done, args, callback) ->
@@ -31,9 +31,19 @@ describe 'mocha-phantomjs', ->
       expect(stdout).to.match /foo\/bar.html/i
 
   it 'returns a failure code and notifies of no such runner class', (done) ->
-    @runner done, [htmlFile('passing'), 'nonesuch'], (code, stdout, stderr) ->
+    @runner done, [fileURL('passing'), 'nonesuch'], (code, stdout, stderr) ->
       expect(code).to.equal 1
       expect(stdout).to.equal "Reporter class not implemented: Nonesuch\n"
+
+  it 'returns a failure code when mocha can not be found on the page', (done) ->
+    @runner done, [fileURL('blank')], (code, stdout, stderr) ->
+      expect(code).to.equal 1
+      expect(stdout).to.equal "Failed to find mocha on the page.\n"
+
+  it 'returns a failure code when mocha fails to start for any reason', (done) ->
+    @runner done, [fileURL('bad')], (code, stdout, stderr) ->
+      expect(code).to.equal 1
+      expect(stdout).to.equal "Failed to start mocha.\n"
 
   describe 'spec', ->
     
@@ -52,7 +62,7 @@ describe 'mocha-phantomjs', ->
       ###
 
       before ->
-        @args = [htmlFile('passing')]
+        @args = [fileURL('passing')]
 
       it 'returns a passing code', (done) ->
         @runner done, @args, (code, stdout, stderr) ->
@@ -78,7 +88,7 @@ describe 'mocha-phantomjs', ->
       ###
 
       before ->
-        @args = [htmlFile('failing')]
+        @args = [fileURL('failing')]
 
       it 'returns a failing code equal to the number of mocha failures', (done) ->
         @runner done, @args, (code, stdout, stderr) ->
@@ -103,12 +113,16 @@ describe 'mocha-phantomjs', ->
     ###
 
     before ->
-      @args = [htmlFile('mixed'), 'dot']
+      @args = [fileURL('mixed'), 'dot']
 
     it 'uses dot reporter', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /\u001b\[90m\․\u001b\[0m/ # grey
         expect(stdout).to.match /\u001b\[36m\․\u001b\[0m/ # cyan
         expect(stdout).to.match /\u001b\[31m\․\u001b\[0m/ # red
-
+    
+    ###
+    $ phantomjs lib/mocha-phantomjs.coffee test/many.html -R dot
+    $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/many.js
+    ###
 

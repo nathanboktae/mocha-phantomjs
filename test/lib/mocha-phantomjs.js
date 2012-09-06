@@ -2,10 +2,10 @@
 (function() {
 
   describe('mocha-phantomjs', function() {
-    var expect, htmlFile, spawn;
+    var expect, fileURL, spawn;
     expect = require('chai').expect;
     spawn = require('child_process').spawn;
-    htmlFile = function(file) {
+    fileURL = function(file) {
       return "file://" + (process.cwd()) + "/test/" + file + ".html";
     };
     before(function() {
@@ -45,9 +45,21 @@
       });
     });
     it('returns a failure code and notifies of no such runner class', function(done) {
-      return this.runner(done, [htmlFile('passing'), 'nonesuch'], function(code, stdout, stderr) {
+      return this.runner(done, [fileURL('passing'), 'nonesuch'], function(code, stdout, stderr) {
         expect(code).to.equal(1);
         return expect(stdout).to.equal("Reporter class not implemented: Nonesuch\n");
+      });
+    });
+    it('returns a failure code when mocha can not be found on the page', function(done) {
+      return this.runner(done, [fileURL('blank')], function(code, stdout, stderr) {
+        expect(code).to.equal(1);
+        return expect(stdout).to.equal("Failed to find mocha on the page.\n");
+      });
+    });
+    it('returns a failure code when mocha fails to start for any reason', function(done) {
+      return this.runner(done, [fileURL('bad')], function(code, stdout, stderr) {
+        expect(code).to.equal(1);
+        return expect(stdout).to.equal("Failed to start mocha.\n");
       });
     });
     describe('spec', function() {
@@ -76,7 +88,7 @@
               $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/passing.js
         */
         before(function() {
-          return this.args = [htmlFile('passing')];
+          return this.args = [fileURL('passing')];
         });
         it('returns a passing code', function(done) {
           return this.runner(done, this.args, function(code, stdout, stderr) {
@@ -103,7 +115,7 @@
               $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing.js
         */
         before(function() {
-          return this.args = [htmlFile('failing')];
+          return this.args = [fileURL('failing')];
         });
         it('returns a failing code equal to the number of mocha failures', function(done) {
           return this.runner(done, this.args, function(code, stdout, stderr) {
@@ -130,7 +142,7 @@
           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
       */
       before(function() {
-        return this.args = [htmlFile('mixed'), 'dot'];
+        return this.args = [fileURL('mixed'), 'dot'];
       });
       return it('uses dot reporter', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {

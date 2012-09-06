@@ -8,8 +8,9 @@ USAGE = """
 class Reporter
 
   constructor: (@reporter) ->
-    @url      = system.args[1]
-    @timeout  = 6000
+    @url = system.args[1]
+    @mochaStarted = false
+    @mochaStartWait = 6000
     @fail(USAGE) unless @url
 
   run: ->
@@ -49,34 +50,37 @@ class Reporter
     @fail "Failed to load the page. Check the url: #{@url}"
 
   injectJS: ->
-    @page.injectJs 'mocha-phantomjs/core_extensions.js'
-    @didInjectCoreExtensions()
+    if @page.evaluate(-> window.mocha?)
+      @page.injectJs 'mocha-phantomjs/core_extensions.js'
+      @didInjectCoreExtensions()
+    else
+      @fail "Failed to find mocha on the page."
 
   runMocha: ->
     @page.evaluate @runner, @reporter
-    @defer => @page.evaluate -> mocha.phantomjs?.ended    
-
-  defer: (test) ->
-    start = new Date().getTime()
-    testStart = new Date().getTime()
-    passed = false
-    func = =>
-      if new Date().getTime() - start < @timeout and !passed
-        passed = test()
-      else
-        if !passed
-          @fail 'Timeout passed before the tests finished.'
-        else
-          clearInterval(interval)
-          @finish()
-    interval = setInterval(func, 100)
+    @mochaStarted = @page.evaluate -> mocha?.phantomjs?.run or false
+    if @mochaStarted
+      @mochaRunAt = new Date().getTime()
+      @waitForMocha()
+    else
+      @fail "Failed to start mocha."
+  
+  waitForMocha: =>
+    ended = @page.evaluate -> mocha.phantomjs?.ended
+    if ended then @finish() else setTimeout @waitForMocha, 100
 
   runner: (reporter) ->
-    mocha.setup reporter: reporter
-    mocha.phantomjs = failures: 0, ended: false
-    mocha.run().on 'end', ->
-      mocha.phantomjs.failures = @failures
-      mocha.phantomjs.ended = true
+    try
+      mocha.setup reporter: reporter
+      mocha.phantomjs = failures: 0, ended: false, run: false
+      runner = mocha.run()
+      if runner
+        mocha.phantomjs.run = true
+        runner.on 'end', ->
+          mocha.phantomjs.failures = @failures
+          mocha.phantomjs.ended = true
+    catch error
+      false
 
 class Spec extends Reporter
 
