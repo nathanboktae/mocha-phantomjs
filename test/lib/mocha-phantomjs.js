@@ -138,7 +138,7 @@
     });
     return describe('dot', function() {
       /*
-          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html -R dot
+          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html dot
           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
       */
       before(function() {
@@ -151,6 +151,11 @@
           return expect(stdout).to.match(/\u001b\[31m\․\u001b\[0m/);
         });
       });
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/many.html dot
+          $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/many.js
+      */
+
     });
   });
 
