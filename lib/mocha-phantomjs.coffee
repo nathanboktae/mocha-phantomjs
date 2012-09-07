@@ -19,7 +19,10 @@ class Reporter
 
   # Subclass Hooks
 
-  didInjectCoreExtensions: ->
+  customizeProcessStdout: -> 
+    undefined
+
+  customizeConsole: ->
     undefined
 
   # Private
@@ -52,7 +55,8 @@ class Reporter
   injectJS: ->
     if @page.evaluate(-> window.mocha?)
       @page.injectJs 'mocha-phantomjs/core_extensions.js'
-      @didInjectCoreExtensions()
+      @customizeProcessStdout()
+      @customizeConsole()
     else
       @fail "Failed to find mocha on the page."
 
@@ -87,17 +91,32 @@ class Spec extends Reporter
   constructor: ->
     super 'spec'
 
-  didInjectCoreExtensions: ->
+  customizeProcessStdout: ->
     @page.evaluate -> 
+      process.stdout.write = (string) ->
+        return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
+        console.log string
+
+  customizeConsole: ->
+    @page.evaluate ->
       process.cursor.CRMatcher = /\s+◦\s\w/
       process.cursor.CRCleaner = process.cursor.up + process.cursor.deleteLine
+      origLog = console.log
+      console.log = ->
+        string = console.format.apply(console, arguments)
+        if process.cursor.CRMatcher and string.match(process.cursor.CRMatcher)
+          process.cursor.CRCleanup = true
+        else if process.cursor.CRCleanup and process.cursor.CRCleaner
+          string = process.cursor.CRCleaner + string
+          process.cursor.CRCleanup = false
+        origLog.call console, string
 
 class Dot extends Reporter
 
   constructor: ->
     super 'dot'
 
-  didInjectCoreExtensions: ->
+  customizeProcessStdout: ->
     @page.evaluate ->
       process.stdout.write = (string) ->
         if string.match /\u001b\[\d\dm\․\u001b\[0m/
