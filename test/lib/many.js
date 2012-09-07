@@ -5,12 +5,17 @@
   expect = (typeof chai !== "undefined" && chai !== null ? chai.expect : void 0) || require('chai').expect;
 
   describe('Many Passing', function() {
-    var n, _i, _results;
+    var n, pass, _i, _results;
     _results = [];
     for (n = _i = 1; _i <= 500; n = ++_i) {
-      _results.push(it("passes " + n, function() {
-        return expect(n).to.equal(n);
-      }));
+      pass = n < 10 ? true : n % 10;
+      if (pass) {
+        _results.push(it("passes " + n, function() {
+          return expect(n).to.equal(n);
+        }));
+      } else {
+        _results.push(it.skip("skips " + n, function() {}));
+      }
     }
     return _results;
   });
