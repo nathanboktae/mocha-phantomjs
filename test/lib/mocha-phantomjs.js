@@ -136,7 +136,7 @@
         });
       });
     });
-    return describe('dot', function() {
+    describe('dot', function() {
       /*
           $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html dot
           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
@@ -164,6 +164,34 @@
           var matches;
           matches = stdout.match(/\d\dm\․\u001b\[0m\n\n/g);
           return expect(matches.length).to.equal(1);
+        });
+      });
+    });
+    describe('tap', function() {
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html tap
+          $ mocha -r chai/chai.js -R tap --globals chai.expect test/lib/mixed.js
+      */
+      before(function() {
+        return this.args = [fileURL('mixed'), 'tap'];
+      });
+      return it.only('basically works', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          return expect(stdout).to.match(/Tests Mixed/);
+        });
+      });
+    });
+    return describe('list', function() {
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html list
+          $ mocha -r chai/chai.js -R list --globals chai.expect test/lib/mixed.js
+      */
+      before(function() {
+        return this.args = [fileURL('mixed'), 'list'];
+      });
+      return it('basically works', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          return expect(stdout).to.match(/Tests Mixed/);
         });
       });
     });

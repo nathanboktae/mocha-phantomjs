@@ -1,6 +1,6 @@
 expect = chai?.expect or require('chai').expect
 
-describe 'Tests Failing', ->
+describe 'Tests Mixed', ->
 
   it 'passes 1', -> expect(1).to.be.ok
   it 'passes 2', -> expect(2).to.be.ok

@@ -111,7 +111,7 @@ class Spec extends Reporter
       string = console.format.apply(console, arguments)
       if string.match(process.cursor.CRMatcher)
         process.cursor.CRCleanup = true
-      else if process.cursor.CRCleanup and process.cursor.CRCleaner
+      else if process.cursor.CRCleanup
         string = process.cursor.CRCleaner + string
         process.cursor.CRCleanup = false
       origLog.call console, string
@@ -147,6 +147,29 @@ class Tap extends Reporter
 
   constructor: ->
     super 'tap'
+
+class List extends Reporter
+
+  constructor: ->
+    super 'list'
+
+  customizeProcessStdout: (options) ->
+    process.stdout.write = (string) ->
+      return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
+      console.log string
+
+  customizeProcessStdout: (options) ->
+    process.cursor.CRMatcher = /\u001b\[90m.*:\s\u001b\[0m/
+    process.cursor.CRCleaner = (string) -> process.cursor.up + process.cursor.deleteLine + string + process.cursor.up + process.cursor.up
+    origLog = console.log
+    console.log = ->
+      string = console.format.apply(console, arguments)
+      if string.match(process.cursor.CRMatcher)
+        process.cursor.CRCleanup = true
+      else if process.cursor.CRCleanup
+        string = process.cursor.CRCleaner(string)
+        process.cursor.CRCleanup = false
+      origLog.call console, string
 
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
