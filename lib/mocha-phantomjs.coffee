@@ -9,6 +9,7 @@ class Reporter
 
   constructor: (@reporter) ->
     @url = system.args[1]
+    @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
     @mochaStartWait = 6000
     @fail(USAGE) unless @url
@@ -19,11 +20,14 @@ class Reporter
 
   # Subclass Hooks
 
-  customizeProcessStdout: -> 
+  customizeProcessStdout: (options) -> 
     undefined
 
-  customizeConsole: ->
+  customizeConsole: (options) ->
     undefined
+
+  customizeOptions: ->
+    columns: @columns
 
   # Private
 
@@ -55,8 +59,8 @@ class Reporter
   injectJS: ->
     if @page.evaluate(-> window.mocha?)
       @page.injectJs 'mocha-phantomjs/core_extensions.js'
-      @customizeProcessStdout()
-      @customizeConsole()
+      @page.evaluate @customizeProcessStdout, @customizeOptions()
+      @page.evaluate @customizeConsole, @customizeOptions()
     else
       @fail "Failed to find mocha on the page."
 
@@ -91,39 +95,36 @@ class Spec extends Reporter
   constructor: ->
     super 'spec'
 
-  customizeProcessStdout: ->
-    @page.evaluate -> 
-      process.stdout.write = (string) ->
-        return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
-        console.log string
+  customizeProcessStdout: (options) ->
+    process.stdout.write = (string) ->
+      return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
+      console.log string
 
-  customizeConsole: ->
-    @page.evaluate ->
-      process.cursor.CRMatcher = /\s+◦\s\w/
-      process.cursor.CRCleaner = process.cursor.up + process.cursor.deleteLine
-      origLog = console.log
-      console.log = ->
-        string = console.format.apply(console, arguments)
-        if process.cursor.CRMatcher and string.match(process.cursor.CRMatcher)
-          process.cursor.CRCleanup = true
-        else if process.cursor.CRCleanup and process.cursor.CRCleaner
-          string = process.cursor.CRCleaner + string
-          process.cursor.CRCleanup = false
-        origLog.call console, string
+  customizeConsole: (options) ->
+    process.cursor.CRMatcher = /\s+◦\s\w/
+    process.cursor.CRCleaner = process.cursor.up + process.cursor.deleteLine
+    origLog = console.log
+    console.log = ->
+      string = console.format.apply(console, arguments)
+      if process.cursor.CRMatcher and string.match(process.cursor.CRMatcher)
+        process.cursor.CRCleanup = true
+      else if process.cursor.CRCleanup and process.cursor.CRCleaner
+        string = process.cursor.CRCleaner + string
+        process.cursor.CRCleanup = false
+      origLog.call console, string
 
 class Dot extends Reporter
 
   constructor: ->
     super 'dot'
 
-  customizeProcessStdout: ->
-    @page.evaluate ->
-      process.stdout.write = (string) ->
-        if string.match /\u001b\[\d\dm\․\u001b\[0m/
-          ++process.cursor.count
-          forward = process.cursor.count + 2
-          string = process.cursor.up + process.cursor.forwardN(forward) + string
-        console.log string
+  customizeProcessStdout: (options) ->
+    process.stdout.write = (string) ->
+      if string.match /\u001b\[\d\dm\․\u001b\[0m/
+        ++process.cursor.count
+        forward = process.cursor.count + 2
+        string = process.cursor.up + process.cursor.forwardN(forward) + string
+      console.log string
 
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
