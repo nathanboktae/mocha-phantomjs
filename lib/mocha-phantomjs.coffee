@@ -69,7 +69,7 @@ class Reporter
 
   runMocha: ->
     @page.evaluate @runner, @reporter
-    @mochaStarted = @page.evaluate -> mocha?.phantomjs?.runner?
+    @mochaStarted = @page.evaluate -> mocha?.phantomjs?.runner or false
     if @mochaStarted
       @mochaRunAt = new Date().getTime()
       @page.evaluate @customizeRunner, @customizeOptions()

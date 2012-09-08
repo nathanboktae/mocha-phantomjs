@@ -159,7 +159,7 @@
       before(function() {
         return this.args = [fileURL('many'), 'dot'];
       });
-      return it.only('wraps lines correctly and has only one double space for the last dot', function(done) {
+      return it('wraps lines correctly and has only one double space for the last dot', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           var matches;
           matches = stdout.match(/\d\dm\․\u001b\[0m\n\n/g);
