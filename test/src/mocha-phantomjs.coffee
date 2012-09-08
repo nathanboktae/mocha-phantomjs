@@ -126,3 +126,14 @@ describe 'mocha-phantomjs', ->
     $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/many.js
     ###
 
+    before ->
+      @args = [fileURL('many'), 'dot']
+
+    it 'wraps lines correctly and has only one double space for the last dot', (done) ->
+      @runner done, @args, (code, stdout, stderr) ->
+        matches = stdout.match /\d\dm\․\u001b\[0m\n\n/g
+        expect(matches.length).to.equal 1
+
+
+
+

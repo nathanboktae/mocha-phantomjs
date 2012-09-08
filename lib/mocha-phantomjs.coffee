@@ -2,7 +2,7 @@ system  = require 'system'
 webpage = require 'webpage'
 
 USAGE = """
-        Usage: phantomjs run-mocha.coffee URL REPORTER
+        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER
         """
 
 class Reporter
@@ -19,6 +19,9 @@ class Reporter
     @loadPage()
 
   # Subclass Hooks
+
+  customizeRunner: (options) ->
+    undefined
 
   customizeProcessStdout: (options) -> 
     undefined
@@ -66,9 +69,10 @@ class Reporter
 
   runMocha: ->
     @page.evaluate @runner, @reporter
-    @mochaStarted = @page.evaluate -> mocha?.phantomjs?.run or false
+    @mochaStarted = @page.evaluate -> mocha?.phantomjs?.runner?
     if @mochaStarted
       @mochaRunAt = new Date().getTime()
+      @page.evaluate @customizeRunner, @customizeOptions()
       @waitForMocha()
     else
       @fail "Failed to start mocha."
@@ -81,10 +85,9 @@ class Reporter
     try
       mocha.setup reporter: reporter
       mocha.phantomjs = failures: 0, ended: false, run: false
-      runner = mocha.run()
-      if runner
-        mocha.phantomjs.run = true
-        runner.on 'end', ->
+      mocha.phantomjs.runner = mocha.run()
+      if mocha.phantomjs.runner
+        mocha.phantomjs.runner.on 'end', ->
           mocha.phantomjs.failures = @failures
           mocha.phantomjs.ended = true
     catch error
@@ -106,7 +109,7 @@ class Spec extends Reporter
     origLog = console.log
     console.log = ->
       string = console.format.apply(console, arguments)
-      if process.cursor.CRMatcher and string.match(process.cursor.CRMatcher)
+      if string.match(process.cursor.CRMatcher)
         process.cursor.CRCleanup = true
       else if process.cursor.CRCleanup and process.cursor.CRCleaner
         string = process.cursor.CRCleaner + string
@@ -119,11 +122,25 @@ class Dot extends Reporter
     super 'dot'
 
   customizeProcessStdout: (options) ->
+    process.cursor.margin = 2
+    process.cursor.CRMatcher = /\u001b\[\d\dm\․\u001b\[0m/
+    process.stdout.columns = options.columns
+    process.stdout.allowedFirstNewLine = false
     process.stdout.write = (string) ->
-      if string.match /\u001b\[\d\dm\․\u001b\[0m/
+      if string is '\n  '
+        unless process.stdout.allowedFirstNewLine
+          process.stdout.allowedFirstNewLine = true
+        else
+          return
+      else if string.match(process.cursor.CRMatcher)
+        if process.cursor.count is process.stdout.columns
+          process.cursor.count = 0
+          forward = process.cursor.margin
+          string = process.cursor.forwardN(forward) + string
+        else
+          forward = process.cursor.margin + process.cursor.count
+          string = process.cursor.up + process.cursor.forwardN(forward) + string
         ++process.cursor.count
-        forward = process.cursor.count + 2
-        string = process.cursor.up + process.cursor.forwardN(forward) + string
       console.log string
 
 reporterString = system.args[2] || 'spec'
