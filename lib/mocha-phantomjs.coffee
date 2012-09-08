@@ -143,6 +143,11 @@ class Dot extends Reporter
         ++process.cursor.count
       console.log string
 
+class Tap extends Reporter
+
+  constructor: ->
+    super 'tap'
+
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
 reporterKlass  = try

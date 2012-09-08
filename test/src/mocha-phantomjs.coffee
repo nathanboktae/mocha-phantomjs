@@ -134,6 +134,15 @@ describe 'mocha-phantomjs', ->
         matches = stdout.match /\d\dm\․\u001b\[0m\n\n/g
         expect(matches.length).to.equal 1
 
+  describe 'tap', ->
+
+    ###
+    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html tap
+    $ mocha -r chai/chai.js -R tap --globals chai.expect test/lib/mixed.js
+    ###
+
+
+
 
 
 
