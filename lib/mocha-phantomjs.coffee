@@ -164,6 +164,9 @@ class List extends Reporter
     origLog = console.log
     console.log = ->
       string = console.format.apply(console, arguments)
+      if string.match /\u001b\[32m\s\s-\u001b\[0m/
+        string = string
+        process.cursor.CRCleanup = false
       if string.match(process.cursor.CRMatcher)
         process.cursor.CRCleanup = true
       else if process.cursor.CRCleanup
