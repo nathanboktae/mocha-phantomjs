@@ -171,6 +171,12 @@ class List extends Reporter
         process.cursor.CRCleanup = false
       origLog.call console, string
 
+class Min extends Reporter
+
+  constructor: ->
+    super 'min'
+
+
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
 reporterKlass  = try
