@@ -144,7 +144,7 @@ describe 'mocha-phantomjs', ->
     before ->
       @args = [fileURL('mixed'), 'tap']
 
-    it.only 'basically works', (done) ->
+    it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /Tests Mixed/
 
@@ -162,7 +162,18 @@ describe 'mocha-phantomjs', ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /Tests Mixed/
 
+  describe 'doc', ->
 
+    ###
+    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html doc
+    $ mocha -r chai/chai.js -R doc --globals chai.expect test/lib/mixed.js
+    ###
 
+    before ->
+      @args = [fileURL('mixed'), 'doc']
+
+    it 'basically works', (done) ->
+      @runner done, @args, (code, stdout, stderr) ->
+        expect(stdout).to.match /<h1>Tests Mixed<\/h1>/
 
 

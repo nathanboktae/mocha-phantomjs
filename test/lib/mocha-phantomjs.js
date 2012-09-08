@@ -175,13 +175,13 @@
       before(function() {
         return this.args = [fileURL('mixed'), 'tap'];
       });
-      return it.only('basically works', function(done) {
+      return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/Tests Mixed/);
         });
       });
     });
-    return describe('list', function() {
+    describe('list', function() {
       /*
           $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html list
           $ mocha -r chai/chai.js -R list --globals chai.expect test/lib/mixed.js
@@ -192,6 +192,20 @@
       return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/Tests Mixed/);
+        });
+      });
+    });
+    return describe('doc', function() {
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html doc
+          $ mocha -r chai/chai.js -R doc --globals chai.expect test/lib/mixed.js
+      */
+      before(function() {
+        return this.args = [fileURL('mixed'), 'doc'];
+      });
+      return it('basically works', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          return expect(stdout).to.match(/<h1>Tests Mixed<\/h1>/);
         });
       });
     });

@@ -176,6 +176,10 @@ class Min extends Reporter
   constructor: ->
     super 'min'
 
+class Doc extends Reporter
+
+  constructor: ->
+    super 'doc'
 
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
