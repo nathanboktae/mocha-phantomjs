@@ -7,6 +7,20 @@
 * Make sure runner hooks into status code. Test.
 
 
+# Supported Reporters
+
+* spec (default)
+* dot
+* tap
+* min
+* list
+* doc
+
+### Spec Reporter
+
+->![Spec Reporter](https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif)<-
+
+
 # Details
 
 * Talk about `window.mochaPhantomJS` being set to true by PhantomJS on page initialization.
