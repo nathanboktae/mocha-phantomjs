@@ -19,7 +19,7 @@
 ### Spec Reporter
 
 <div style="text-align:center;">
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter">
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="770">
 </div>
 
 
