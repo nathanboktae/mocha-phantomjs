@@ -18,7 +18,10 @@
 
 ### Spec Reporter
 
-->![Spec Reporter](https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif)<-
+<div style="text-align:center;">
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter">
+</div>
+
 
 
 # Details
