@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>mocha-phantomjs by metaskills</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">mocha-phantomjs</h1>
+        <p class="header">PhantomJS Runners for Mocha</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/metaskills/mocha-phantomjs/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/metaskills/mocha-phantomjs/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/metaskills/mocha-phantomjs">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/metaskills">metaskills</a></p>
+
+
+      </header>
+      <section>
+        <h1>PhantomJS Runners for Mocha</h1>
+
+<h1>TODO</h1>
+
+<ul>
+<li>Real Package - <a href="https://github.com/jamescarr/jasmine-tool">https://github.com/jamescarr/jasmine-tool</a>
+</li>
+<li>Make sure runner hooks into status code. Test.</li>
+</ul><h1>Supported Reporters</h1>
+
+<ul>
+<li>spec (default)</li>
+<li>dot</li>
+<li>tap</li>
+<li>min</li>
+<li>list</li>
+<li>doc</li>
+</ul><h3>Spec Reporter</h3>
+
+ 
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter"> 
+
+<h1>Details</h1>
+
+<ul>
+<li>Talk about <code>window.mochaPhantomJS</code> being set to true by PhantomJS on page initialization.
+
+<ul>
+<li>Used so you can manually run HTML files as well as avoid run() in PhantomJS.</li>
+</ul>
+</li>
+<li>Talk about <code>process.stdout.write</code> done right!</li>
+</ul><h1>Exit Code</h1>
+
+<p>This runner will use the number of test failures as the exit code for the phantom process. This makes it easy to utilize this runner in your continious integration system. So zero test failures will mean a status code of 0 which is equal to passing. </p>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-34687749-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
