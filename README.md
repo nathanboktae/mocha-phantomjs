@@ -133,6 +133,12 @@ We also use Travis CI to run our tests too. The current build status:
 * Create a `mocha-phantomjs` bin file for use in Node.js and publish a NPM.
 
 
+# Alternatives
+
+* OpenPhantomScripts - https://github.com/mark-rushakoff/OpenPhantomScripts
+* Front Tests - https://github.com/Backbonist/front-tests
+
+
 # License
 
 Released under the MIT license. Copyright (c) 2012 Ken Collins.
