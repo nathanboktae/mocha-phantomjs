@@ -9,11 +9,11 @@ The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and 
 
 ### Standard Out
 
-Finally, `process.stdout.write`, done right. Mocha is primarly written for node, hence it relies on writing to standard out without trailing newline characters. This behavior is critical for reporters like the dot reporter. We make up for PhantomJS's lack of stream support by both customizing `console.log` and creating a `process.stdout.write` function to the current PhantomJS process. This technique combined with a handful of fancy [ANSI cursor movement codes](http://web.mit.edu/gnu/doc/html/screen_10.html) allows PhantomJS to support Mocha's diverse reporter options.
+Finally, `process.stdout.write`, done right. Mocha is primarily written for node, hence it relies on writing to standard out without trailing newline characters. This behavior is critical for reporters like the dot reporter. We make up for PhantomJS's lack of stream support by both customizing `console.log` and creating a `process.stdout.write` function to the current PhantomJS process. This technique combined with a handful of fancy [ANSI cursor movement codes](http://web.mit.edu/gnu/doc/html/screen_10.html) allows PhantomJS to support Mocha's diverse reporter options.
 
 ### Exit Codes
 
-Proper exit status codes from PhantomJS using Mocha's failures. The number of Mocha's test failures from Mocha will be the return code. So in standard unix fashion, a `0` code means success. This means you can use mocha-phantomjs on your CI server of choice.
+Proper exit status codes from PhantomJS using Mocha's failures. The number of Mocha's test failures from Mocha will be the return code. So in standard UNIX fashion, a `0` code means success. This means you can use mocha-phantomjs on your CI server of choice.
 
 ### Mixed Mode Runs
 
@@ -56,7 +56,7 @@ Your HTML file structure should look something like this. The reporter set below
 
 # Supported Reporters
 
-No other Mocha/PhantomJS runner does what this project does. Some used a debounce method to keep duplicate messages in the spec reporter from showing up twice. But this came at a cost, loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how out runner script fully compies with expected Mocha behavior.
+No other Mocha/PhantomJS runner does what this project does. Some used a debounce method to keep duplicate messages in the spec reporter from showing up twice. But this came at a cost, loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how out runner script fully compiles with expected Mocha behavior.
 
 <div style="text-align:center;">
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
@@ -128,8 +128,7 @@ We also use Travis CI to run our tests too. The current [![Build Status](https:/
 
 # TODO
 
-* Real Package - https://github.com/jamescarr/jasmine-tool
-* Make sure runner hooks into status code. Test.
+* Create a `mocha-phantomjs` bin file for use in Node.js and publish a NPM.
 
 
 # License
