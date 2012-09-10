@@ -123,7 +123,9 @@ Use `doc` for the reporter argument.
 
 Simple! Just clone the repo, then run `npm install` and the various node development dependencies will install to the `node_modules` directory of the project. If you have not done so, it is typically a good idea to add `/node_modules/.bin` to your `$PATH` so these modules bins are used. Now run `cake test` to start off the test suite.
 
-We also use Travis CI to run our tests too. The current [![Build Status](https://secure.travis-ci.org/metaskills/mocha-phantomjs.png)](http://travis-ci.org/metaskills/mocha-phantomjs)
+We also use Travis CI to run our tests too. The current build status:
+
+[![Build Status](https://secure.travis-ci.org/metaskills/mocha-phantomjs.png)](http://travis-ci.org/metaskills/mocha-phantomjs)
 
 
 # TODO
