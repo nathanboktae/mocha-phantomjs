@@ -2,7 +2,7 @@
 
 [Mocha](http://visionmedia.github.com/mocha/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.
 
-The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha form the console.
+The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console.
 
 
 # Key Features
@@ -13,11 +13,11 @@ Finally, `process.stdout.write`, done right. Mocha is primarily written for node
 
 ### Exit Codes
 
-Proper exit status codes from PhantomJS using Mocha's failures. The number of Mocha's test failures from Mocha will be the return code. So in standard UNIX fashion, a `0` code means success. This means you can use mocha-phantomjs on your CI server of choice.
+Proper exit status codes from PhantomJS using Mocha's failures count. So in standard UNIX fashion, a `0` code means success. This means you can use mocha-phantomjs on your CI server of choice.
 
 ### Mixed Mode Runs
 
-Mixed mode HTML file support. Meaning you can use your existing Mocha HTML file reporters side by side with mocha-phantomjs. This gives you the option to run your tests both in a browser or with PhantomJS. Since mocha-phantomjs needs to control when the `run()` command is sent to the mocha object, we accomplish this by setting the `mochaPhantomJS` on the `window` object to `true`. Here is an example of a HTML structure that can be used both by opening the file in your browser or choice or using mocha-phantomjs. See the usage section below for an example of how to use this feature.
+You can use your existing Mocha HTML file reporters side by side with mocha-phantomjs. This gives you the option to run your tests both in a browser or with PhantomJS. Since mocha-phantomjs needs to control when the `run()` command is sent to the mocha object, we accomplish this by setting the `mochaPhantomJS` on the `window` object to `true`. Below, in the usage section, is an example of a HTML structure that can be used both by opening the file in your browser or choice or using mocha-phantomjs.
 
 
 # Usage
@@ -28,7 +28,7 @@ $ phantomjs mocha-phantomjs.coffee URL [REPORTER]
 
 The `mocha-phantomjs.coffee` script needs to be accompanied by the `mocha-phantomjs` directory included in the Github's `lib` project directory. This directory contains core extensions the script needs to inject into the loaded URL. If the `mocha-phantomjs.coffee` file resides directly beside this directory, everything should just work.
 
-Your HTML file structure should look something like this. The reporter set below to `html` is only needed for viewing the HTML page in your browser. The `mocha-phantomjs.coffee` script overrides that reporter value. The conditional run allows the mixed mode described above.
+Your HTML file structure should look something like this. The reporter set below to `html` is only needed for viewing the HTML page in your browser. The `mocha-phantomjs.coffee` script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.
 
 ```html
 <html>
@@ -56,7 +56,7 @@ Your HTML file structure should look something like this. The reporter set below
 
 # Supported Reporters
 
-No other Mocha/PhantomJS runner does what this project does. Some used a debounce method to keep duplicate messages in the spec reporter from showing up twice. But this came at a cost, loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how out runner script fully compiles with expected Mocha behavior.
+Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.
 
 <div style="text-align:center;">
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
