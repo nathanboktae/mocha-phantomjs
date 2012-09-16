@@ -26,7 +26,27 @@
     it('fails 3', function() {
       return expect(false).to.be["true"];
     });
-
+    it('passes 4', function() {
+      return expect(1).to.be.ok;
+    });
+    it('passes 5', function() {
+      return expect(2).to.be.ok;
+    });
+    it('passes 6', function() {
+      return expect(3).to.be.ok;
+    });
+    it('fails 4', function() {
+      return expect(false).to.be["true"];
+    });
+    it('fails 5', function() {
+      return expect(false).to.be["true"];
+    });
+    it('fails 6', function() {
+      return expect(false).to.be["true"];
+    });
+    it('skips 4');
+    it('skips 5');
+    return it('skips 6');
   });
 
 }).call(this);
