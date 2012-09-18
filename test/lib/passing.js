@@ -19,4 +19,10 @@
     return it('skips 3');
   });
 
+  if (window.requirejs) {
+    define(function(require) {
+      return {};
+    });
+  }
+
 }).call(this);
