@@ -105,6 +105,27 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match failRegExp(3)
           expect(stdout).to.match failComplete(3,6)
 
+    describe 'requirejs', ->
+
+      before ->
+        @args = [fileURL('requirejs')]
+
+      it 'returns a passing code', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(code).to.equal 0
+
+      it 'writes all output in color', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(stdout).to.match /Tests Passing/
+          expect(stdout).to.match passRegExp(1)
+          expect(stdout).to.match passRegExp(2)
+          expect(stdout).to.match passRegExp(3)
+          expect(stdout).to.match skipRegExp(1)
+          expect(stdout).to.match skipRegExp(2)
+          expect(stdout).to.match skipRegExp(3)
+          expect(stdout).to.match passComplete(6)
+          expect(stdout).to.match pendComplete(3)
+
   describe 'dot', ->
 
     ###
@@ -175,5 +196,3 @@ describe 'mocha-phantomjs', ->
     it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /<h1>Tests Mixed<\/h1>/
-
-

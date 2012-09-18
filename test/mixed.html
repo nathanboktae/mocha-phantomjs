@@ -15,7 +15,11 @@
     </script>
     <script src="lib/mixed.js"></script>
     <script>
-      if (!window.mochaPhantomJS) { mocha.run(); }
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
     </script>
   </body>
 </html>
