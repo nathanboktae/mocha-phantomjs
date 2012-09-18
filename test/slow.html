@@ -15,7 +15,11 @@
     </script>
     <script src="lib/slow.js"></script>
     <script>
-      if (!window.mochaPhantomJS) { mocha.run(); }
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
     </script>
   </body>
 </html>

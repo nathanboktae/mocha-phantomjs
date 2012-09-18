@@ -5,6 +5,13 @@
   </head>
   <body>
     <script src="../node_modules/mocha/mocha.js"></script>
-    <script>mocha.run = function() { return false; };</script>
+    <script>
+      mocha.run = function() { return false; };
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
+    </script>
   </body>
 </html>
