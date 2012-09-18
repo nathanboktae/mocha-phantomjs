@@ -23,7 +23,7 @@ class Reporter
   customizeRunner: (options) ->
     undefined
 
-  customizeProcessStdout: (options) -> 
+  customizeProcessStdout: (options) ->
     undefined
 
   customizeConsole: (options) ->
@@ -39,13 +39,19 @@ class Reporter
     phantom.exit 1
 
   finish: ->
-    phantom.exit @page.evaluate -> mocha.phantomjs?.failures
+    phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->
     @page = webpage.create()
     @page.onConsoleMessage = (msg) -> console.log msg
-    @page.onInitialized = => 
-      @page.evaluate -> window.mochaPhantomJS = true
+    @page.onInitialized = =>
+      @page.evaluate ->
+        window.mochaPhantomJS =
+          failures: 0
+          ended: false
+          started: false
+          run: ->
+            mochaPhantomJS.started = true
 
   loadPage: ->
     @page.open @url
@@ -62,13 +68,6 @@ class Reporter
   injectJS: ->
     if @page.evaluate(-> window.mocha?)
       @page.injectJs 'mocha-phantomjs/core_extensions.js'
-      @page.evaluate ->
-        mocha.phantomjs =
-          failures: 0
-          ended: false
-          started: false
-          run: ->
-            mocha.phantomjs.started = true
       @page.evaluate @customizeProcessStdout, @customizeOptions()
       @page.evaluate @customizeConsole, @customizeOptions()
     else
@@ -76,7 +75,7 @@ class Reporter
 
   runMocha: ->
     @page.evaluate @runner, @reporter
-    @mochaStarted = @page.evaluate -> mocha?.phantomjs?.runner or false
+    @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
     if @mochaStarted
       @mochaRunAt = new Date().getTime()
       @page.evaluate @customizeRunner, @customizeOptions()
@@ -85,21 +84,24 @@ class Reporter
       @fail "Failed to start mocha."
 
   waitForMocha: =>
-    ended = @page.evaluate -> mocha.phantomjs?.ended
+    ended = @page.evaluate -> mochaPhantomJS.ended
     if ended then @finish() else setTimeout @waitForMocha, 100
 
   waitForRunMocha: =>
-    started = @page.evaluate -> mocha.phantomjs?.started
-    if started then @runMocha() else setTimeout @waitForRunMocha, 100
+    started = @page.evaluate -> mochaPhantomJS.started
+    if started
+      @runMocha()
+    else
+      setTimeout @waitForRunMocha, 100
 
   runner: (reporter) ->
     try
       mocha.setup reporter: reporter
-      mocha.phantomjs.runner = mocha.run()
-      if mocha.phantomjs.runner
-        mocha.phantomjs.runner.on 'end', ->
-          mocha.phantomjs.failures = @failures
-          mocha.phantomjs.ended = true
+      mochaPhantomJS.runner = mocha.run()
+      if mochaPhantomJS.runner
+        mochaPhantomJS.runner.on 'end', ->
+          mochaPhantomJS.failures = @failures
+          mochaPhantomJS.ended = true
     catch error
       false
 
