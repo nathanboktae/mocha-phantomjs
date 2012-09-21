@@ -118,6 +118,27 @@ Use `doc` for the reporter argument.
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_doc.gif" alt="Doc Reporter" width="616">
 </div>
 
+### TeamCity Reporter
+
+Use `teamcity` for the reporter argument.
+
+```
+$ phantomjs lib/mocha-phantomjs.coffee test/passing.html teamcity
+##teamcity[testSuiteStarted name='mocha.suite']
+##teamcity[testStarted name='Tests Passing passes 1']
+##teamcity[testFinished name='Tests Passing passes 1' duration='0']
+##teamcity[testStarted name='Tests Passing passes 2']
+##teamcity[testFinished name='Tests Passing passes 2' duration='0']
+##teamcity[testStarted name='Tests Passing passes 3']
+##teamcity[testFinished name='Tests Passing passes 3' duration='0']
+##teamcity[testIgnored name='Tests Passing skips 1' message='pending']
+##teamcity[testFinished name='Tests Passing skips 1' duration='undefined']
+##teamcity[testIgnored name='Tests Passing skips 2' message='pending']
+##teamcity[testFinished name='Tests Passing skips 2' duration='undefined']
+##teamcity[testIgnored name='Tests Passing skips 3' message='pending']
+##teamcity[testFinished name='Tests Passing skips 3' duration='undefined']
+##teamcity[testSuiteFinished name='mocha.suite' duration='133']
+```
 
 # Testing
 
