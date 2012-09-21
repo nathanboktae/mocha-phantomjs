@@ -193,6 +193,11 @@ class Doc extends Reporter
   constructor: ->
     super 'doc'
 
+class Teamcity extends Reporter
+
+  constructor: ->
+    super 'teamcity'
+
 reporterString = system.args[2] || 'spec'
 reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
 reporterKlass  = try
