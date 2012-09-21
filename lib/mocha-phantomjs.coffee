@@ -89,10 +89,7 @@ class Reporter
 
   waitForRunMocha: =>
     started = @page.evaluate -> mochaPhantomJS.started
-    if started
-      @runMocha()
-    else
-      setTimeout @waitForRunMocha, 100
+    if started then @runMocha() else setTimeout @waitForRunMocha, 100
 
   runner: (reporter) ->
     try

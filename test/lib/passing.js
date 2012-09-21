@@ -19,7 +19,7 @@
     return it('skips 3');
   });
 
-  if (window.requirejs) {
+  if (typeof window !== "undefined" && window !== null ? window.requirejs : void 0) {
     define(function(require) {
       return {};
     });

@@ -10,5 +10,5 @@ describe 'Tests Passing', ->
   it 'skips 2'
   it 'skips 3'
 
-if window.requirejs
+if window?.requirejs
   define (require) -> {}
