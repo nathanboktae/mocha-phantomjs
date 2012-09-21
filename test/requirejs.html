@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Slow tests</title>
+    <title>Tests Passing</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
   </head>
@@ -9,18 +9,12 @@
     <script src="../node_modules/mocha/mocha.js"></script>
     <script src="../node_modules/chai/chai.js"></script>
     <script>
-      mocha.ui('bdd'); 
+      mocha.ui('bdd');
       mocha.reporter('html');
       expect = chai.expect;
     </script>
-    <script src="lib/slow.js"></script>
-    <script>
-      if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-      } else {
-        mocha.run();
-      }
-    </script>
+    <script src="../node_modules/requirejs/require.js"
+      data-main="lib/requirejs-app"></script>
   </body>
 </html>
 
