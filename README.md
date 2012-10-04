@@ -47,7 +47,8 @@ Your HTML file structure should look something like this. The reporter set below
     </script>
     <script src="test/mycode.js"></script>
     <script>
-      if (!window.mochaPhantomJS) { mocha.run(); }
+      if (window.mochaPhantomJS) { mochaPhantomJS.run(); }
+      else { mocha.run(); }
     </script>
   </body>
 </html>
