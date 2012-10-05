@@ -185,21 +185,31 @@ class List extends Reporter
 
 class Min extends Reporter
 
-  constructor: ->
-    super 'min'
+  constructor: -> super 'min'
 
 class Doc extends Reporter
 
-  constructor: ->
-    super 'doc'
+  constructor: -> super 'doc'
 
 class Teamcity extends Reporter
 
-  constructor: ->
-    super 'teamcity'
+  constructor: -> super 'teamcity'
+
+class Json extends Reporter
+
+  constructor: -> super 'json'
+
+class JsonCov extends Reporter
+
+  constructor: -> super 'json-cov'
+
+class HtmlCov extends Reporter
+
+  constructor: -> super 'html-cov'
+
 
 reporterString = system.args[2] || 'spec'
-reporterString = reporterString.charAt(0).toUpperCase() + reporterString.slice(1)
+reporterString = ("#{s.charAt(0).toUpperCase()}#{s.slice(1)}" for s in reporterString.split('-')).join('')
 reporterKlass  = try
                    eval(reporterString)
                  catch error

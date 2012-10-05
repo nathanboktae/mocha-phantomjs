@@ -141,6 +141,48 @@ $ phantomjs lib/mocha-phantomjs.coffee test/passing.html teamcity
 ##teamcity[testSuiteFinished name='mocha.suite' duration='133']
 ```
 
+### JSON Reporter
+
+Use `json` for the reporter argument.
+
+```
+$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json
+{
+  "stats": {
+    "suites": 1,
+    "tests": 6,
+    "passes": 3,
+    "pending": 3,
+    "failures": 0,
+  ...
+```
+
+### JSONCov Reporter
+
+Use `json-cov` for the reporter argument. I have not tested these as they require the [node-jscoverage](https://github.com/visionmedia/node-jscoverage) tool to be used.
+
+```
+$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json-cov
+{
+  "instrumentation": "node-jscoverage",
+  "sloc": 0,
+  "hits": 0,
+  "misses": 0,
+  "coverage": 0,
+  "files": [],
+  "stats": {
+    "suites": 1,
+    "tests": 6,
+    "passes": 3,
+    "pending": 3,
+    ...
+```
+
+### HTMLCov Reporter
+
+Use `html-cov` for the reporter argument. I have not tested these as they require the [node-jscoverage](https://github.com/visionmedia/node-jscoverage) tool to be used.
+
+
 # Testing
 
 Simple! Just clone the repo, then run `npm install` and the various node development dependencies will install to the `node_modules` directory of the project. If you have not done so, it is typically a good idea to add `/node_modules/.bin` to your `$PATH` so these modules bins are used. Now run `cake test` to start off the test suite.
