@@ -75,7 +75,8 @@
     <span class="nt">&lt;/script&gt;</span>
     <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"test/mycode.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
     <span class="nt">&lt;script&gt;</span>
-      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">window</span><span class="p">.</span><span class="nx">mochaPhantomJS</span><span class="p">)</span> <span class="p">{</span> <span class="nx">mocha</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span> <span class="p">}</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">mochaPhantomJS</span><span class="p">)</span> <span class="p">{</span> <span class="nx">mochaPhantomJS</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span> <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span> <span class="nx">mocha</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span> <span class="p">}</span>
     <span class="nt">&lt;/script&gt;</span>
   <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
@@ -85,8 +86,9 @@
 
 <p>Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
+</div>
 
 <p>The following is a list of supported runners. If you do not see one that you really want, fork the repo and try to write the <code>customizeProcessStdout()</code> and <code>customizeConsole()</code> functions to support that runner. If you need help, <a href="https://github.com/metaskills/mocha-phantomjs/issues">create a github issue</a> and let me know.</p>
 
@@ -94,15 +96,17 @@
 
 <p>The default reporter. You can force it using <code>spec</code> for the reporter argument.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="616"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="616">
+</div>
 
 <h3>Dot Matrix Reporter</h3>
 
 <p>Use <code>dot</code> for the reporter argument.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_dot.gif" alt="Dot Matrix Reporter" width="616"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_dot.gif" alt="Dot Matrix Reporter" width="616">
+</div>
 
 <p>The PhantomJS process has no way of knowing anything about your console window's width. So we default the width to 75 columns. But if you pass down the <code>COLUMNS</code> environment variable, it will pick that up and adjust to your current terminal width. For example, using the <code>$COLUMNS</code> variable like so.</p>
 
@@ -113,29 +117,93 @@
 
 <p>Use <code>tap</code> for the reporter argument.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_tap.gif" alt="TAP Reporter" width="616"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_tap.gif" alt="TAP Reporter" width="616">
+</div>
 
 <h3>Min Reporter</h3>
 
 <p>Use <code>min</code> for the reporter argument.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_min.gif" alt="Min Reporter" width="616"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_min.gif" alt="Min Reporter" width="616">
+</div>
 
 <h3>List Reporter</h3>
 
 <p>Use <code>list</code> for the reporter argument.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_list.gif" alt="List Reporter" width="616"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_list.gif" alt="List Reporter" width="616">
+</div>
 
 <h3>Doc Reporter</h3>
 
 <p>Use <code>doc</code> for the reporter argument.</p>
 
- 
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_doc.gif" alt="Doc Reporter" width="616"> 
+<div>
+  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_doc.gif" alt="Doc Reporter" width="616">
+</div>
+
+<h3>TeamCity Reporter</h3>
+
+<p>Use <code>teamcity</code> for the reporter argument.</p>
+
+<pre><code>$ phantomjs lib/mocha-phantomjs.coffee test/passing.html teamcity
+##teamcity[testSuiteStarted name='mocha.suite']
+##teamcity[testStarted name='Tests Passing passes 1']
+##teamcity[testFinished name='Tests Passing passes 1' duration='0']
+##teamcity[testStarted name='Tests Passing passes 2']
+##teamcity[testFinished name='Tests Passing passes 2' duration='0']
+##teamcity[testStarted name='Tests Passing passes 3']
+##teamcity[testFinished name='Tests Passing passes 3' duration='0']
+##teamcity[testIgnored name='Tests Passing skips 1' message='pending']
+##teamcity[testFinished name='Tests Passing skips 1' duration='undefined']
+##teamcity[testIgnored name='Tests Passing skips 2' message='pending']
+##teamcity[testFinished name='Tests Passing skips 2' duration='undefined']
+##teamcity[testIgnored name='Tests Passing skips 3' message='pending']
+##teamcity[testFinished name='Tests Passing skips 3' duration='undefined']
+##teamcity[testSuiteFinished name='mocha.suite' duration='133']
+</code></pre>
+
+<h3>JSON Reporter</h3>
+
+<p>Use <code>json</code> for the reporter argument.</p>
+
+<pre><code>$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json
+{
+  "stats": {
+    "suites": 1,
+    "tests": 6,
+    "passes": 3,
+    "pending": 3,
+    "failures": 0,
+  ...
+</code></pre>
+
+<h3>JSONCov Reporter</h3>
+
+<p>Use <code>json-cov</code> for the reporter argument. I have not tested these as they require the <a href="https://github.com/visionmedia/node-jscoverage">node-jscoverage</a> tool to be used.</p>
+
+<pre><code>$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json-cov
+{
+  "instrumentation": "node-jscoverage",
+  "sloc": 0,
+  "hits": 0,
+  "misses": 0,
+  "coverage": 0,
+  "files": [],
+  "stats": {
+    "suites": 1,
+    "tests": 6,
+    "passes": 3,
+    "pending": 3,
+    ...
+</code></pre>
+
+<h3>HTMLCov Reporter</h3>
+
+<p>Use <code>html-cov</code> for the reporter argument. I have not tested these as they require the <a href="https://github.com/visionmedia/node-jscoverage">node-jscoverage</a> tool to be used.</p>
 
 <h1>Testing</h1>
 
