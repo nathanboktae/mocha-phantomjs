@@ -52,15 +52,19 @@ class Reporter
           started: false
           run: ->
             mochaPhantomJS.started = true
+            window.callPhantom('mochaPhantomJS.run')
 
   loadPage: ->
     @page.open @url
     @page.onLoadFinished = (status) =>
       if status isnt 'success' then @onLoadFailed() else @onLoadSuccess()
+    @page.onCallback = (data) =>
+      if (data == 'mochaPhantomJS.run')
+        if (@injectJS())
+          @waitForRunMocha()
 
   onLoadSuccess: ->
-    @injectJS()
-    @waitForRunMocha()
+    # moved injectJS and waitForRunMocha into onCallback
 
   onLoadFailed: ->
     @fail "Failed to load the page. Check the url: #{@url}"
@@ -70,8 +74,10 @@ class Reporter
       @page.injectJs 'mocha-phantomjs/core_extensions.js'
       @page.evaluate @customizeProcessStdout, @customizeOptions()
       @page.evaluate @customizeConsole, @customizeOptions()
+      true
     else
       @fail "Failed to find mocha on the page."
+      false
 
   runMocha: ->
     @page.evaluate @runner, @reporter
