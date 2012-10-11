@@ -41,7 +41,7 @@ Your HTML file structure should look something like this. The reporter set below
     <script src="mocha.js"></script>
     <script src="chai.js"></script>
     <script>
-      mocha.ui('bdd'); 
+      mocha.ui('bdd');
       mocha.reporter('html');
       expect = chai.expect;
     </script>
