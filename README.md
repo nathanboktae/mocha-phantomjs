@@ -182,6 +182,18 @@ $ phantomjs lib/mocha-phantomjs.coffee test/passing.html json-cov
 
 Use `html-cov` for the reporter argument. I have not tested these as they require the [node-jscoverage](https://github.com/visionmedia/node-jscoverage) tool to be used.
 
+### XUnit Reporter
+
+Use `xunit` for the reporter argument.
+
+```
+<testsuite name="Mocha Tests" tests="18" failures="6" errors="6" skip="6" timestamp="Sun, 21 Oct 2012 17:29:59 GMT" time="0.36">
+<testcase classname="Tests Mixed" name="passes 1" time="0"/>
+<testcase classname="Tests Mixed" name="passes 2" time="0.001"/>
+<testcase classname="Tests Mixed" name="passes 3" time="0"/>
+...
+```
+
 
 # Testing
 

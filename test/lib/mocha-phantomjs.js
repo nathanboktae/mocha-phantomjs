@@ -218,7 +218,7 @@
         });
       });
     });
-    return describe('doc', function() {
+    describe('doc', function() {
       /*
           $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html doc
           $ mocha -r chai/chai.js -R doc --globals chai.expect test/lib/mixed.js
@@ -229,6 +229,20 @@
       return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/<h1>Tests Mixed<\/h1>/);
+        });
+      });
+    });
+    return describe('xunit', function() {
+      /*
+          $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html xunit
+          $ mocha -r chai/chai.js -R xunit --globals chai.expect test/lib/mixed.js
+      */
+      before(function() {
+        return this.args = [fileURL('mixed'), 'xunit'];
+      });
+      return it.only('basically works', function(done) {
+        return this.runner(done, this.args, function(code, stdout, stderr) {
+          return expect(stdout).to.match(/<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/);
         });
       });
     });

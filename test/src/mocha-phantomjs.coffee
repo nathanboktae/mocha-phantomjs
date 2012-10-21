@@ -196,3 +196,19 @@ describe 'mocha-phantomjs', ->
     it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /<h1>Tests Mixed<\/h1>/
+
+
+  describe 'xunit', ->
+
+    ###
+    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html xunit
+    $ mocha -r chai/chai.js -R xunit --globals chai.expect test/lib/mixed.js
+    ###
+
+    before ->
+      @args = [fileURL('mixed'), 'xunit']
+
+    it 'basically works', (done) ->
+      @runner done, @args, (code, stdout, stderr) ->
+        expect(stdout).to.match /<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/
+
