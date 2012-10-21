@@ -240,7 +240,7 @@
       before(function() {
         return this.args = [fileURL('mixed'), 'xunit'];
       });
-      return it.only('basically works', function(done) {
+      return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/);
         });
