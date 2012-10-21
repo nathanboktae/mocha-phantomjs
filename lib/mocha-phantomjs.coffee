@@ -197,6 +197,10 @@ class Teamcity extends Reporter
 
   constructor: -> super 'teamcity'
 
+class Xunit extends Reporter
+
+  constructor: -> super 'xunit'
+
 class Json extends Reporter
 
   constructor: -> super 'json'
