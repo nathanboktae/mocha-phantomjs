@@ -34,7 +34,10 @@
 
 <p><a href="http://visionmedia.github.com/mocha/">Mocha</a> is a feature-rich JavaScript test framework running on node and the browser. Along with the <a href="http://chaijs.com">Chai</a> assertion library they make an impressive combo. <a href="http://phantomjs.org">PhantomJS</a> is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.</p>
 
-<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console.</p>
+<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper.</p>
+
+<pre><code>$ npm install -g mocha-phantomjs
+</code></pre>
 
 <h1>Key Features</h1>
 
@@ -52,12 +55,23 @@
 
 <h1>Usage</h1>
 
-<pre><code>$ phantomjs mocha-phantomjs.coffee URL [REPORTER]
+<pre><code>Usage: mocha-phantomjs [options] page
+
+Options:
+
+  -h, --help             output usage information
+  -V, --version          output the version number
+  -R, --reporter &lt;name&gt;  specify the reporter to use
+
+Examples:
+
+  $ mocha-phantomjs -R dot /test/file.html
+  $ mocha-phantomjs http://testserver.com/file.html
 </code></pre>
 
-<p>The <code>mocha-phantomjs.coffee</code> script needs to be accompanied by the <code>mocha-phantomjs</code> directory included in the Github's <code>lib</code> project directory. This directory contains core extensions the script needs to inject into the loaded URL. If the <code>mocha-phantomjs.coffee</code> file resides directly beside this directory, everything should just work.</p>
+<p>Now as an node package, using <code>mocha-phantomjs</code> has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the <code>--reporter</code> option.</p>
 
-<p>Your HTML file structure should look something like this. The reporter set below to <code>html</code> is only needed for viewing the HTML page in your browser. The <code>mocha-phantomjs.coffee</code> script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.</p>
+<p>Your HTML file's structure should look something like this. The reporter set below to <code>html</code> is only needed for viewing the HTML page in your browser. The <code>mocha-phantomjs.coffee</code> script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.</p>
 
 <div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
   <span class="nt">&lt;head&gt;</span>
@@ -204,6 +218,17 @@
 <h3>HTMLCov Reporter</h3>
 
 <p>Use <code>html-cov</code> for the reporter argument. I have not tested these as they require the <a href="https://github.com/visionmedia/node-jscoverage">node-jscoverage</a> tool to be used.</p>
+
+<h3>XUnit Reporter</h3>
+
+<p>Use <code>xunit</code> for the reporter argument.</p>
+
+<pre><code>&lt;testsuite name="Mocha Tests" tests="18" failures="6" errors="6" skip="6" timestamp="Sun, 21 Oct 2012 17:29:59 GMT" time="0.36"&gt;
+&lt;testcase classname="Tests Mixed" name="passes 1" time="0"/&gt;
+&lt;testcase classname="Tests Mixed" name="passes 2" time="0.001"/&gt;
+&lt;testcase classname="Tests Mixed" name="passes 3" time="0"/&gt;
+...
+</code></pre>
 
 <h1>Testing</h1>
 
