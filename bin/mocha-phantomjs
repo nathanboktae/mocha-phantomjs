@@ -1,13 +1,49 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
-SOURCE="${BASH_SOURCE[0]}"
-DIR="$(dirname "$SOURCE")"
-while [ -h "$SOURCE" ]
-do 
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-  DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
-done
-DIR="$(cd -P "$(dirname "$SOURCE")" && pwd)"
+var program = require('commander'),
+      spawn = require('child_process').spawn,
+      print = require('util').print,
+         fs = require('fs'),
+       path = require('path'),
+     exists = fs.existsSync || path.existsSync,
+        cwd = process.cwd();
 
-phantomjs "$DIR/../lib/mocha-phantomjs.coffee" $1 $2
+program
+  .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
+  .usage('[options] page')
+  .option('-R, --reporter <name>', 'specify the reporter to use', 'spec');
+
+program.on('--help', function(){
+  console.log('  Examples:');
+  console.log('');
+  console.log('    $ mocha-phantomjs -R dot /test/file.html');
+  console.log('    $ mocha-phantomjs http://testserver.com/file.html');
+  console.log('');
+});
+
+program.parse(process.argv);
+
+if (!program.args.length) { program.outputHelp(); process.exit(1); };
+
+var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
+var reporter = program.reporter;
+var page     = function(){
+  var arg = program.args[0];
+  if (arg.match(/file:\/\//))   { return arg; };
+  if (arg.match(/http:\/\//))   { return arg; };
+  if (arg.match(/https:\/\//))  { return arg; };
+  if (exists(arg))              { return arg; };
+  if (exists(cwd+'/'+arg))      { return fs.realpathSync(cwd+'/'+arg); };
+  return arg;
+}();
+
+var phantomjs = spawn('phantomjs', [script, page, reporter]);
+
+phantomjs.stdout.on('data', function(data){
+  print(data.toString());
+})
+
+phantomjs.on('exit', function(code){
+  process.exit(code);
+})
+

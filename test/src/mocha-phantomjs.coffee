@@ -9,19 +9,17 @@ describe 'mocha-phantomjs', ->
     @runner = (done, args, callback) ->
       stdout = ''
       stderr = ''
-      phantomArgs = args.slice()
-      phantomArgs.unshift "#{process.cwd()}/lib/mocha-phantomjs.coffee"
-      phantomjs = spawn 'phantomjs', phantomArgs
-      phantomjs.stdout.on 'data', (data) -> stdout = stdout.concat data.toString()
-      phantomjs.stderr.on 'data', (data) -> stderr = stderr.concat data.toString()
-      phantomjs.on 'exit', (code) -> 
+      mochaPhantomJS = spawn "#{process.cwd()}/bin/mocha-phantomjs", args
+      mochaPhantomJS.stdout.on 'data', (data) -> stdout = stdout.concat data.toString()
+      mochaPhantomJS.stderr.on 'data', (data) -> stderr = stderr.concat data.toString()
+      mochaPhantomJS.on 'exit', (code) -> 
         callback?(code, stdout, stderr)
         done?()
 
   it 'returns a failure code and shows usage when no args are given', (done) ->
     @runner done, [], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.match /usage/i
+      expect(stdout).to.match /Usage: mocha-phantomjs/
 
   it 'returns a failure code and notifies of bad url when given one', (done) ->
     @runner done, ['foo/bar.html'], (code, stdout, stderr) ->
@@ -31,7 +29,7 @@ describe 'mocha-phantomjs', ->
       expect(stdout).to.match /foo\/bar.html/i
 
   it 'returns a failure code and notifies of no such runner class', (done) ->
-    @runner done, [fileURL('passing'), 'nonesuch'], (code, stdout, stderr) ->
+    @runner done, ['-R', 'nonesuch', fileURL('passing')], (code, stdout, stderr) ->
       expect(code).to.equal 1
       expect(stdout).to.equal "Reporter class not implemented: Nonesuch\n"
 
@@ -57,7 +55,7 @@ describe 'mocha-phantomjs', ->
     describe 'passing', ->
 
       ###
-      $ phantomjs lib/mocha-phantomjs.coffee test/passing.html
+      $ ./bin/mocha-phantomjs -R spec test/passing.html
       $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/passing.js
       ###
 
@@ -83,7 +81,7 @@ describe 'mocha-phantomjs', ->
     describe 'failing', ->
       
       ###
-      $ phantomjs lib/mocha-phantomjs.coffee test/failing.html
+      $ ./bin/mocha-phantomjs test/failing.html
       $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing.js
       ###
 
@@ -129,12 +127,12 @@ describe 'mocha-phantomjs', ->
   describe 'dot', ->
 
     ###
-    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html dot
+    $ ./bin/mocha-phantomjs test/mixed.html dot
     $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
     ###
 
     before ->
-      @args = [fileURL('mixed'), 'dot']
+      @args = ['-R', 'dot', fileURL('mixed')]
 
     it 'uses dot reporter', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
@@ -143,12 +141,12 @@ describe 'mocha-phantomjs', ->
         expect(stdout).to.match /\u001b\[31m\․\u001b\[0m/ # red
     
     ###
-    $ phantomjs lib/mocha-phantomjs.coffee test/many.html dot
+    $ ./bin/mocha-phantomjs test/many.html dot
     $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/many.js
     ###
 
     before ->
-      @args = [fileURL('many'), 'dot']
+      @args = ['-R', 'dot', fileURL('many')]
 
     it 'wraps lines correctly and has only one double space for the last dot', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
@@ -158,12 +156,12 @@ describe 'mocha-phantomjs', ->
   describe 'tap', ->
 
     ###
-    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html tap
+    $ ./bin/mocha-phantomjs -R tap test/mixed.html
     $ mocha -r chai/chai.js -R tap --globals chai.expect test/lib/mixed.js
     ###
 
     before ->
-      @args = [fileURL('mixed'), 'tap']
+      @args = ['-R', 'tap', fileURL('mixed')]
 
     it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
@@ -172,12 +170,12 @@ describe 'mocha-phantomjs', ->
   describe 'list', ->
 
     ###
-    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html list
+    $ ./bin/mocha-phantomjs -R list test/mixed.html
     $ mocha -r chai/chai.js -R list --globals chai.expect test/lib/mixed.js
     ###
 
     before ->
-      @args = [fileURL('mixed'), 'list']
+      @args = ['-R', 'list', fileURL('mixed')]
 
     it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
@@ -186,12 +184,12 @@ describe 'mocha-phantomjs', ->
   describe 'doc', ->
 
     ###
-    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html doc
+    $ ./bin/mocha-phantomjs -R doc test/mixed.html
     $ mocha -r chai/chai.js -R doc --globals chai.expect test/lib/mixed.js
     ###
 
     before ->
-      @args = [fileURL('mixed'), 'doc']
+      @args = ['-R', 'doc', fileURL('mixed')]
 
     it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
@@ -201,12 +199,12 @@ describe 'mocha-phantomjs', ->
   describe 'xunit', ->
 
     ###
-    $ phantomjs lib/mocha-phantomjs.coffee test/mixed.html xunit
+    $ ./bin/mocha-phantomjs -R xunit test/mixed.html
     $ mocha -r chai/chai.js -R xunit --globals chai.expect test/lib/mixed.js
     ###
 
     before ->
-      @args = [fileURL('mixed'), 'xunit']
+      @args = ['-R', 'xunit', fileURL('mixed')]
 
     it 'basically works', (done) ->
       @runner done, @args, (code, stdout, stderr) ->

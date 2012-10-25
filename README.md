@@ -2,7 +2,11 @@
 
 [Mocha](http://visionmedia.github.com/mocha/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.
 
-The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console.
+The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install `mocha-phantomjs` via node's packaged modules and use the `mocha-phantomjs` binary wrapper.
+
+```
+$ npm install -g mocha-phantomjs
+```
 
 
 # Key Features
@@ -23,12 +27,23 @@ You can use your existing Mocha HTML file reporters side by side with mocha-phan
 # Usage
 
 ```
-$ phantomjs mocha-phantomjs.coffee URL [REPORTER]
+Usage: mocha-phantomjs [options] page
+
+Options:
+
+  -h, --help             output usage information
+  -V, --version          output the version number
+  -R, --reporter <name>  specify the reporter to use
+
+Examples:
+
+  $ mocha-phantomjs -R dot /test/file.html
+  $ mocha-phantomjs http://testserver.com/file.html
 ```
 
-The `mocha-phantomjs.coffee` script needs to be accompanied by the `mocha-phantomjs` directory included in the Github's `lib` project directory. This directory contains core extensions the script needs to inject into the loaded URL. If the `mocha-phantomjs.coffee` file resides directly beside this directory, everything should just work.
+Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the `--reporter` option.
 
-Your HTML file structure should look something like this. The reporter set below to `html` is only needed for viewing the HTML page in your browser. The `mocha-phantomjs.coffee` script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.
+Your HTML file's structure should look something like this. The reporter set below to `html` is only needed for viewing the HTML page in your browser. The `mocha-phantomjs.coffee` script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.
 
 ```html
 <html>
