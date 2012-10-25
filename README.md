@@ -2,7 +2,7 @@
 
 [Mocha](http://visionmedia.github.com/mocha/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.
 
-The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install `mocha-phantomjs` via node's packaged modules and use the `mocha-phantomjs` binary wrapper.
+The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install `mocha-phantomjs` via node's packaged modules and use the `mocha-phantomjs` binary wrapper. Tested with Mocha 1.4, 1.5 and 1.6 and with PhantomJS version 1.6 or 1.7.
 
 ```
 $ npm install -g mocha-phantomjs
