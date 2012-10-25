@@ -1,5 +1,7 @@
+.travis.yml
+*.swp
+/tmp/*
 /node_modules
 test
 public
-.travis.yml
-Cakefile
+
