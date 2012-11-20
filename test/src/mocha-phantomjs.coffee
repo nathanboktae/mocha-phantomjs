@@ -4,7 +4,7 @@ describe 'mocha-phantomjs', ->
   spawn  = require('child_process').spawn
 
   fileURL = (file) -> "file://#{process.cwd()}/test/#{file}.html"
-  
+
   before ->
     @runner = (done, args, callback) ->
       stdout = ''
@@ -12,7 +12,7 @@ describe 'mocha-phantomjs', ->
       mochaPhantomJS = spawn "#{process.cwd()}/bin/mocha-phantomjs", args
       mochaPhantomJS.stdout.on 'data', (data) -> stdout = stdout.concat data.toString()
       mochaPhantomJS.stderr.on 'data', (data) -> stderr = stderr.concat data.toString()
-      mochaPhantomJS.on 'exit', (code) -> 
+      mochaPhantomJS.on 'exit', (code) ->
         callback?(code, stdout, stderr)
         done?()
 
@@ -44,8 +44,8 @@ describe 'mocha-phantomjs', ->
       expect(stdout).to.equal "Failed to start mocha.\n"
 
   describe 'spec', ->
-    
-    passRegExp   = (n) -> ///\u001b\[32m\s\s✓\u001b\[0m\u001b\[90m\spasses\s#{n}///
+
+    passRegExp   = (n) -> ///\u001b\[32m\s\s[✔✓]\u001b\[0m\u001b\[90m\spasses\s#{n}///
     skipRegExp   = (n) -> ///\u001b\[36m\s\s-\sskips\s#{n}\u001b\[0m///
     failRegExp   = (n) -> ///\u001b\[31m\s\s#{n}\)\sfails\s#{n}\u001b\[0m///
     passComplete = (n) -> ///\u001b\[0m\n\n\n\u001b\[92m\s\s✔\u001b\[0m\u001b\[32m\s#{n}\stests\scomplete///
@@ -79,7 +79,7 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match pendComplete(3)
 
     describe 'failing', ->
-      
+
       ###
       $ ./bin/mocha-phantomjs test/failing.html
       $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing.js
@@ -139,7 +139,7 @@ describe 'mocha-phantomjs', ->
         expect(stdout).to.match /\u001b\[90m\․\u001b\[0m/ # grey
         expect(stdout).to.match /\u001b\[36m\․\u001b\[0m/ # cyan
         expect(stdout).to.match /\u001b\[31m\․\u001b\[0m/ # red
-    
+
     ###
     $ ./bin/mocha-phantomjs test/many.html dot
     $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/many.js
