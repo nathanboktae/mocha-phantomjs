@@ -11,7 +11,8 @@ var program = require('commander'),
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
-  .option('-R, --reporter <name>', 'specify the reporter to use', 'spec');
+  .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
+  .option('-A, --agent <userAgent>', 'specify the user agent to use', '');
 
 program.on('--help', function(){
   console.log('  Examples:');
@@ -27,6 +28,7 @@ if (!program.args.length) { program.outputHelp(); process.exit(1); };
 
 var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
 var reporter = program.reporter;
+var agent = program.agent;
 var page     = function(){
   var arg = program.args[0];
   if (arg.match(/file:\/\//))   { return arg; };
@@ -37,7 +39,7 @@ var page     = function(){
   return arg;
 }();
 
-var phantomjs = spawn('phantomjs', [script, page, reporter]);
+var phantomjs = spawn('phantomjs', [script, page, reporter, agent]);
 
 phantomjs.stdout.on('data', function(data){
   print(data.toString());
