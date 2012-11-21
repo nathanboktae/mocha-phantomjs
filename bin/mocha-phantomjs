@@ -39,7 +39,10 @@ var page     = function(){
   return arg;
 }();
 
-var phantomjs = spawn('phantomjs', [script, page, reporter, agent]);
+var config = {
+};
+
+var phantomjs = spawn('phantomjs', [script, page, reporter, JSON.stringify(config)]);
 
 phantomjs.stdout.on('data', function(data){
   print(data.toString());

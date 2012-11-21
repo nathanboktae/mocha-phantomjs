@@ -2,12 +2,12 @@ system  = require 'system'
 webpage = require 'webpage'
 
 USAGE = """
-        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [USER-AGENT]
+        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [CONFIG]
         """
 
 class Reporter
 
-  constructor: (@reporter) ->
+  constructor: (@reporter, @config) ->
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
@@ -111,8 +111,8 @@ class Reporter
 
 class Spec extends Reporter
 
-  constructor: ->
-    super 'spec'
+  constructor: (config) ->
+    super 'spec', config
 
   customizeProcessStdout: (options) ->
     process.stdout.write = (string) ->
@@ -134,8 +134,8 @@ class Spec extends Reporter
 
 class Dot extends Reporter
 
-  constructor: ->
-    super 'dot'
+  constructor: (config) ->
+    super 'dot', config
 
   customizeProcessStdout: (options) ->
     process.cursor.margin = 2
@@ -161,13 +161,13 @@ class Dot extends Reporter
 
 class Tap extends Reporter
 
-  constructor: ->
-    super 'tap'
+  constructor: (config) ->
+    super 'tap', config
 
 class List extends Reporter
 
-  constructor: ->
-    super 'list'
+  constructor: (config) ->
+    super 'list', config
 
   customizeProcessStdout: (options) ->
     process.stdout.write = (string) ->
@@ -192,32 +192,38 @@ class List extends Reporter
 
 class Min extends Reporter
 
-  constructor: -> super 'min'
+  constructor: (config) ->
+    super 'min', config
 
 class Doc extends Reporter
 
-  constructor: -> super 'doc'
+  constructor: (config) ->
+    super 'doc', config
 
 class Teamcity extends Reporter
 
-  constructor: -> super 'teamcity'
+  constructor: (config) ->
+    super 'teamcity', config
 
 class Xunit extends Reporter
 
-  constructor: -> super 'xunit'
+  constructor: (config) ->
+    super 'xunit', config
 
 class Json extends Reporter
 
-  constructor: -> super 'json'
+  constructor: (config) ->
+    super 'json', config
 
 class JsonCov extends Reporter
 
-  constructor: -> super 'json-cov'
+  constructor: (config) ->
+    super 'json-cov', config
 
 class HtmlCov extends Reporter
 
-  constructor: -> super 'html-cov'
-
+  constructor: (config) ->
+    super 'html-cov', config
 
 userAgent = system.args[3]
 
@@ -228,8 +234,10 @@ reporterKlass  = try
                  catch error
                    undefined
 
+config = JSON.parse(system.args[3] || '{}')
+
 if reporterKlass
-  reporter = new reporterKlass
+  reporter = new reporterKlass config
   reporter.run()
 else
   console.log "Reporter class not implemented: #{reporterString}"
