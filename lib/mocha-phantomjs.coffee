@@ -34,9 +34,9 @@ class Reporter
 
   # Private
 
-  fail: (msg) ->
+  fail: (msg, errno) ->
     console.log msg if msg
-    phantom.exit 1
+    phantom.exit errno || 1
 
   finish: ->
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
