@@ -227,6 +227,16 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-A', 'cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /^cakeUserAgent\n/
 
+    describe 'cookies', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -R spec test/cookie.html
+      ###
+
+      it 'it has passed cookies', (done) ->
+        @runner done, ['-c', 'foo=bar', '--cookie', 'baz=bat', fileURL('cookie')], (code, stdout, stderr) ->
+          expect(stdout).to.match /foo=bar; baz=bat/
+
     describe 'viewport', ->
 
       ###

@@ -7,8 +7,22 @@ var program = require('commander'),
        path = require('path'),
      exists = fs.existsSync || path.existsSync,
         cwd = process.cwd(),
+    cookies = {},
    settings = {};
 
+function keyValue(val, store) {
+  val = val.split('=');
+  if (val[1] === 'true') {
+    val[1] = true;
+  } else if (val[1] === 'false') {
+    val[1] = false;
+  }
+  store[val[0]] = val[1];
+  return val;
+}
+function cookie(val) {
+  return keyValue(val, cookies);
+}
 function viewport(val) {
   val = val.split('x');
   return {
@@ -22,6 +36,7 @@ program
   .usage('[options] page')
   .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
   .option('-A, --agent <userAgent>', 'specify the user agent to use')
+  .option('-c, --cookie <name>=<value>', 'specify cookie', cookie)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport);
 
 program.on('--help', function(){
@@ -49,6 +64,7 @@ var page     = function(){
 }();
 
 var config = {
+  cookies: cookies,
   settings: settings,
   viewportSize: program.view
 };

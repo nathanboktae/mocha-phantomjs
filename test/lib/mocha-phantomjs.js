@@ -260,6 +260,16 @@
           });
         });
       });
+      describe('cookies', function() {
+        /*
+              $ ./bin/mocha-phantomjs -R spec test/cookie.html
+        */
+        return it('it has passed cookies', function(done) {
+          return this.runner(done, ['-c', 'foo=bar', '--cookie', 'baz=bat', fileURL('cookie')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/foo=bar; baz=bat/);
+          });
+        });
+      });
       return describe('viewport', function() {
         /*
               $ ./bin/mocha-phantomjs -R spec test/viewport.html

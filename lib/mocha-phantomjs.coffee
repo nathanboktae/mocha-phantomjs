@@ -46,6 +46,10 @@ class Reporter
     @page = webpage.create
       settings: @config.settings
 
+    for name, value of @config.cookies
+      @page.addCookie
+        name: name
+        value: value
     @page.viewportSize = @config.viewportSize if @config.viewportSize
 
     @page.onConsoleMessage = (msg) -> console.log msg
