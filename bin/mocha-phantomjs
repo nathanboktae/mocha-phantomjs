@@ -23,6 +23,9 @@ function keyValue(val, store) {
 function cookie(val) {
   return keyValue(val, cookies);
 }
+function setting(val) {
+  return keyValue(val, settings);
+}
 function viewport(val) {
   val = val.split('x');
   return {
@@ -37,6 +40,7 @@ program
   .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
   .option('-A, --agent <userAgent>', 'specify the user agent to use')
   .option('-c, --cookie <name>=<value>', 'specify cookie', cookie)
+  .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport);
 
 program.on('--help', function(){

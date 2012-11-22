@@ -254,8 +254,13 @@
             return expect(stdout).to.match(/PhantomJS\//);
           });
         });
-        return it('it has a custom user agent', function(done) {
+        it('it has a custom user agent', function(done) {
           return this.runner(done, ['-A', 'cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/^cakeUserAgent\n/);
+          });
+        });
+        return it('it has a custom user agent via setting flag', function(done) {
+          return this.runner(done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
             return expect(stdout).to.match(/^cakeUserAgent\n/);
           });
         });
