@@ -46,6 +46,7 @@ class Reporter
     @page = webpage.create
       settings: @config.settings
 
+    @page.customHeaders = @config.headers if @config.headers
     for name, value of @config.cookies
       @page.addCookie
         name: name
