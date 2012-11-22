@@ -230,7 +230,7 @@
         });
       });
     });
-    return describe('xunit', function() {
+    describe('xunit', function() {
       /*
           $ ./bin/mocha-phantomjs -R xunit test/mixed.html
           $ mocha -r chai/chai.js -R xunit --globals chai.expect test/lib/mixed.js
@@ -241,6 +241,48 @@
       return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/);
+        });
+      });
+    });
+    return describe('config', function() {
+      describe('user-agent', function() {
+        /*
+              $ ./bin/mocha-phantomjs -R spec test/user-agent.html
+        */
+        it('it has the default user agent', function(done) {
+          return this.runner(done, [fileURL('user-agent')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/PhantomJS\//);
+          });
+        });
+        it('it has a custom user agent', function(done) {
+          return this.runner(done, ['-A', 'cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/^cakeUserAgent\n/);
+          });
+        });
+        return it('it has a custom user agent via setting flag', function(done) {
+          return this.runner(done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/^cakeUserAgent\n/);
+          });
+        });
+      });
+      describe('cookies', function() {
+        /*
+              $ ./bin/mocha-phantomjs -R spec test/cookie.html
+        */
+        return it('it has passed cookies', function(done) {
+          return this.runner(done, ['-c', 'foo=bar', '--cookie', 'baz=bat', fileURL('cookie')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/foo=bar; baz=bat/);
+          });
+        });
+      });
+      return describe('viewport', function() {
+        /*
+              $ ./bin/mocha-phantomjs -R spec test/viewport.html
+        */
+        return it('it has passed cookies', function(done) {
+          return this.runner(done, ['-v', '123x456', fileURL('viewport')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/123x456/);
+          });
         });
       });
     });

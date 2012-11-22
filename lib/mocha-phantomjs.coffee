@@ -2,12 +2,12 @@ system  = require 'system'
 webpage = require 'webpage'
 
 USAGE = """
-        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [USER-AGENT]
+        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [CONFIG]
         """
 
 class Reporter
 
-  constructor: (@reporter) ->
+  constructor: (@reporter, @config) ->
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
@@ -42,12 +42,17 @@ class Reporter
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->
-    if userAgent
-      settings =
-        userAgent: userAgent
 
     @page = webpage.create
-      settings: settings
+      settings: @config.settings
+
+    @page.customHeaders = @config.headers if @config.headers
+    for name, value of @config.cookies
+      @page.addCookie
+        name: name
+        value: value
+    @page.viewportSize = @config.viewportSize if @config.viewportSize
+
     @page.onConsoleMessage = (msg) -> console.log msg
     @page.onInitialized = =>
       @page.evaluate ->
@@ -103,16 +108,23 @@ class Reporter
       mocha.setup reporter: reporter
       mochaPhantomJS.runner = mocha.run()
       if mochaPhantomJS.runner
-        mochaPhantomJS.runner.on 'end', ->
-          mochaPhantomJS.failures = @failures
+        cleanup = ->
+          mochaPhantomJS.failures = mochaPhantomJS.runner.failures
           mochaPhantomJS.ended = true
+
+        # It's possible for the end event to occur prior to binding,
+        # this is most likely due to having zero tests but we don't want to hang.
+        if mochaPhantomJS.runner?.stats?.end
+          cleanup()
+        else
+          mochaPhantomJS.runner.on 'end', cleanup
     catch error
       false
 
 class Spec extends Reporter
 
-  constructor: ->
-    super 'spec'
+  constructor: (config) ->
+    super 'spec', config
 
   customizeProcessStdout: (options) ->
     process.stdout.write = (string) ->
@@ -134,8 +146,8 @@ class Spec extends Reporter
 
 class Dot extends Reporter
 
-  constructor: ->
-    super 'dot'
+  constructor: (config) ->
+    super 'dot', config
 
   customizeProcessStdout: (options) ->
     process.cursor.margin = 2
@@ -161,13 +173,13 @@ class Dot extends Reporter
 
 class Tap extends Reporter
 
-  constructor: ->
-    super 'tap'
+  constructor: (config) ->
+    super 'tap', config
 
 class List extends Reporter
 
-  constructor: ->
-    super 'list'
+  constructor: (config) ->
+    super 'list', config
 
   customizeProcessStdout: (options) ->
     process.stdout.write = (string) ->
@@ -192,34 +204,39 @@ class List extends Reporter
 
 class Min extends Reporter
 
-  constructor: -> super 'min'
+  constructor: (config) ->
+    super 'min', config
 
 class Doc extends Reporter
 
-  constructor: -> super 'doc'
+  constructor: (config) ->
+    super 'doc', config
 
 class Teamcity extends Reporter
 
-  constructor: -> super 'teamcity'
+  constructor: (config) ->
+    super 'teamcity', config
 
 class Xunit extends Reporter
 
-  constructor: -> super 'xunit'
+  constructor: (config) ->
+    super 'xunit', config
 
 class Json extends Reporter
 
-  constructor: -> super 'json'
+  constructor: (config) ->
+    super 'json', config
 
 class JsonCov extends Reporter
 
-  constructor: -> super 'json-cov'
+  constructor: (config) ->
+    super 'json-cov', config
 
 class HtmlCov extends Reporter
 
-  constructor: -> super 'html-cov'
+  constructor: (config) ->
+    super 'html-cov', config
 
-
-userAgent = system.args[3]
 
 reporterString = system.args[2] || 'spec'
 reporterString = ("#{s.charAt(0).toUpperCase()}#{s.slice(1)}" for s in reporterString.split('-')).join('')
@@ -228,8 +245,10 @@ reporterKlass  = try
                  catch error
                    undefined
 
+config = JSON.parse(system.args[3] || '{}')
+
 if reporterKlass
-  reporter = new reporterKlass
+  reporter = new reporterKlass config
   reporter.run()
 else
   console.log "Reporter class not implemented: #{reporterString}"
