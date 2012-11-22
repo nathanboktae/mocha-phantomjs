@@ -63,7 +63,7 @@
     describe('spec', function() {
       var failComplete, failRegExp, passComplete, passRegExp, pendComplete, skipRegExp;
       passRegExp = function(n) {
-        return RegExp("\\u001b\\[32m\\s\\s✓\\u001b\\[0m\\u001b\\[90m\\spasses\\s" + n);
+        return RegExp("\\u001b\\[32m\\s\\s[✔✓]\\u001b\\[0m\\u001b\\[90m\\spasses\\s" + n);
       };
       skipRegExp = function(n) {
         return RegExp("\\u001b\\[36m\\s\\s-\\sskips\\s" + n + "\\u001b\\[0m");
