@@ -230,7 +230,7 @@
         });
       });
     });
-    return describe('xunit', function() {
+    describe('xunit', function() {
       /*
           $ ./bin/mocha-phantomjs -R xunit test/mixed.html
           $ mocha -r chai/chai.js -R xunit --globals chai.expect test/lib/mixed.js
@@ -241,6 +241,23 @@
       return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/);
+        });
+      });
+    });
+    return describe('config', function() {
+      return describe('user-agent', function() {
+        /*
+              $ ./bin/mocha-phantomjs -R spec test/user-agent.html
+        */
+        it('it has the default user agent', function(done) {
+          return this.runner(done, [fileURL('user-agent')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/PhantomJS\//);
+          });
+        });
+        return it('it has a custom user agent', function(done) {
+          return this.runner(done, ['-A', 'cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/^cakeUserAgent\n/);
+          });
         });
       });
     });

@@ -42,12 +42,9 @@ class Reporter
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->
-    if userAgent
-      settings =
-        userAgent: userAgent
 
     @page = webpage.create
-      settings: settings
+      settings: @config.settings
     @page.onConsoleMessage = (msg) -> console.log msg
     @page.onInitialized = =>
       @page.evaluate ->
@@ -225,7 +222,6 @@ class HtmlCov extends Reporter
   constructor: (config) ->
     super 'html-cov', config
 
-userAgent = system.args[3]
 
 reporterString = system.args[2] || 'spec'
 reporterString = ("#{s.charAt(0).toUpperCase()}#{s.slice(1)}" for s in reporterString.split('-')).join('')
