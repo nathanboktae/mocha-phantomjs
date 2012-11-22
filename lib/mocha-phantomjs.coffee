@@ -2,7 +2,7 @@ system  = require 'system'
 webpage = require 'webpage'
 
 USAGE = """
-        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER
+        Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [USER-AGENT]
         """
 
 class Reporter
@@ -42,7 +42,12 @@ class Reporter
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->
-    @page = webpage.create()
+    if userAgent
+      settings =
+        userAgent: userAgent
+
+    @page = webpage.create
+      settings: settings
     @page.onConsoleMessage = (msg) -> console.log msg
     @page.onInitialized = =>
       @page.evaluate ->
@@ -213,6 +218,8 @@ class HtmlCov extends Reporter
 
   constructor: -> super 'html-cov'
 
+
+userAgent = system.args[3]
 
 reporterString = system.args[2] || 'spec'
 reporterString = ("#{s.charAt(0).toUpperCase()}#{s.slice(1)}" for s in reporterString.split('-')).join('')
