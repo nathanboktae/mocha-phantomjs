@@ -60,7 +60,7 @@
         return expect(stdout).to.equal("Failed to start mocha.\n");
       });
     });
-    it('returns failure when mocha is not started in a timely manner', function(done) {
+    it('returns a failure code when mocha is not started in a timely manner', function(done) {
       return this.runner(done, ['-t', 500, fileURL('timeout')], function(code, stdout, stderr) {
         expect(code).to.equal(255);
         return expect(stdout).to.match(/Failed to start mocha: Init timeout/);
