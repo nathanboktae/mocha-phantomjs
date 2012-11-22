@@ -11,7 +11,8 @@ class Reporter
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
-    @mochaStartWait = 6000
+    @mochaStartWait = @config.timeout || 6000
+    @startTime = Date.now()
     @fail(USAGE) unless @url
 
   run: ->
@@ -34,9 +35,9 @@ class Reporter
 
   # Private
 
-  fail: (msg) ->
+  fail: (msg, errno) ->
     console.log msg if msg
-    phantom.exit 1
+    phantom.exit errno || 1
 
   finish: ->
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
@@ -68,6 +69,7 @@ class Reporter
     @page.open @url
     @page.onLoadFinished = (status) =>
       @onLoadFailed() if status isnt 'success'
+      @waitForInitMocha()
     @page.onCallback = (data) =>
       if data is 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
@@ -99,9 +101,17 @@ class Reporter
     ended = @page.evaluate -> mochaPhantomJS.ended
     if ended then @finish() else setTimeout @waitForMocha, 100
 
+  waitForInitMocha: =>
+    setTimeout @waitForInitMocha, 100 unless @checkStarted()
+
   waitForRunMocha: =>
+    if @checkStarted() then @runMocha() else setTimeout @waitForRunMocha, 100
+
+  checkStarted: =>
     started = @page.evaluate -> mochaPhantomJS.started
-    if started then @runMocha() else setTimeout @waitForRunMocha, 100
+    if !started && @mochaStartWait && @startTime + @mochaStartWait < Date.now()
+      @fail "Failed to start mocha: Init timeout", 255
+    started
 
   runner: (reporter) ->
     try

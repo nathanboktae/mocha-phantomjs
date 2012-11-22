@@ -42,6 +42,7 @@ program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
   .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
+  .option('-t, --timeout <timeout>', 'specify the test startup timeout to use', parseInt, 6000)
   .option('-A, --agent <userAgent>', 'specify the user agent to use')
   .option('-c, --cookie <name>=<value>', 'specify cookie', cookie)
   .option('-h, --header <name>=<value>', 'specify custom header', header)
@@ -73,6 +74,7 @@ var page     = function(){
 }();
 
 var config = {
+  timeout: program.timeout,
   cookies: cookies,
   headers: headers,
   settings: settings,
