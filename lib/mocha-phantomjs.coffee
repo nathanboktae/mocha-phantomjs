@@ -100,9 +100,16 @@ class Reporter
       mocha.setup reporter: reporter
       mochaPhantomJS.runner = mocha.run()
       if mochaPhantomJS.runner
-        mochaPhantomJS.runner.on 'end', ->
-          mochaPhantomJS.failures = @failures
+        cleanup = ->
+          mochaPhantomJS.failures = mochaPhantomJS.runner.failures
           mochaPhantomJS.ended = true
+
+        # It's possible for the end event to occur prior to binding,
+        # this is most likely due to having zero tests but we don't want to hang.
+        if mochaPhantomJS.runner?.stats?.end
+          cleanup()
+        else
+          mochaPhantomJS.runner.on 'end', cleanup
     catch error
       false
 
