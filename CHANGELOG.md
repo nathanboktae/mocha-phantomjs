@@ -1,4 +1,11 @@
 
+1.1.0 / 2012-11-21
+==================
+
+  * Tested with Mocha 1.7
+  * New -A UserAgent argument passed to PhantomJS.
+
+
 1.0.1 / 2012-10-25
 ==================
 

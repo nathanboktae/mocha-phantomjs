@@ -31,9 +31,10 @@ Usage: mocha-phantomjs [options] page
 
 Options:
 
-  -h, --help             output usage information
-  -V, --version          output the version number
-  -R, --reporter <name>  specify the reporter to use
+  -h, --help               output usage information
+  -V, --version            output the version number
+  -R, --reporter <name>    specify the reporter to use
+  -A, --agent <userAgent>  specify the user agent to use
 
 Examples:
 
