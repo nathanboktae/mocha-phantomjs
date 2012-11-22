@@ -226,3 +226,13 @@ describe 'mocha-phantomjs', ->
       it 'it has a custom user agent', (done) ->
         @runner done, ['-A', 'cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /^cakeUserAgent\n/
+
+    describe 'viewport', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -R spec test/viewport.html
+      ###
+
+      it 'it has passed cookies', (done) ->
+        @runner done, ['-v', '123x456', fileURL('viewport')], (code, stdout, stderr) ->
+          expect(stdout).to.match /123x456/

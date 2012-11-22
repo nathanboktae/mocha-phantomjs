@@ -245,7 +245,7 @@
       });
     });
     return describe('config', function() {
-      return describe('user-agent', function() {
+      describe('user-agent', function() {
         /*
               $ ./bin/mocha-phantomjs -R spec test/user-agent.html
         */
@@ -257,6 +257,16 @@
         return it('it has a custom user agent', function(done) {
           return this.runner(done, ['-A', 'cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
             return expect(stdout).to.match(/^cakeUserAgent\n/);
+          });
+        });
+      });
+      return describe('viewport', function() {
+        /*
+              $ ./bin/mocha-phantomjs -R spec test/viewport.html
+        */
+        return it('it has passed cookies', function(done) {
+          return this.runner(done, ['-v', '123x456', fileURL('viewport')], function(code, stdout, stderr) {
+            return expect(stdout).to.match(/123x456/);
           });
         });
       });

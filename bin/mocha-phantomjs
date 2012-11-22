@@ -9,11 +9,20 @@ var program = require('commander'),
         cwd = process.cwd(),
    settings = {};
 
+function viewport(val) {
+  val = val.split('x');
+  return {
+    width: parseFloat(val[0]),
+    height: parseFloat(val[1])
+  };
+}
+
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
   .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
-  .option('-A, --agent <userAgent>', 'specify the user agent to use');
+  .option('-A, --agent <userAgent>', 'specify the user agent to use')
+  .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport);
 
 program.on('--help', function(){
   console.log('  Examples:');
@@ -40,7 +49,8 @@ var page     = function(){
 }();
 
 var config = {
-  settings: settings
+  settings: settings,
+  viewportSize: program.view
 };
 if (program.agent) {
   settings.userAgent = program.agent;
