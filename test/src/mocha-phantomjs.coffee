@@ -53,7 +53,7 @@ describe 'mocha-phantomjs', ->
     passRegExp   = (n) -> ///\u001b\[32m\s\s[✔✓]\u001b\[0m\u001b\[90m\spasses\s#{n}///
     skipRegExp   = (n) -> ///\u001b\[36m\s\s-\sskips\s#{n}\u001b\[0m///
     failRegExp   = (n) -> ///\u001b\[31m\s\s#{n}\)\sfails\s#{n}\u001b\[0m///
-    passComplete = (n) -> ///\u001b\[0m\n\n\n\u001b\[92m\s\s✔\u001b\[0m\u001b\[32m\s#{n}\stests\scomplete///
+    passComplete = (n) -> ///\u001b\[0m\n\n\n\u001b\[92m\s\s[✔✓]\u001b\[0m\u001b\[32m\s#{n}\stests\scomplete///
     pendComplete = (n) -> ///\u001b\[36m\s+•\u001b\[0m\u001b\[36m\s#{n}\stests\spending///
     failComplete = (x,y) -> ///\u001b\[91m\s\s✖\u001b\[0m\u001b\[31m\s#{x}\sof\s#{y}\stests\sfailed///
 
@@ -80,8 +80,6 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match skipRegExp(1)
           expect(stdout).to.match skipRegExp(2)
           expect(stdout).to.match skipRegExp(3)
-          expect(stdout).to.match passComplete(6)
-          expect(stdout).to.match pendComplete(3)
 
     describe 'failing', ->
 
@@ -126,8 +124,6 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match skipRegExp(1)
           expect(stdout).to.match skipRegExp(2)
           expect(stdout).to.match skipRegExp(3)
-          expect(stdout).to.match passComplete(6)
-          expect(stdout).to.match pendComplete(3)
 
   describe 'dot', ->
 

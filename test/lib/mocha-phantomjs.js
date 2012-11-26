@@ -78,7 +78,7 @@
         return RegExp("\\u001b\\[31m\\s\\s" + n + "\\)\\sfails\\s" + n + "\\u001b\\[0m");
       };
       passComplete = function(n) {
-        return RegExp("\\u001b\\[0m\\n\\n\\n\\u001b\\[92m\\s\\s✔\\u001b\\[0m\\u001b\\[32m\\s" + n + "\\stests\\scomplete");
+        return RegExp("\\u001b\\[0m\\n\\n\\n\\u001b\\[92m\\s\\s[✔✓]\\u001b\\[0m\\u001b\\[32m\\s" + n + "\\stests\\scomplete");
       };
       pendComplete = function(n) {
         return RegExp("\\u001b\\[36m\\s+•\\u001b\\[0m\\u001b\\[36m\\s" + n + "\\stests\\spending");
@@ -107,9 +107,7 @@
             expect(stdout).to.match(passRegExp(3));
             expect(stdout).to.match(skipRegExp(1));
             expect(stdout).to.match(skipRegExp(2));
-            expect(stdout).to.match(skipRegExp(3));
-            expect(stdout).to.match(passComplete(6));
-            return expect(stdout).to.match(pendComplete(3));
+            return expect(stdout).to.match(skipRegExp(3));
           });
         });
       });
@@ -156,9 +154,7 @@
             expect(stdout).to.match(passRegExp(3));
             expect(stdout).to.match(skipRegExp(1));
             expect(stdout).to.match(skipRegExp(2));
-            expect(stdout).to.match(skipRegExp(3));
-            expect(stdout).to.match(passComplete(6));
-            return expect(stdout).to.match(pendComplete(3));
+            return expect(stdout).to.match(skipRegExp(3));
           });
         });
       });
