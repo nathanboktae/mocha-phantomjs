@@ -31,10 +31,16 @@ Usage: mocha-phantomjs [options] page
 
 Options:
 
-  -h, --help               output usage information
-  -V, --version            output the version number
-  -R, --reporter <name>    specify the reporter to use
-  -A, --agent <userAgent>  specify the user agent to use
+  -h, --help                   output usage information
+  -V, --version                output the version number
+  -R, --reporter <name>        specify the reporter to use
+  -t, --timeout <timeout>      specify the test startup timeout to use
+  -A, --agent <userAgent>      specify the user agent to use
+  -c, --cookie <name>=<value>  specify cookie
+  -h, --header <name>=<value>  specify custom header
+  -s, --setting <key>=<value>  specify specific phantom settings
+  -v, --view <width>x<height>  specify phantom viewport size
+
 
 Examples:
 
