@@ -34,7 +34,7 @@
 
 <p><a href="http://visionmedia.github.com/mocha/">Mocha</a> is a feature-rich JavaScript test framework running on node and the browser. Along with the <a href="http://chaijs.com">Chai</a> assertion library they make an impressive combo. <a href="http://phantomjs.org">PhantomJS</a> is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.</p>
 
-<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper.</p>
+<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper. Tested with Mocha 1.4, 1.5 and 1.6 and with PhantomJS version 1.6 or 1.7.</p>
 
 <pre><code>$ npm install -g mocha-phantomjs
 </code></pre>
@@ -59,9 +59,16 @@
 
 Options:
 
-  -h, --help             output usage information
-  -V, --version          output the version number
-  -R, --reporter &lt;name&gt;  specify the reporter to use
+  -h, --help                   output usage information
+  -V, --version                output the version number
+  -R, --reporter &lt;name&gt;        specify the reporter to use
+  -t, --timeout &lt;timeout&gt;      specify the test startup timeout to use
+  -A, --agent &lt;userAgent&gt;      specify the user agent to use
+  -c, --cookie &lt;name&gt;=&lt;value&gt;  specify cookie
+  -h, --header &lt;name&gt;=&lt;value&gt;  specify custom header
+  -s, --setting &lt;key&gt;=&lt;value&gt;  specify specific phantom settings
+  -v, --view &lt;width&gt;x&lt;height&gt;  specify phantom viewport size
+
 
 Examples:
 
