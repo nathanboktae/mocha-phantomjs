@@ -14,6 +14,9 @@
     it('passes 3', function() {
       return expect(3).to.be.ok;
     });
+    it('passes 4', function() {
+      return expect('string').to.equal('string');
+    });
     it('skips 1');
     it('skips 2');
     return it('skips 3');

@@ -36,7 +36,7 @@ class Reporter
   # Private
 
   fail: (msg, errno) ->
-    console.log msg if msg
+    console.error msg if msg
     phantom.exit errno || 1
 
   finish: ->
@@ -67,6 +67,16 @@ class Reporter
 
   loadPage: ->
     @page.open @url
+    @page.onError = (msg, trace) =>
+      console.error msg
+      @fail '\t' + (trace.map (item) ->
+        item.file + ':' + item.line + (
+          if item.function
+            ' in ' + item.function
+          else
+            ''
+        )
+      ).join('\n\t') + '\n'
     @page.onLoadFinished = (status) =>
       @onLoadFailed() if status isnt 'success'
       @waitForInitMocha()
