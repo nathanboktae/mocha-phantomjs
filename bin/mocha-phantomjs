@@ -2,7 +2,7 @@
 
 var program = require('commander'),
       spawn = require('child_process').spawn,
-      print = require('util').print,
+       util = require('util'),
          fs = require('fs'),
        path = require('path'),
      exists = fs.existsSync || path.existsSync,
@@ -87,10 +87,14 @@ if (program.agent) {
 var phantomjs = spawn('phantomjs', [script, page, reporter, JSON.stringify(config)]);
 
 phantomjs.stdout.on('data', function(data){
-  print(data.toString());
-})
+  util.print(data.toString());
+});
+
+phantomjs.stderr.on('error', function(data){
+  util.error(data.toString());
+});
 
 phantomjs.on('exit', function(code){
   process.exit(code);
-})
+});
 
