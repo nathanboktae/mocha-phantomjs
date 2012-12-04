@@ -20,8 +20,8 @@
     it('fails 2', function() {
       return expect(false).to.be["true"];
     });
-    return it('fails 3', function() {
-      return expect(false).to.be["true"];
+    return it('fails 4', function() {
+      return expect('some string 1').to.equal('another string 1');
     });
   });
 

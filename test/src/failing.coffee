@@ -8,5 +8,5 @@ describe 'Tests Failing', ->
 
   it 'fails 1', -> expect(false).to.be.true
   it 'fails 2', -> expect(false).to.be.true
-  it 'fails 3', -> expect(false).to.be.true
+  it 'fails 3', -> expect('some string 1').to.equal('another string 1')
 
