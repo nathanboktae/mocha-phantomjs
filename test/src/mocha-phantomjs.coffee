@@ -48,6 +48,10 @@ describe 'mocha-phantomjs', ->
       expect(code).to.equal 255
       expect(stdout).to.match /Failed to start mocha: Init timeout/
 
+  it 'returns a failure code when there is an unexpected error on the page.', (done) ->
+    @runner done, [fileURL('uncaught-error')], (code, stout, sterr) ->
+      expect(code).to.equal 1
+
   describe 'spec', ->
 
     passRegExp   = (n) -> ///\u001b\[32m\s\s[✔✓]\u001b\[0m\u001b\[90m\spasses\s#{n}///

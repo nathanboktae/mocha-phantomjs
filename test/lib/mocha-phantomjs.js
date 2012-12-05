@@ -66,6 +66,11 @@
         return expect(stdout).to.match(/Failed to start mocha: Init timeout/);
       });
     });
+    it('returns a failure code when there is an unexpected error on the page.', function(done) {
+      return this.runner(done, [fileURL('uncaught-error')], function(code, stout, sterr) {
+        return expect(code).to.equal(1);
+      });
+    });
     describe('spec', function() {
       var failComplete, failRegExp, passComplete, passRegExp, pendComplete, skipRegExp;
       passRegExp = function(n) {
