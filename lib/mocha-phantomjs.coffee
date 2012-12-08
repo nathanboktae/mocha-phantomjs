@@ -142,7 +142,7 @@ class Spec extends Reporter
       console.log string
 
   customizeConsole: (options) ->
-    process.cursor.CRMatcher = /\s+◦\s\w/
+    process.cursor.CRMatcher = /\s+◦\s\S/
     process.cursor.CRCleaner = process.cursor.up + process.cursor.deleteLine
     origLog = console.log
     console.log = ->
