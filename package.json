@@ -15,7 +15,7 @@
     "commander": "~ 1.0.5"
   },
   "devDependencies": {
-    "chai": "1.2.x",
+    "chai": ">= 1.4.x",
     "async": "0.1.22",
     "coffee-script": "1.4.x",
     "requirejs": "2.0.6"
