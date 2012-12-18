@@ -6,9 +6,16 @@
       var iframe;
       iframe = document.createElement("iframe");
       iframe.src = "blank.html";
+      document.body.appendChild(iframe);
       return iframe.parentNode.removeChild(iframe);
     });
-    return it.only('allow us to change the src of an iframe that is not finished downloading', function() {
+    it('allow us to remove an iframe that is not finished downloading', function() {
+      var iframe;
+      iframe = document.createElement("iframe");
+      iframe.src = "blank.html";
+      return iframe = null;
+    });
+    return it('allow us to change the src of an iframe that is not finished downloading', function() {
       var iframe;
       iframe = document.createElement("iframe");
       iframe.src = "blank.html";
