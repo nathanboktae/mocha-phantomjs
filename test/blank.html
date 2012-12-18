@@ -5,8 +5,9 @@
   </head>
   <body>
     <script>
-      mochaPhantomJS.run();
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      }
     </script>
   </body>
 </html>
-
