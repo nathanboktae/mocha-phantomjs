@@ -66,6 +66,12 @@
         return expect(stdout).to.match(/Failed to start mocha: Init timeout/);
       });
     });
+    it('does not fail when an iframe is used', function(done) {
+      return this.runner(done, [fileURL('iframe')], function(code, stdout, stderr) {
+        expect(stdout).to.not.match(/Failed to load the page\./m);
+        return expect(code).to.equal(0);
+      });
+    });
     describe('spec', function() {
       var failComplete, failRegExp, passComplete, passRegExp, pendComplete, skipRegExp;
       passRegExp = function(n) {
