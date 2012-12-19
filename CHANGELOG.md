@@ -3,6 +3,7 @@
 ==================
 
   * Fix iframe usage.
+  * Allow a local npm of phantomjs to work.
 
 
 1.1.1 / 2012-12-08
