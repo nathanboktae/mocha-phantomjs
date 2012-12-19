@@ -68,6 +68,9 @@ class Reporter
   loadPage: ->
     @page.open @url
     @page.onLoadFinished = (status) =>
+      # reset this handler, so it only executes once
+      # nested iframes can trigger this handler more times, which is undesired
+      @page.onLoadFinished = ->
       @onLoadFailed() if status isnt 'success'
       @waitForInitMocha()
     @page.onCallback = (data) =>
@@ -263,5 +266,3 @@ if reporterKlass
 else
   console.log "Reporter class not implemented: #{reporterString}"
   phantom.exit 1
-
-
