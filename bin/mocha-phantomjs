@@ -86,8 +86,10 @@ if (program.agent) {
 var phantomjs;
 for (var i=0; i < module.paths.length; i++) {
   var bin = path.join(module.paths[i], '.bin/phantomjs');
-  if (!fs.existsSync(bin)) continue;
-  phantomjs = spawn(bin, [script, page, reporter, JSON.stringify(config)]);
+  if (exists(bin)) {
+    phantomjs = spawn(bin, [script, page, reporter, JSON.stringify(config)]);
+    break;
+  }
 }
 
 if (!phantomjs) {
