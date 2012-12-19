@@ -83,8 +83,17 @@ var config = {
 if (program.agent) {
   settings.userAgent = program.agent;
 }
+var phantomjs;
+for (var i=0; i < module.paths.length; i++) {
+  var bin = path.join(module.paths[i], '.bin/phantomjs');
+  if (!fs.existsSync(bin)) continue;
+  phantomjs = spawn(bin, [script, page, reporter, JSON.stringify(config)]);
+}
 
-var phantomjs = spawn('./node_modules/.bin/phantomjs', [script, page, reporter, JSON.stringify(config)]);
+if (!phantomjs) {
+  console.log('phantomjs not found.');
+  process.exit(1);
+}
 
 phantomjs.stdout.on('data', function(data){
   print(data.toString());
