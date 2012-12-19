@@ -84,7 +84,7 @@ if (program.agent) {
   settings.userAgent = program.agent;
 }
 
-var phantomjs = spawn('phantomjs', [script, page, reporter, JSON.stringify(config)]);
+var phantomjs = spawn('./node_modules/.bin/phantomjs', [script, page, reporter, JSON.stringify(config)]);
 
 phantomjs.stdout.on('data', function(data){
   print(data.toString());
