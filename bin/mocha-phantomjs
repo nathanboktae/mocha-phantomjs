@@ -93,8 +93,8 @@ for (var i=0; i < module.paths.length; i++) {
 }
 
 if (!phantomjs) {
-  console.log('phantomjs not found.');
-  process.exit(1);
+  // fall back to a global phantomjs install
+  phantomjs = spawn('phantomjs', [script, page, reporter, JSON.stringify(config)]);
 }
 
 phantomjs.stdout.on('data', function(data){

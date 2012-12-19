@@ -12,8 +12,7 @@
   "scripts":       {"test": "cake test"},
   "dependencies": {
     "mocha": ">= 1.4.x",
-    "commander": "~ 1.0.5",
-    "phantomjs": "~ 0.2.3"
+    "commander": "~ 1.0.5"
   },
   "devDependencies": {
     "chai": "1.2.x",
