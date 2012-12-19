@@ -83,8 +83,19 @@ var config = {
 if (program.agent) {
   settings.userAgent = program.agent;
 }
+var phantomjs, spawnArgs = [script, page, reporter, JSON.stringify(config)];
+for (var i=0; i < module.paths.length; i++) {
+  var bin = path.join(module.paths[i], '.bin/phantomjs');
+  if (exists(bin)) {
+    phantomjs = spawn.call(null, [bin, spawnArgs]);
+    break;
+  }
+}
 
-var phantomjs = spawn('phantomjs', [script, page, reporter, JSON.stringify(config)]);
+if (!phantomjs) {
+  // fall back to a global phantomjs install
+  phantomjs = spawn.call(null, ['phantomjs', spawnArgs]);
+}
 
 phantomjs.stdout.on('data', function(data){
   print(data.toString());
