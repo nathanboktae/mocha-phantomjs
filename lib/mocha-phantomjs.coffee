@@ -43,17 +43,14 @@ class Reporter
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->
-
     @page = webpage.create
       settings: @config.settings
-
     @page.customHeaders = @config.headers if @config.headers
     for name, value of @config.cookies
       @page.addCookie
         name: name
         value: value
     @page.viewportSize = @config.viewportSize if @config.viewportSize
-
     @page.onConsoleMessage = (msg) -> console.log msg
     @page.onInitialized = =>
       @page.evaluate ->
@@ -68,8 +65,6 @@ class Reporter
   loadPage: ->
     @page.open @url
     @page.onLoadFinished = (status) =>
-      # reset this handler, so it only executes once
-      # nested iframes can trigger this handler more times, which is undesired
       @page.onLoadFinished = ->
       @onLoadFailed() if status isnt 'success'
       @waitForInitMocha()
@@ -124,9 +119,6 @@ class Reporter
         cleanup = ->
           mochaPhantomJS.failures = mochaPhantomJS.runner.failures
           mochaPhantomJS.ended = true
-
-        # It's possible for the end event to occur prior to binding,
-        # this is most likely due to having zero tests but we don't want to hang.
         if mochaPhantomJS.runner?.stats?.end
           cleanup()
         else

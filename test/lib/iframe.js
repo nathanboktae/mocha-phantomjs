@@ -9,7 +9,7 @@
       document.body.appendChild(iframe);
       return iframe.parentNode.removeChild(iframe);
     });
-    it('allow us to remove an iframe that is not finished downloading', function() {
+    it('allow us to destroy an iframe reference that is not finished downloading', function() {
       var iframe;
       iframe = document.createElement("iframe");
       iframe.src = "blank.html";
