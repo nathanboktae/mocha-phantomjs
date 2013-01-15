@@ -85,6 +85,9 @@ var spawnArgs = [script, page, reporter, config];
 var phantomjs;
 for (var i=0; i < module.paths.length; i++) {
   var bin = path.join(module.paths[i], '.bin/phantomjs');
+  if (process.platform === 'win32') {
+    bin += '.cmd';
+  }
   if (exists(bin)) {
     phantomjs = spawn(bin, spawnArgs);
     break;
