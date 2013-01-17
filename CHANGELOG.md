@@ -1,4 +1,9 @@
 
+1.1.3 / 2013-01-16
+
+  * Fix error code 127 on Windows. Thanks @romario333
+
+
 1.1.2 / 2012-12-19
 ==================
 
