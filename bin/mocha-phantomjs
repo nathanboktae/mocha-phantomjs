@@ -100,6 +100,7 @@ phantomjs.stdout.on('data', function(data){
 })
 
 phantomjs.on('exit', function(code){
+  if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
   process.exit(code);
 })
 

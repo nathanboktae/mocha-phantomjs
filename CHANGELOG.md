@@ -1,4 +1,10 @@
 
+2.0.0 / 2013-01-25
+  
+  * Lock down package.json to mocha 1.7, 1.8 after http://git.io/GYJCTw is resolved.
+  * Notify if phantomjs is not installed.
+
+
 1.1.3 / 2013-01-16
 
   * Fix error code 127 on Windows. Thanks @romario333
