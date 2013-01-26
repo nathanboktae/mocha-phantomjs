@@ -21,7 +21,7 @@
       return expect(false).to.be["true"];
     });
     return it('fails 3', function() {
-      return expect(false).to.be["true"];
+      return expect('false').to.equal('true');
     });
   });
 
