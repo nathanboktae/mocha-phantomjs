@@ -119,7 +119,7 @@
       });
       describe('failing', function() {
         /*
-              $ ./bin/mocha-phantomjs test/failing.html
+              $ ./bin/mocha-phantomjs -R spec test/failing.html
               $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing.js
         */
         before(function() {
@@ -167,7 +167,7 @@
     });
     describe('dot', function() {
       /*
-          $ ./bin/mocha-phantomjs test/mixed.html dot
+          $ ./bin/mocha-phantomjs -R dot test/mixed.html
           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/mixed.js
       */
       before(function() {
@@ -181,7 +181,7 @@
         });
       });
       /*
-          $ ./bin/mocha-phantomjs test/many.html dot
+          $ ./bin/mocha-phantomjs -R dot test/many.html
           $ mocha -r chai/chai.js -R dot --globals chai.expect test/lib/many.js
       */
 
