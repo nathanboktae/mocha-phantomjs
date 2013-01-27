@@ -47,6 +47,7 @@ Options:
   -h, --header <name>=<value>  specify custom header
   -s, --setting <key>=<value>  specify specific phantom settings
   -v, --view <width>x<height>  specify phantom viewport size
+  -C, --no-color               disable color escape codes
 
 
 Examples:

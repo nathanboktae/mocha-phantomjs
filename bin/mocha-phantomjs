@@ -47,7 +47,8 @@ program
   .option('-c, --cookie <name>=<value>', 'specify cookie', cookie)
   .option('-h, --header <name>=<value>', 'specify custom header', header)
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
-  .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport);
+  .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
+  .option('-C, --no-color', 'disable color escape codes');
 
 program.on('--help', function(){
   console.log('  Examples:');
@@ -78,7 +79,8 @@ var config = JSON.stringify({
   cookies: cookies,
   headers: headers,
   settings: settings,
-  viewportSize: program.view
+  viewportSize: program.view,
+  useColors: program.color
 });
 var spawnArgs = [script, page, reporter, config];
 

@@ -225,15 +225,15 @@ describe 'mocha-phantomjs', ->
       $ ./bin/mocha-phantomjs -R spec test/user-agent.html
       ###
 
-      it 'it has the default user agent', (done) ->
+      it 'has the default user agent', (done) ->
         @runner done, [fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /PhantomJS\//
 
-      it 'it has a custom user agent', (done) ->
+      it 'has a custom user agent', (done) ->
         @runner done, ['-A', 'cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /^cakeUserAgent\n/
 
-      it 'it has a custom user agent via setting flag', (done) ->
+      it 'has a custom user agent via setting flag', (done) ->
         @runner done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /^cakeUserAgent\n/
 
@@ -243,7 +243,7 @@ describe 'mocha-phantomjs', ->
       $ ./bin/mocha-phantomjs -R spec test/cookie.html
       ###
 
-      it 'it has passed cookies', (done) ->
+      it 'has passed cookies', (done) ->
         @runner done, ['-c', 'foo=bar', '--cookie', 'baz=bat', fileURL('cookie')], (code, stdout, stderr) ->
           expect(stdout).to.match /foo=bar; baz=bat/
 
@@ -253,6 +253,12 @@ describe 'mocha-phantomjs', ->
       $ ./bin/mocha-phantomjs -R spec test/viewport.html
       ###
 
-      it 'it has passed cookies', (done) ->
+      it 'has passed cookies', (done) ->
         @runner done, ['-v', '123x456', fileURL('viewport')], (code, stdout, stderr) ->
           expect(stdout).to.match /123x456/
+
+    describe 'no-colors', ->
+
+      it 'suppresses color output', (done) ->
+        @runner done, ['-C', fileURL('mixed')], (code, stdout, stderr) ->
+          expect(stdout).to.not.match /\u001b\[\d\dm/
