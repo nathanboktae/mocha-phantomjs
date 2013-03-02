@@ -163,7 +163,7 @@ describe 'mocha-phantomjs', ->
 
     it 'wraps lines correctly and has only one double space for the last dot', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
-        matches = stdout.match /\d\dm\․\u001b\[0m\n\n/g
+        matches = stdout.match /\d\dm\․\u001b\[0m(\r\n\r\n|\n\n)/g
         expect(matches.length).to.equal 1
 
   describe 'tap', ->

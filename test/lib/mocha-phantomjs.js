@@ -202,7 +202,7 @@
       return it('wraps lines correctly and has only one double space for the last dot', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           var matches;
-          matches = stdout.match(/\d\dm\․\u001b\[0m\n\n/g);
+          matches = stdout.match(/\d\dm\․\u001b\[0m(\r\n\r\n|\n\n)/g);
           return expect(matches.length).to.equal(1);
         });
       });
