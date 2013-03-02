@@ -56,19 +56,19 @@
     it('returns a failure code and notifies of no such runner class', function(done) {
       return this.runner(done, ['-R', 'nonesuch', fileURL('passing')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.equal("Reporter class not implemented: Nonesuch\n");
+        return expect(stdout).to.match(/Reporter class not implemented: Nonesuch/);
       });
     });
     it('returns a failure code when mocha can not be found on the page', function(done) {
       return this.runner(done, [fileURL('blank')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.equal("Failed to find mocha on the page.\n");
+        return expect(stdout).to.match(/Failed to find mocha on the page./);
       });
     });
     it('returns a failure code when mocha fails to start for any reason', function(done) {
       return this.runner(done, [fileURL('bad')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.equal("Failed to start mocha.\n");
+        return expect(stdout).to.match(/Failed to start mocha./);
       });
     });
     it('returns a failure code when mocha is not started in a timely manner', function(done) {
