@@ -10,10 +10,11 @@
     };
     before(function() {
       return this.runner = function(done, args, callback) {
-        var mochaPhantomJS, stderr, stdout;
+        var mochaPhantomJS, spawnArgs, stderr, stdout;
         stdout = '';
         stderr = '';
-        mochaPhantomJS = spawn("" + (process.cwd()) + "/bin/mocha-phantomjs", args);
+        spawnArgs = ["" + (process.cwd()) + "/bin/mocha-phantomjs"].concat(args);
+        mochaPhantomJS = spawn('node', spawnArgs);
         mochaPhantomJS.stdout.on('data', function(data) {
           return stdout = stdout.concat(data.toString());
         });

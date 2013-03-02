@@ -9,7 +9,8 @@ describe 'mocha-phantomjs', ->
     @runner = (done, args, callback) ->
       stdout = ''
       stderr = ''
-      mochaPhantomJS = spawn "#{process.cwd()}/bin/mocha-phantomjs", args
+      spawnArgs = ["#{process.cwd()}/bin/mocha-phantomjs"].concat(args)
+      mochaPhantomJS = spawn 'node', spawnArgs
       mochaPhantomJS.stdout.on 'data', (data) -> stdout = stdout.concat data.toString()
       mochaPhantomJS.stderr.on 'data', (data) -> stderr = stderr.concat data.toString()
       mochaPhantomJS.on 'exit', (code) ->
