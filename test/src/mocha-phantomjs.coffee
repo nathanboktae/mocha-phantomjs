@@ -238,11 +238,11 @@ describe 'mocha-phantomjs', ->
 
       it 'has a custom user agent', (done) ->
         @runner done, ['-A', 'cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^cakeUserAgent\n/
+          expect(stdout).to.match /^cakeUserAgent/
 
       it 'has a custom user agent via setting flag', (done) ->
         @runner done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^cakeUserAgent\n/
+          expect(stdout).to.match /^cakeUserAgent/
 
     describe 'cookies', ->
 
