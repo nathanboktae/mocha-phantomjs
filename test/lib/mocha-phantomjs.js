@@ -2,11 +2,21 @@
 (function() {
 
   describe('mocha-phantomjs', function() {
-    var expect, fileURL, spawn;
+    var expect, fileURL, fs, spawn, url;
     expect = require('chai').expect;
     spawn = require('child_process').spawn;
+    url = require('url');
+    fs = require('fs');
     fileURL = function(file) {
-      return "file://" + (process.cwd()) + "/test/" + file + ".html";
+      var fullPath, urlString;
+      fullPath = fs.realpathSync("" + (process.cwd()) + "/test/" + file + ".html");
+      fullPath = fullPath.replace(/\\/g, '\/');
+      urlString = url.format({
+        protocol: 'file',
+        hostname: '',
+        pathname: fullPath
+      });
+      return urlString;
     };
     before(function() {
       return this.runner = function(done, args, callback) {

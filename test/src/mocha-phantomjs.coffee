@@ -2,8 +2,14 @@ describe 'mocha-phantomjs', ->
 
   expect = require('chai').expect
   spawn  = require('child_process').spawn
+  url    = require('url')
+  fs     = require('fs')
 
-  fileURL = (file) -> "file://#{process.cwd()}/test/#{file}.html"
+  fileURL = (file) ->
+    fullPath = fs.realpathSync "#{process.cwd()}/test/#{file}.html"
+    fullPath = fullPath.replace /\\/g, '\/'
+    urlString = url.format { protocol: 'file', hostname: '', pathname: fullPath }
+    return urlString
 
   before ->
     @runner = (done, args, callback) ->
