@@ -1,4 +1,9 @@
 
+2.0.1 / 2013-03-04
+
+  * Option to remove colors like mocha's --no-color. Thanks @nathanboktae
+
+
 2.0.0 / 2013-01-25
   
   * Lock down package.json to mocha 1.7, 1.8 after http://git.io/GYJCTw is resolved.
