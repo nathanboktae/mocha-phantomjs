@@ -86,6 +86,7 @@ class Reporter
       false
 
   runMocha: ->
+    if @config.useColors is false then @page.evaluate -> Mocha.reporters.Base.useColors = false
     @page.evaluate @runner, @reporter
     @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
     if @mochaStarted
