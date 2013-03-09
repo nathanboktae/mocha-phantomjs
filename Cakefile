@@ -15,7 +15,8 @@ task 'test', 'Run tests', ->
 build = (callback) ->
   builder = (args...) ->
     (callback) ->
-      coffee = spawn 'coffee', args
+      coffeeCmd = 'coffee' + if process.platform is 'win32' then '.cmd' else ''
+      coffee = spawn coffeeCmd, args
       coffee.stderr.on 'data', (data) -> process.stderr.write data.toString()
       coffee.stdout.on 'data', (data) -> print data.toString()
       coffee.on 'exit', (code) -> callback?(code,code)
@@ -26,7 +27,8 @@ build = (callback) ->
 test = ->
   tester = (file) ->
     (callback) ->
-      mocha = spawn 'mocha',  ['-u', 'bdd', '-R', 'spec', '-t', '20000', '--colors', "test/lib/#{file}"]
+      mochaCmd = 'mocha' + if process.platform is 'win32' then '.cmd' else ''
+      mocha = spawn mochaCmd, ['-u', 'bdd', '-R', 'spec', '-t', '20000', '--colors', "test/lib/#{file}"]
       mocha.stdout.pipe process.stdout, end: false
       mocha.stderr.pipe process.stderr, end: false
       mocha.on 'exit', (code) -> callback?(code,code)
