@@ -2,18 +2,29 @@
 (function() {
 
   describe('mocha-phantomjs', function() {
-    var expect, fileURL, spawn;
+    var expect, fileURL, fs, spawn, url;
     expect = require('chai').expect;
     spawn = require('child_process').spawn;
+    url = require('url');
+    fs = require('fs');
     fileURL = function(file) {
-      return "file://" + (process.cwd()) + "/test/" + file + ".html";
+      var fullPath, urlString;
+      fullPath = fs.realpathSync("" + (process.cwd()) + "/test/" + file + ".html");
+      fullPath = fullPath.replace(/\\/g, '\/');
+      urlString = url.format({
+        protocol: 'file',
+        hostname: '',
+        pathname: fullPath
+      });
+      return urlString;
     };
     before(function() {
       return this.runner = function(done, args, callback) {
-        var mochaPhantomJS, stderr, stdout;
+        var mochaPhantomJS, spawnArgs, stderr, stdout;
         stdout = '';
         stderr = '';
-        mochaPhantomJS = spawn("" + (process.cwd()) + "/bin/mocha-phantomjs", args);
+        spawnArgs = ["" + (process.cwd()) + "/bin/mocha-phantomjs"].concat(args);
+        mochaPhantomJS = spawn('node', spawnArgs);
         mochaPhantomJS.stdout.on('data', function(data) {
           return stdout = stdout.concat(data.toString());
         });
@@ -45,19 +56,19 @@
     it('returns a failure code and notifies of no such runner class', function(done) {
       return this.runner(done, ['-R', 'nonesuch', fileURL('passing')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.equal("Reporter class not implemented: Nonesuch\n");
+        return expect(stdout).to.match(/Reporter class not implemented: Nonesuch/);
       });
     });
     it('returns a failure code when mocha can not be found on the page', function(done) {
       return this.runner(done, [fileURL('blank')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.equal("Failed to find mocha on the page.\n");
+        return expect(stdout).to.match(/Failed to find mocha on the page./);
       });
     });
     it('returns a failure code when mocha fails to start for any reason', function(done) {
       return this.runner(done, [fileURL('bad')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.equal("Failed to start mocha.\n");
+        return expect(stdout).to.match(/Failed to start mocha./);
       });
     });
     it('returns a failure code when mocha is not started in a timely manner', function(done) {
@@ -191,7 +202,7 @@
       return it('wraps lines correctly and has only one double space for the last dot', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           var matches;
-          matches = stdout.match(/\d\dm\․\u001b\[0m\n\n/g);
+          matches = stdout.match(/\d\dm\․\u001b\[0m(\r\n\r\n|\n\n)/g);
           return expect(matches.length).to.equal(1);
         });
       });
@@ -264,12 +275,12 @@
         });
         it('has a custom user agent', function(done) {
           return this.runner(done, ['-A', 'cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
-            return expect(stdout).to.match(/^cakeUserAgent\n/);
+            return expect(stdout).to.match(/^cakeUserAgent/);
           });
         });
         return it('has a custom user agent via setting flag', function(done) {
           return this.runner(done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], function(code, stdout, stderr) {
-            return expect(stdout).to.match(/^cakeUserAgent\n/);
+            return expect(stdout).to.match(/^cakeUserAgent/);
           });
         });
       });

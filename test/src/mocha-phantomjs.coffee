@@ -2,14 +2,21 @@ describe 'mocha-phantomjs', ->
 
   expect = require('chai').expect
   spawn  = require('child_process').spawn
+  url    = require('url')
+  fs     = require('fs')
 
-  fileURL = (file) -> "file://#{process.cwd()}/test/#{file}.html"
+  fileURL = (file) ->
+    fullPath = fs.realpathSync "#{process.cwd()}/test/#{file}.html"
+    fullPath = fullPath.replace /\\/g, '\/'
+    urlString = url.format { protocol: 'file', hostname: '', pathname: fullPath }
+    return urlString
 
   before ->
     @runner = (done, args, callback) ->
       stdout = ''
       stderr = ''
-      mochaPhantomJS = spawn "#{process.cwd()}/bin/mocha-phantomjs", args
+      spawnArgs = ["#{process.cwd()}/bin/mocha-phantomjs"].concat(args)
+      mochaPhantomJS = spawn 'node', spawnArgs
       mochaPhantomJS.stdout.on 'data', (data) -> stdout = stdout.concat data.toString()
       mochaPhantomJS.stderr.on 'data', (data) -> stderr = stderr.concat data.toString()
       mochaPhantomJS.on 'exit', (code) ->
@@ -31,17 +38,17 @@ describe 'mocha-phantomjs', ->
   it 'returns a failure code and notifies of no such runner class', (done) ->
     @runner done, ['-R', 'nonesuch', fileURL('passing')], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.equal "Reporter class not implemented: Nonesuch\n"
+      expect(stdout).to.match /Reporter class not implemented: Nonesuch/
 
   it 'returns a failure code when mocha can not be found on the page', (done) ->
     @runner done, [fileURL('blank')], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.equal "Failed to find mocha on the page.\n"
+      expect(stdout).to.match /Failed to find mocha on the page./
 
   it 'returns a failure code when mocha fails to start for any reason', (done) ->
     @runner done, [fileURL('bad')], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.equal "Failed to start mocha.\n"
+      expect(stdout).to.match /Failed to start mocha./
 
   it 'returns a failure code when mocha is not started in a timely manner', (done) ->
     @runner done, ['-t', 500, fileURL('timeout')], (code, stdout, stderr) ->
@@ -156,7 +163,7 @@ describe 'mocha-phantomjs', ->
 
     it 'wraps lines correctly and has only one double space for the last dot', (done) ->
       @runner done, @args, (code, stdout, stderr) ->
-        matches = stdout.match /\d\dm\․\u001b\[0m\n\n/g
+        matches = stdout.match /\d\dm\․\u001b\[0m(\r\n\r\n|\n\n)/g
         expect(matches.length).to.equal 1
 
   describe 'tap', ->
@@ -231,11 +238,11 @@ describe 'mocha-phantomjs', ->
 
       it 'has a custom user agent', (done) ->
         @runner done, ['-A', 'cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^cakeUserAgent\n/
+          expect(stdout).to.match /^cakeUserAgent/
 
       it 'has a custom user agent via setting flag', (done) ->
         @runner done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^cakeUserAgent\n/
+          expect(stdout).to.match /^cakeUserAgent/
 
     describe 'cookies', ->
 
