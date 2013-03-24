@@ -1,7 +1,8 @@
 
-2.1.0 / 2012-xx-xx
+2.x.x / 2012-xx-xx
 
   * Tested with Mocha 1.8.2. Fixes #37.
+  * Tested with Chai 1.5.0. Fixed #30.
 
 
 2.0.1 / 2013-03-04
