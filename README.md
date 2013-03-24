@@ -36,24 +36,23 @@ $ npm install -g mocha-phantomjs
 ```
 Usage: mocha-phantomjs [options] page
 
-Options:
+ Options:
 
-  -h, --help                   output usage information
-  -V, --version                output the version number
-  -R, --reporter <name>        specify the reporter to use
-  -t, --timeout <timeout>      specify the test startup timeout to use
-  -A, --agent <userAgent>      specify the user agent to use
-  -c, --cookie <name>=<value>  specify cookie
-  -h, --header <name>=<value>  specify custom header
-  -s, --setting <key>=<value>  specify specific phantom settings
-  -v, --view <width>x<height>  specify phantom viewport size
-  -C, --no-color               disable color escape codes
+   -h, --help                   output usage information
+   -V, --version                output the version number
+   -R, --reporter <name>        specify the reporter to use
+   -t, --timeout <timeout>      specify the test startup timeout to use
+   -A, --agent <userAgent>      specify the user agent to use
+   -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
+   -h, --header <name>=<value>  specify custom header
+   -s, --setting <key>=<value>  specify specific phantom settings
+   -v, --view <width>x<height>  specify phantom viewport size
+   -C, --no-color               disable color escape codes
 
+ Examples:
 
-Examples:
-
-  $ mocha-phantomjs -R dot /test/file.html
-  $ mocha-phantomjs http://testserver.com/file.html
+   $ mocha-phantomjs -R dot /test/file.html
+   $ mocha-phantomjs http://testserver.com/file.html
 ```
 
 Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the `--reporter` option.

@@ -7,7 +7,7 @@ var program = require('commander'),
        path = require('path'),
      exists = fs.existsSync || path.existsSync,
         cwd = process.cwd(),
-    cookies = {},
+    cookies = [],
     headers = {},
    settings = {};
 
@@ -21,8 +21,10 @@ function keyValue(val, store) {
   store[val[0]] = val[1];
   return val;
 }
-function cookie(val) {
-  return keyValue(val, cookies);
+function cookiesParser(val) {
+  val = JSON.parse(val);
+  cookies.push(val);
+  return val;
 }
 function header(val) {
   return keyValue(val, headers);
@@ -41,14 +43,14 @@ function viewport(val) {
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
-  .option('-R, --reporter <name>', 'specify the reporter to use', 'spec')
-  .option('-t, --timeout <timeout>', 'specify the test startup timeout to use', parseInt, 6000)
-  .option('-A, --agent <userAgent>', 'specify the user agent to use')
-  .option('-c, --cookie <name>=<value>', 'specify cookie', cookie)
+  .option('-R, --reporter <name>',       'specify the reporter to use', 'spec')
+  .option('-t, --timeout <timeout>',     'specify the test startup timeout to use', parseInt, 6000)
+  .option('-A, --agent <userAgent>',     'specify the user agent to use')
+  .option('-c, --cookies <Object>',      'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
   .option('-h, --header <name>=<value>', 'specify custom header', header)
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
-  .option('-C, --no-color', 'disable color escape codes');
+  .option('-C, --no-color',              'disable color escape codes');
 
 program.on('--help', function(){
   console.log('  Examples:');

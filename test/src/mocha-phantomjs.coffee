@@ -251,7 +251,9 @@ describe 'mocha-phantomjs', ->
       ###
 
       it 'has passed cookies', (done) ->
-        @runner done, ['-c', 'foo=bar', '--cookie', 'baz=bat', fileURL('cookie')], (code, stdout, stderr) ->
+        c1Opt = '{"name":"foo","value":"bar"}'
+        c2Opt = '{"name":"baz","value":"bat","path":"/"}'
+        @runner done, ['-c', c1Opt, '--cookie', c2Opt, fileURL('cookie')], (code, stdout, stderr) ->
           expect(stdout).to.match /foo=bar; baz=bat/
 
     describe 'viewport', ->

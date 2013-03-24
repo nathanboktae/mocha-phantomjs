@@ -46,10 +46,7 @@ class Reporter
     @page = webpage.create
       settings: @config.settings
     @page.customHeaders = @config.headers if @config.headers
-    for name, value of @config.cookies
-      @page.addCookie
-        name: name
-        value: value
+    @page.addCookie(cookie) for cookie in @config.cookies
     @page.viewportSize = @config.viewportSize if @config.viewportSize
     @page.onConsoleMessage = (msg) -> console.log msg
     @page.onInitialized = =>

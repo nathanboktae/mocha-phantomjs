@@ -1,6 +1,7 @@
 
 2.x.x / 2012-xx-xx
-
+  
+  * Change --cookie to --cookies and take full object. Fixes #31.
   * Tested with Mocha 1.8.2. Fixes #37.
   * Tested with Chai 1.5.0. Fixed #30.
   * Tested with PhantomJS 1.9.0.

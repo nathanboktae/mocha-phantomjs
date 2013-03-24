@@ -289,7 +289,10 @@
               $ ./bin/mocha-phantomjs -R spec test/cookie.html
         */
         return it('has passed cookies', function(done) {
-          return this.runner(done, ['-c', 'foo=bar', '--cookie', 'baz=bat', fileURL('cookie')], function(code, stdout, stderr) {
+          var c1Opt, c2Opt;
+          c1Opt = '{"name":"foo","value":"bar"}';
+          c2Opt = '{"name":"baz","value":"bat","path":"/"}';
+          return this.runner(done, ['-c', c1Opt, '--cookie', c2Opt, fileURL('cookie')], function(code, stdout, stderr) {
             return expect(stdout).to.match(/foo=bar; baz=bat/);
           });
         });
