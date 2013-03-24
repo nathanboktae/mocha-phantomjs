@@ -1,4 +1,9 @@
 
+2.1.0 / 2012-xx-xx
+
+  * Tested with Mocha 1.8.2. Fixes #37.
+
+
 2.0.1 / 2013-03-04
 
   * Option to remove colors like mocha's --no-color. Thanks @nathanboktae
