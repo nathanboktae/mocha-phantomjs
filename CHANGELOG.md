@@ -3,6 +3,7 @@
 
   * Tested with Mocha 1.8.2. Fixes #37.
   * Tested with Chai 1.5.0. Fixed #30.
+  * Tested with PhantomJS 1.9.0.
 
 
 2.0.1 / 2013-03-04
