@@ -41,7 +41,7 @@ Otherwise, once you have downloaded and installed PhantomJS yourself:
 $ npm install -g mocha-phantomjs
 ```
 
-If you don't install phantomjs using either of these approaches, you will get an unhelpful **ENOENT** error when you try to run mocha-phantomjs.
+If you don't install phantomjs using either of these approaches, you will get an unhelpful **ENOENT** error when you try to run `mocha-phantomjs`.
 
 # Usage
 
