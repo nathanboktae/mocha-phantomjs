@@ -34,10 +34,9 @@
 
 <p><a href="http://visionmedia.github.com/mocha/">Mocha</a> is a feature-rich JavaScript test framework running on node and the browser. Along with the <a href="http://chaijs.com">Chai</a> assertion library they make an impressive combo. <a href="http://phantomjs.org">PhantomJS</a> is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.</p>
 
-<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper. Tested with Mocha 1.4, 1.5 and 1.6 and with PhantomJS version 1.6 or 1.7.</p>
+<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper. Tested with Mocha 1.8, Chai 1.5, and PhantomJS 1.9. The latest of these versions is recommended!</p>
 
-<pre><code>$ npm install -g mocha-phantomjs
-</code></pre>
+<p><a href="http://travis-ci.org/metaskills/mocha-phantomjs"><img src="https://secure.travis-ci.org/metaskills/mocha-phantomjs.png" alt="Build Status"></a></p>
 
 <h1>Key Features</h1>
 
@@ -53,27 +52,46 @@
 
 <p>You can use your existing Mocha HTML file reporters side by side with mocha-phantomjs. This gives you the option to run your tests both in a browser or with PhantomJS. Since mocha-phantomjs needs to control when the <code>run()</code> command is sent to the mocha object, we accomplish this by setting the <code>mochaPhantomJS</code> on the <code>window</code> object to <code>true</code>. Below, in the usage section, is an example of a HTML structure that can be used both by opening the file in your browser or choice or using mocha-phantomjs.</p>
 
+<h1>Installation</h1>
+
+<p>We distribute <a href="https://npmjs.org/package/mocha-phantomjs">mocha-phantomjs as an npm</a> that is easy to install. Once done, you will have a <code>mocha-phantomjs</code> binary. See the next usage section for docs or use the <code>-h</code> flag.</p>
+
+<p>We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm),
+or to use system PhantomJS downloaded and installed from <a href="http://phantomjs.org">the PhantomJS website</a>.</p>
+
+<p>If you would like to use PhantomJS installed from npm:</p>
+
+<pre><code>$ npm install -g mocha-phantomjs phantomjs
+</code></pre>
+
+<p>Otherwise, once you have downloaded and installed PhantomJS yourself:</p>
+
+<pre><code>$ npm install -g mocha-phantomjs
+</code></pre>
+
+<p>If you don't install phantomjs using either of these approaches, you will get an unhelpful <strong>ENOENT</strong> error when you try to run <code>mocha-phantomjs</code>.</p>
+
 <h1>Usage</h1>
 
 <pre><code>Usage: mocha-phantomjs [options] page
 
-Options:
+ Options:
 
-  -h, --help                   output usage information
-  -V, --version                output the version number
-  -R, --reporter &lt;name&gt;        specify the reporter to use
-  -t, --timeout &lt;timeout&gt;      specify the test startup timeout to use
-  -A, --agent &lt;userAgent&gt;      specify the user agent to use
-  -c, --cookie &lt;name&gt;=&lt;value&gt;  specify cookie
-  -h, --header &lt;name&gt;=&lt;value&gt;  specify custom header
-  -s, --setting &lt;key&gt;=&lt;value&gt;  specify specific phantom settings
-  -v, --view &lt;width&gt;x&lt;height&gt;  specify phantom viewport size
+   -h, --help                   output usage information
+   -V, --version                output the version number
+   -R, --reporter &lt;name&gt;        specify the reporter to use
+   -t, --timeout &lt;timeout&gt;      specify the test startup timeout to use
+   -A, --agent &lt;userAgent&gt;      specify the user agent to use
+   -c, --cookies &lt;Object&gt;       phantomjs cookie object http://git.io/RmPxgA
+   -h, --header &lt;name&gt;=&lt;value&gt;  specify custom header
+   -s, --setting &lt;key&gt;=&lt;value&gt;  specify specific phantom settings
+   -v, --view &lt;width&gt;x&lt;height&gt;  specify phantom viewport size
+   -C, --no-color               disable color escape codes
 
+ Examples:
 
-Examples:
-
-  $ mocha-phantomjs -R dot /test/file.html
-  $ mocha-phantomjs http://testserver.com/file.html
+   $ mocha-phantomjs -R dot /test/file.html
+   $ mocha-phantomjs http://testserver.com/file.html
 </code></pre>
 
 <p>Now as an node package, using <code>mocha-phantomjs</code> has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the <code>--reporter</code> option.</p>
