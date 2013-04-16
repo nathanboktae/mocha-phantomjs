@@ -19,17 +19,9 @@ class Reporter
     @initPage()
     @loadPage()
 
-  # Subclass Hooks
-
-  customizeRunner: (options) ->
-    undefined
-
-  customizeProcessStdout: (options) ->
-    undefined
-
-  customizeConsole: (options) ->
-    undefined
-
+  customizeMocha: (options) ->
+    Mocha.reporters.Base.window.width = options.columns
+  
   customizeOptions: ->
     columns: @columns
 
@@ -48,7 +40,7 @@ class Reporter
     @page.customHeaders = @config.headers if @config.headers
     @page.addCookie(cookie) for cookie in @config.cookies
     @page.viewportSize = @config.viewportSize if @config.viewportSize
-    @page.onConsoleMessage = (msg) -> console.log msg
+    @page.onConsoleMessage = (msg) -> system.stdout.writeLine(msg)
     @page.onInitialized = =>
       @page.evaluate ->
         window.mochaPhantomJS =
@@ -57,7 +49,7 @@ class Reporter
           started: false
           run: ->
             mochaPhantomJS.started = true
-            window.callPhantom 'mochaPhantomJS.run'
+            window.callPhantom 'mochaPhantomJS.run': true
 
   loadPage: ->
     @page.open @url
@@ -66,8 +58,11 @@ class Reporter
       @onLoadFailed() if status isnt 'success'
       @waitForInitMocha()
     @page.onCallback = (data) =>
-      if data is 'mochaPhantomJS.run'
+      if data.hasOwnProperty 'process.stdout.write'
+        system.stdout.write data['process.stdout.write']
+      else if data.hasOwnProperty 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
+      true
 
   onLoadFailed: ->
     @fail "Failed to load the page. Check the url: #{@url}"
@@ -75,8 +70,7 @@ class Reporter
   injectJS: ->
     if @page.evaluate(-> window.mocha?)
       @page.injectJs 'mocha-phantomjs/core_extensions.js'
-      @page.evaluate @customizeProcessStdout, @customizeOptions()
-      @page.evaluate @customizeConsole, @customizeOptions()
+      @page.evaluate @customizeMocha, @customizeOptions()
       true
     else
       @fail "Failed to find mocha on the page."
@@ -88,7 +82,6 @@ class Reporter
     @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
     if @mochaStarted
       @mochaRunAt = new Date().getTime()
-      @page.evaluate @customizeRunner, @customizeOptions()
       @waitForMocha()
     else
       @fail "Failed to start mocha."
@@ -129,50 +122,10 @@ class Spec extends Reporter
   constructor: (config) ->
     super 'spec', config
 
-  customizeProcessStdout: (options) ->
-    process.stdout.write = (string) ->
-      return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
-      console.log string
-
-  customizeConsole: (options) ->
-    process.cursor.CRMatcher = /\s+◦\s\S/
-    process.cursor.CRCleaner = process.cursor.up + process.cursor.deleteLine
-    origLog = console.log
-    console.log = ->
-      string = console.format.apply(console, arguments)
-      if string.match(process.cursor.CRMatcher)
-        process.cursor.CRCleanup = true
-      else if process.cursor.CRCleanup
-        string = process.cursor.CRCleaner + string
-        process.cursor.CRCleanup = false
-      origLog.call console, string
-
 class Dot extends Reporter
 
   constructor: (config) ->
     super 'dot', config
-
-  customizeProcessStdout: (options) ->
-    process.cursor.margin = 2
-    process.cursor.CRMatcher = /\u001b\[\d\dm\․\u001b\[0m/
-    process.stdout.columns = options.columns
-    process.stdout.allowedFirstNewLine = false
-    process.stdout.write = (string) ->
-      if string is '\n  '
-        unless process.stdout.allowedFirstNewLine
-          process.stdout.allowedFirstNewLine = true
-        else
-          return
-      else if string.match(process.cursor.CRMatcher)
-        if process.cursor.count is process.stdout.columns
-          process.cursor.count = 0
-          forward = process.cursor.margin
-          string = process.cursor.forwardN(forward) + string
-        else
-          forward = process.cursor.margin + process.cursor.count
-          string = process.cursor.up + process.cursor.forwardN(forward) + string
-        ++process.cursor.count
-      console.log string
 
 class Tap extends Reporter
 
@@ -183,27 +136,6 @@ class List extends Reporter
 
   constructor: (config) ->
     super 'list', config
-
-  customizeProcessStdout: (options) ->
-    process.stdout.write = (string) ->
-      return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
-      console.log string
-
-  customizeProcessStdout: (options) ->
-    process.cursor.CRMatcher = /\u001b\[90m.*:\s\u001b\[0m/
-    process.cursor.CRCleaner = (string) -> process.cursor.up + process.cursor.deleteLine + string + process.cursor.up + process.cursor.up
-    origLog = console.log
-    console.log = ->
-      string = console.format.apply(console, arguments)
-      if string.match /\u001b\[32m\s\s-\u001b\[0m/
-        string = string
-        process.cursor.CRCleanup = false
-      if string.match(process.cursor.CRMatcher)
-        process.cursor.CRCleanup = true
-      else if process.cursor.CRCleanup
-        string = process.cursor.CRCleaner(string)
-        process.cursor.CRCleanup = false
-      origLog.call console, string
 
 class Min extends Reporter
 
