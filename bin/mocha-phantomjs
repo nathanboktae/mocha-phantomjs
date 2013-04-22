@@ -9,6 +9,7 @@ var program = require('commander'),
         cwd = process.cwd(),
     cookies = [],
     headers = {},
+   fileData = '',
    settings = {};
 
 function keyValue(val, store) {
@@ -50,6 +51,7 @@ program
   .option('-h, --header <name>=<value>', 'specify custom header', header)
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
+  .option('-f, --filename <filename>',   'specify a filename to which the report should be written')
   .option('-C, --no-color',              'disable color escape codes');
 
 program.on('--help', function(){
@@ -67,6 +69,7 @@ if (program.agent) { settings.userAgent = program.agent; }
 
 var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
 var reporter = program.reporter;
+var filename = program.filename;
 var page     = function(){
   var arg = program.args[0];
   if (arg.match(/file:\/\//))   { return arg; };
@@ -81,9 +84,11 @@ var config = JSON.stringify({
   cookies: cookies,
   headers: headers,
   settings: settings,
+  filename : filename,
   viewportSize: program.view,
   useColors: program.color
 });
+console.log(config)
 var spawnArgs = [script, page, reporter, config];
 
 var phantomjs;
@@ -100,6 +105,14 @@ for (var i=0; i < module.paths.length; i++) {
 if (phantomjs === undefined) { phantomjs = spawn('phantomjs', spawnArgs); }
 
 phantomjs.stdout.on('data', function(data){
+  if (filename) {
+    fileData += data.toString();
+    fs.writeFile(filename, fileData, function(err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
   print(data.toString());
 })
 
