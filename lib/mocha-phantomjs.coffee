@@ -189,7 +189,7 @@ class List extends Reporter
       return if string is process.cursor.deleteLine or string is process.cursor.beginningOfLine
       console.log string
 
-  customizeProcessStdout: (options) ->
+  customizeConsole: (options) ->
     process.cursor.CRMatcher = /\u001b\[90m.*:\s\u001b\[0m/
     process.cursor.CRCleaner = (string) -> process.cursor.up + process.cursor.deleteLine + string + process.cursor.up + process.cursor.up
     origLog = console.log
