@@ -50,13 +50,15 @@ program
   .option('-h, --header <name>=<value>', 'specify custom header', header)
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
-  .option('-C, --no-color',              'disable color escape codes');
+  .option('-C, --no-color',              'disable color escape codes')
+  .option('-p, --path <path>',           'path to PhantomJS binary');
 
 program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
   console.log('    $ mocha-phantomjs -R dot /test/file.html');
   console.log('    $ mocha-phantomjs http://testserver.com/file.html');
+  console.log('    $ mocha-phantomjs -p ~/bin/phantomjs /test/file.html');
   console.log('');
 });
 
@@ -87,14 +89,19 @@ var config = JSON.stringify({
 var spawnArgs = [script, page, reporter, config];
 
 var phantomjs;
-for (var i=0; i < module.paths.length; i++) {
-  var bin = path.join(module.paths[i], '.bin/phantomjs');
-  if (process.platform === 'win32') {
-    bin += '.cmd';
-  }
-  if (exists(bin)) {
-    phantomjs = spawn(bin, spawnArgs);
-    break;
+if (program.path !== undefined) {
+  phantomjs = spawn(program.path, spawnArgs);
+}
+if (phantomjs === undefined) {
+  for (var i=0; i < module.paths.length; i++) {
+    var bin = path.join(module.paths[i], '.bin/phantomjs');
+    if (process.platform === 'win32') {
+      bin += '.cmd';
+    }
+    if (exists(bin)) {
+      phantomjs = spawn(bin, spawnArgs);
+      break;
+    }
   }
 }
 if (phantomjs === undefined) { phantomjs = spawn('phantomjs', spawnArgs); }
