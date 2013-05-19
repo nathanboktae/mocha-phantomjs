@@ -60,12 +60,14 @@ Usage: mocha-phantomjs [options] page
    -s, --setting <key>=<value>  specify phantomjs WebPage settings
    -v, --view <width>x<height>  specify phantomjs viewport size
    -C, --no-color               disable color escape codes
+   -p, --path <path>            path to PhantomJS binary
 
  Examples:
 
    $ mocha-phantomjs -R dot /test/file.html
    $ mocha-phantomjs http://testserver.com/file.html
    $ mocha-phantomjs -s localToRemoteUrlAccessEnabled=true -s webSecurityEnabled=false http://testserver.com/file.html
+   $ mocha-phantomjs -p ~/bin/phantomjs /test/file.html
 ```
 
 Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the `--reporter` argument. See [phantomjs WebPage settings](https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#wiki-webpage-settings) for options that may be supplied to the `--setting` argument.
