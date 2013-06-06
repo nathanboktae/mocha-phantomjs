@@ -49,6 +49,10 @@ class Reporter
     @page.addCookie(cookie) for cookie in @config.cookies
     @page.viewportSize = @config.viewportSize if @config.viewportSize
     @page.onConsoleMessage = (msg) -> console.log msg
+    @page.onError = (msg, traces) =>
+      for {line, file}, index in traces
+        traces[index] = "  #{file}:#{line}"
+      @fail "#{msg}\n\n#{traces.join '\n'}"
     @page.onInitialized = =>
       @page.evaluate ->
         window.mochaPhantomJS =

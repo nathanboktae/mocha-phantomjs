@@ -55,6 +55,11 @@ describe 'mocha-phantomjs', ->
       expect(code).to.equal 255
       expect(stdout).to.match /Failed to start mocha: Init timeout/
 
+  it 'returns a failure code when there is a page error', (done) ->
+    @runner done, [fileURL('error')], (code, stdout, stderr) ->
+      expect(code).to.equal 1
+      expect(stdout).to.match /ReferenceError/
+
   it 'does not fail when an iframe is used', (done) ->
     @runner done, [fileURL('iframe')], (code, stdout, stderr) ->
       expect(stdout).to.not.match /Failed to load the page\./m
