@@ -1,5 +1,10 @@
 
-2.0.2 / 2012-05-14
+2.0.3 / 2013-06-06
+
+  * Should fail when there is a page error.
+
+
+2.0.2 / 2013-05-14
 
   * Change --cookie to --cookies and take full object. Fixes #31.
   * Tested with Mocha 1.8.2. Fixes #37.
