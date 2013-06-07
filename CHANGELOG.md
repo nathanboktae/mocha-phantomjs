@@ -1,4 +1,10 @@
 
+3.0.0 / 2013-06-06
+  
+  * Focus on latest PhantomJS 1.9.1.
+  * Set package.json to mocha 1.9.x and chai 1.6.x
+
+
 2.0.3 / 2013-06-06
 
   * Should fail when there is a page error.
