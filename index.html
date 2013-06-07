@@ -30,34 +30,42 @@
 
       </header>
       <section>
-        <h1>PhantomJS Runners for Mocha</h1>
+        <h1>
+<a name="phantomjs-runners-for-mocha" class="anchor" href="#phantomjs-runners-for-mocha"><span class="octicon octicon-link"></span></a>PhantomJS Runners for Mocha</h1>
 
 <p><a href="http://visionmedia.github.com/mocha/">Mocha</a> is a feature-rich JavaScript test framework running on node and the browser. Along with the <a href="http://chaijs.com">Chai</a> assertion library they make an impressive combo. <a href="http://phantomjs.org">PhantomJS</a> is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.</p>
 
-<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper. Tested with Mocha 1.8, Chai 1.5, and PhantomJS 1.9. The latest of these versions is recommended!</p>
+<p>The mocha-phantomjs project provides a <code>mocha-phantomjs.coffee</code> script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install <code>mocha-phantomjs</code> via node's packaged modules and use the <code>mocha-phantomjs</code> binary wrapper. Tested with Mocha 1.9, Chai 1.6, and PhantomJS 1.9.1.</p>
 
-<p><a href="http://travis-ci.org/metaskills/mocha-phantomjs"><img src="https://secure.travis-ci.org/metaskills/mocha-phantomjs.png" alt="Build Status"></a></p>
+<ul>
+<li><strong>Since version 3.0 of mocha-phantomjs, you must use PhantomJS 1.9.1 or higher.</strong></li>
+<li><strong>As of now Mocha 1.10.x is unsupported. We must lobby Mocha.js for a Mocha.process hook.</strong></li>
+</ul><p><a href="http://travis-ci.org/metaskills/mocha-phantomjs"><img src="https://secure.travis-ci.org/metaskills/mocha-phantomjs.png" alt="Build Status"></a></p>
 
-<h1>Key Features</h1>
+<h1>
+<a name="key-features" class="anchor" href="#key-features"><span class="octicon octicon-link"></span></a>Key Features</h1>
 
-<h3>Standard Out</h3>
+<h3>
+<a name="standard-out" class="anchor" href="#standard-out"><span class="octicon octicon-link"></span></a>Standard Out</h3>
 
 <p>Finally, <code>process.stdout.write</code>, done right. Mocha is primarily written for node, hence it relies on writing to standard out without trailing newline characters. This behavior is critical for reporters like the dot reporter. We make up for PhantomJS's lack of stream support by both customizing <code>console.log</code> and creating a <code>process.stdout.write</code> function to the current PhantomJS process. This technique combined with a handful of fancy <a href="http://web.mit.edu/gnu/doc/html/screen_10.html">ANSI cursor movement codes</a> allows PhantomJS to support Mocha's diverse reporter options.</p>
 
-<h3>Exit Codes</h3>
+<h3>
+<a name="exit-codes" class="anchor" href="#exit-codes"><span class="octicon octicon-link"></span></a>Exit Codes</h3>
 
 <p>Proper exit status codes from PhantomJS using Mocha's failures count. So in standard UNIX fashion, a <code>0</code> code means success. This means you can use mocha-phantomjs on your CI server of choice.</p>
 
-<h3>Mixed Mode Runs</h3>
+<h3>
+<a name="mixed-mode-runs" class="anchor" href="#mixed-mode-runs"><span class="octicon octicon-link"></span></a>Mixed Mode Runs</h3>
 
 <p>You can use your existing Mocha HTML file reporters side by side with mocha-phantomjs. This gives you the option to run your tests both in a browser or with PhantomJS. Since mocha-phantomjs needs to control when the <code>run()</code> command is sent to the mocha object, we accomplish this by setting the <code>mochaPhantomJS</code> on the <code>window</code> object to <code>true</code>. Below, in the usage section, is an example of a HTML structure that can be used both by opening the file in your browser or choice or using mocha-phantomjs.</p>
 
-<h1>Installation</h1>
+<h1>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h1>
 
 <p>We distribute <a href="https://npmjs.org/package/mocha-phantomjs">mocha-phantomjs as an npm</a> that is easy to install. Once done, you will have a <code>mocha-phantomjs</code> binary. See the next usage section for docs or use the <code>-h</code> flag.</p>
 
-<p>We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm),
-or to use system PhantomJS downloaded and installed from <a href="http://phantomjs.org">the PhantomJS website</a>.</p>
+<p>We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm), or to use system PhantomJS downloaded and installed from <a href="http://phantomjs.org">the PhantomJS website</a>. We have heard reports that Windows users have better results with the official PhantomJS download vs the npm.</p>
 
 <p>If you would like to use PhantomJS installed from npm:</p>
 
@@ -71,7 +79,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
 
 <p>If you don't install phantomjs using either of these approaches, you will get an unhelpful <strong>ENOENT</strong> error when you try to run <code>mocha-phantomjs</code>.</p>
 
-<h1>Usage</h1>
+<h1>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h1>
 
 <pre><code>Usage: mocha-phantomjs [options] page
 
@@ -124,7 +133,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 
-<h1>Supported Reporters</h1>
+<h1>
+<a name="supported-reporters" class="anchor" href="#supported-reporters"><span class="octicon octicon-link"></span></a>Supported Reporters</h1>
 
 <p>Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.</p>
 
@@ -132,9 +142,10 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
 </div>
 
-<p>The following is a list of supported runners. If you do not see one that you really want, fork the repo and try to write the <code>customizeProcessStdout()</code> and <code>customizeConsole()</code> functions to support that runner. If you need help, <a href="https://github.com/metaskills/mocha-phantomjs/issues">create a github issue</a> and let me know.</p>
+<p>The following is a list of tested reporters. Since moving PhantomJS 1.9.1, most core Mocha reporters should "just work" since we now support stdout properly. If you have an issue with a reporter, <a href="https://github.com/metaskills/mocha-phantomjs/issues">open a github issue</a> and let me know.</p>
 
-<h3>Spec Reporter (default)</h3>
+<h3>
+<a name="spec-reporter-default" class="anchor" href="#spec-reporter-default"><span class="octicon octicon-link"></span></a>Spec Reporter (default)</h3>
 
 <p>The default reporter. You can force it using <code>spec</code> for the reporter argument.</p>
 
@@ -142,7 +153,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="616">
 </div>
 
-<h3>Dot Matrix Reporter</h3>
+<h3>
+<a name="dot-matrix-reporter" class="anchor" href="#dot-matrix-reporter"><span class="octicon octicon-link"></span></a>Dot Matrix Reporter</h3>
 
 <p>Use <code>dot</code> for the reporter argument.</p>
 
@@ -155,7 +167,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
 <pre><code>env COLUMNS=$COLUMNS phantomjs mocha-phantomjs.coffee URL dot
 </code></pre>
 
-<h3>TAP Reporter</h3>
+<h3>
+<a name="tap-reporter" class="anchor" href="#tap-reporter"><span class="octicon octicon-link"></span></a>TAP Reporter</h3>
 
 <p>Use <code>tap</code> for the reporter argument.</p>
 
@@ -163,7 +176,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_tap.gif" alt="TAP Reporter" width="616">
 </div>
 
-<h3>Min Reporter</h3>
+<h3>
+<a name="min-reporter" class="anchor" href="#min-reporter"><span class="octicon octicon-link"></span></a>Min Reporter</h3>
 
 <p>Use <code>min</code> for the reporter argument.</p>
 
@@ -171,7 +185,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_min.gif" alt="Min Reporter" width="616">
 </div>
 
-<h3>List Reporter</h3>
+<h3>
+<a name="list-reporter" class="anchor" href="#list-reporter"><span class="octicon octicon-link"></span></a>List Reporter</h3>
 
 <p>Use <code>list</code> for the reporter argument.</p>
 
@@ -179,7 +194,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_list.gif" alt="List Reporter" width="616">
 </div>
 
-<h3>Doc Reporter</h3>
+<h3>
+<a name="doc-reporter" class="anchor" href="#doc-reporter"><span class="octicon octicon-link"></span></a>Doc Reporter</h3>
 
 <p>Use <code>doc</code> for the reporter argument.</p>
 
@@ -187,11 +203,12 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_doc.gif" alt="Doc Reporter" width="616">
 </div>
 
-<h3>TeamCity Reporter</h3>
+<h3>
+<a name="teamcity-reporter" class="anchor" href="#teamcity-reporter"><span class="octicon octicon-link"></span></a>TeamCity Reporter</h3>
 
 <p>Use <code>teamcity</code> for the reporter argument.</p>
 
-<pre><code>$ phantomjs lib/mocha-phantomjs.coffee test/passing.html teamcity
+<pre><code>$ mocha-phantomjs -R teamcity test/passing.html
 ##teamcity[testSuiteStarted name='mocha.suite']
 ##teamcity[testStarted name='Tests Passing passes 1']
 ##teamcity[testFinished name='Tests Passing passes 1' duration='0']
@@ -208,11 +225,12 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
 ##teamcity[testSuiteFinished name='mocha.suite' duration='133']
 </code></pre>
 
-<h3>JSON Reporter</h3>
+<h3>
+<a name="json-reporter" class="anchor" href="#json-reporter"><span class="octicon octicon-link"></span></a>JSON Reporter</h3>
 
 <p>Use <code>json</code> for the reporter argument.</p>
 
-<pre><code>$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json
+<pre><code>$ mocha-phantomjs -R json test/passing.html
 {
   "stats": {
     "suites": 1,
@@ -223,11 +241,12 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
   ...
 </code></pre>
 
-<h3>JSONCov Reporter</h3>
+<h3>
+<a name="jsoncov-reporter" class="anchor" href="#jsoncov-reporter"><span class="octicon octicon-link"></span></a>JSONCov Reporter</h3>
 
 <p>Use <code>json-cov</code> for the reporter argument. I have not tested these as they require the <a href="https://github.com/visionmedia/node-jscoverage">node-jscoverage</a> tool to be used.</p>
 
-<pre><code>$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json-cov
+<pre><code>$ mocha-phantomjs -r json-cov test/passing.html
 {
   "instrumentation": "node-jscoverage",
   "sloc": 0,
@@ -243,11 +262,13 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
     ...
 </code></pre>
 
-<h3>HTMLCov Reporter</h3>
+<h3>
+<a name="htmlcov-reporter" class="anchor" href="#htmlcov-reporter"><span class="octicon octicon-link"></span></a>HTMLCov Reporter</h3>
 
 <p>Use <code>html-cov</code> for the reporter argument. I have not tested these as they require the <a href="https://github.com/visionmedia/node-jscoverage">node-jscoverage</a> tool to be used.</p>
 
-<h3>XUnit Reporter</h3>
+<h3>
+<a name="xunit-reporter" class="anchor" href="#xunit-reporter"><span class="octicon octicon-link"></span></a>XUnit Reporter</h3>
 
 <p>Use <code>xunit</code> for the reporter argument.</p>
 
@@ -258,7 +279,8 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
 ...
 </code></pre>
 
-<h1>Testing</h1>
+<h1>
+<a name="testing" class="anchor" href="#testing"><span class="octicon octicon-link"></span></a>Testing</h1>
 
 <p>Simple! Just clone the repo, then run <code>npm install</code> and the various node development dependencies will install to the <code>node_modules</code> directory of the project. If you have not done so, it is typically a good idea to add <code>/node_modules/.bin</code> to your <code>$PATH</code> so these modules bins are used. Now run <code>cake test</code> to start off the test suite.</p>
 
@@ -266,18 +288,21 @@ or to use system PhantomJS downloaded and installed from <a href="http://phantom
 
 <p><a href="http://travis-ci.org/metaskills/mocha-phantomjs"><img src="https://secure.travis-ci.org/metaskills/mocha-phantomjs.png" alt="Build Status"></a></p>
 
-<h1>TODO</h1>
+<h1>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h1>
 
 <ul>
 <li>Create a <code>mocha-phantomjs</code> bin file for use in Node.js and publish a NPM.</li>
-</ul><h1>Alternatives</h1>
+</ul><h1>
+<a name="alternatives" class="anchor" href="#alternatives"><span class="octicon octicon-link"></span></a>Alternatives</h1>
 
 <ul>
 <li>OpenPhantomScripts - <a href="https://github.com/mark-rushakoff/OpenPhantomScripts">https://github.com/mark-rushakoff/OpenPhantomScripts</a>
 </li>
 <li>Front Tests - <a href="https://github.com/Backbonist/front-tests">https://github.com/Backbonist/front-tests</a>
 </li>
-</ul><h1>License</h1>
+</ul><h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
 
 <p>Released under the MIT license. Copyright (c) 2012 Ken Collins.</p>
       </section>
