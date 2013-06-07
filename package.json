@@ -2,7 +2,7 @@
   "name" :         "mocha-phantomjs",
   "description":   "PhantomJS Runners for Mocha",
   "keywords":      ["phantomjs", "mocha", "test", "runner", "command line", "browser"],
-  "version":       "2.0.3",
+  "version":       "3.0.0",
   "author":        "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
   "licenses":      [{"type": "MIT", "url": "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"}],
   "repository":    {"type": "git", "url": "http://github.com/metaskills/mocha-phantomjs.git"},
@@ -11,11 +11,11 @@
   "bin":           {"mocha-phantomjs": "./bin/mocha-phantomjs"},
   "scripts":       {"test": "cake test"},
   "dependencies": {
-    "mocha": "1.8.x",
+    "mocha": "1.9.x",
     "commander": "~ 1.0.5"
   },
   "devDependencies": {
-    "chai": "1.5.x",
+    "chai": "1.6.x",
     "async": "0.1.22",
     "coffee-script": "1.4.x",
     "requirejs": "2.0.6"
