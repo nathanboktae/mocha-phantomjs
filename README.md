@@ -29,8 +29,7 @@ You can use your existing Mocha HTML file reporters side by side with mocha-phan
 
 We distribute [mocha-phantomjs as an npm](https://npmjs.org/package/mocha-phantomjs) that is easy to install. Once done, you will have a `mocha-phantomjs` binary. See the next usage section for docs or use the `-h` flag.
 
-We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm),
-or to use system PhantomJS downloaded and installed from [the PhantomJS website](http://phantomjs.org).
+We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm), or to use system PhantomJS downloaded and installed from [the PhantomJS website](http://phantomjs.org). We have heard reports that Windows users have better results with the official PhantomJS download vs the npm.
 
 If you would like to use PhantomJS installed from npm:
 
