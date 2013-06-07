@@ -26,10 +26,22 @@ You can use your existing Mocha HTML file reporters side by side with mocha-phan
 
 We distribute [mocha-phantomjs as an npm](https://npmjs.org/package/mocha-phantomjs) that is easy to install. Once done, you will have a `mocha-phantomjs` binary. See the next usage section for docs or use the `-h` flag.
 
+We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm),
+or to use system PhantomJS downloaded and installed from [the PhantomJS website](http://phantomjs.org).
+
+If you would like to use PhantomJS installed from npm:
+
+```
+$ npm install -g mocha-phantomjs phantomjs
+```
+
+Otherwise, once you have downloaded and installed PhantomJS yourself:
+
 ```
 $ npm install -g mocha-phantomjs
 ```
 
+If you don't install phantomjs using either of these approaches, you will get an unhelpful **ENOENT** error when you try to run `mocha-phantomjs`.
 
 # Usage
 
@@ -45,17 +57,20 @@ Usage: mocha-phantomjs [options] page
    -A, --agent <userAgent>      specify the user agent to use
    -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
    -h, --header <name>=<value>  specify custom header
-   -s, --setting <key>=<value>  specify specific phantom settings
-   -v, --view <width>x<height>  specify phantom viewport size
+   -s, --setting <key>=<value>  specify phantomjs WebPage settings
+   -v, --view <width>x<height>  specify phantomjs viewport size
    -C, --no-color               disable color escape codes
+   -p, --path <path>            path to PhantomJS binary
 
  Examples:
 
    $ mocha-phantomjs -R dot /test/file.html
    $ mocha-phantomjs http://testserver.com/file.html
+   $ mocha-phantomjs -s localToRemoteUrlAccessEnabled=true -s webSecurityEnabled=false http://testserver.com/file.html
+   $ mocha-phantomjs -p ~/bin/phantomjs /test/file.html
 ```
 
-Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the `--reporter` option.
+Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the `--reporter` argument. See [phantomjs WebPage settings](https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#wiki-webpage-settings) for options that may be supplied to the `--setting` argument.
 
 Your HTML file's structure should look something like this. The reporter set below to `html` is only needed for viewing the HTML page in your browser. The `mocha-phantomjs.coffee` script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.
 
@@ -70,7 +85,7 @@ Your HTML file's structure should look something like this. The reporter set bel
     <script src="mocha.js"></script>
     <script src="chai.js"></script>
     <script>
-      mocha.ui('bdd'); 
+      mocha.ui('bdd');
       mocha.reporter('html');
       expect = chai.expect;
     </script>

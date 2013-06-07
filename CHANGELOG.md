@@ -1,10 +1,16 @@
 
-2.x.x / 2012-xx-xx
-  
+2.0.3 / 2013-06-06
+
+  * Should fail when there is a page error.
+
+
+2.0.2 / 2013-05-14
+
   * Change --cookie to --cookies and take full object. Fixes #31.
   * Tested with Mocha 1.8.2. Fixes #37.
   * Tested with Chai 1.5.0. Fixed #30.
   * Tested with PhantomJS 1.9.0.
+  * Fixed list reporter.
 
 
 2.0.1 / 2013-03-04

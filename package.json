@@ -2,7 +2,7 @@
   "name" :         "mocha-phantomjs",
   "description":   "PhantomJS Runners for Mocha",
   "keywords":      ["phantomjs", "mocha", "test", "runner", "command line", "browser"],
-  "version":       "2.0.1",
+  "version":       "2.0.3",
   "author":        "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
   "licenses":      [{"type": "MIT", "url": "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"}],
   "repository":    {"type": "git", "url": "http://github.com/metaskills/mocha-phantomjs.git"},
