@@ -110,7 +110,7 @@ Mocha-phantomjs does not scrap the web page under test! No other PhantomJS drive
   <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
 </div>
 
-The following is a list of supported runners. If you do not see one that you really want, fork the repo and try to write the `customizeProcessStdout()` and `customizeConsole()` functions to support that runner. If you need help, [create a github issue](https://github.com/metaskills/mocha-phantomjs/issues) and let me know.
+The following is a list of tested reporters. Since moving PhantomJS 1.9.1, most core Mocha reporters should "just work" since we now support stdout properly. If you have an issue with a reporter, [open a github issue](https://github.com/metaskills/mocha-phantomjs/issues) and let me know.
 
 ### Spec Reporter (default)
 
@@ -171,7 +171,7 @@ Use `doc` for the reporter argument.
 Use `teamcity` for the reporter argument.
 
 ```
-$ phantomjs lib/mocha-phantomjs.coffee test/passing.html teamcity
+$ mocha-phantomjs -R teamcity test/passing.html
 ##teamcity[testSuiteStarted name='mocha.suite']
 ##teamcity[testStarted name='Tests Passing passes 1']
 ##teamcity[testFinished name='Tests Passing passes 1' duration='0']
@@ -193,7 +193,7 @@ $ phantomjs lib/mocha-phantomjs.coffee test/passing.html teamcity
 Use `json` for the reporter argument.
 
 ```
-$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json
+$ mocha-phantomjs -R json test/passing.html
 {
   "stats": {
     "suites": 1,
@@ -209,7 +209,7 @@ $ phantomjs lib/mocha-phantomjs.coffee test/passing.html json
 Use `json-cov` for the reporter argument. I have not tested these as they require the [node-jscoverage](https://github.com/visionmedia/node-jscoverage) tool to be used.
 
 ```
-$ phantomjs lib/mocha-phantomjs.coffee test/passing.html json-cov
+$ mocha-phantomjs -r json-cov test/passing.html
 {
   "instrumentation": "node-jscoverage",
   "sloc": 0,

@@ -38,7 +38,7 @@ describe 'mocha-phantomjs', ->
   it 'returns a failure code and notifies of no such runner class', (done) ->
     @runner done, ['-R', 'nonesuch', fileURL('passing')], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.match /Reporter class not implemented: Nonesuch/
+      expect(stdout).to.match /Failed to start mocha./
 
   it 'returns a failure code when mocha can not be found on the page', (done) ->
     @runner done, [fileURL('blank')], (code, stdout, stderr) ->

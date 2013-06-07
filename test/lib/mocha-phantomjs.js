@@ -56,7 +56,7 @@
     it('returns a failure code and notifies of no such runner class', function(done) {
       return this.runner(done, ['-R', 'nonesuch', fileURL('passing')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.match(/Reporter class not implemented: Nonesuch/);
+        return expect(stdout).to.match(/Failed to start mocha./);
       });
     });
     it('returns a failure code when mocha can not be found on the page', function(done) {

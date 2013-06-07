@@ -121,74 +121,11 @@ class Reporter
     catch error
       false
 
-class Spec extends Reporter
-
-  constructor: (config) ->
-    super 'spec', config
-
-class Dot extends Reporter
-
-  constructor: (config) ->
-    super 'dot', config
-
-class Tap extends Reporter
-
-  constructor: (config) ->
-    super 'tap', config
-
-class List extends Reporter
-
-  constructor: (config) ->
-    super 'list', config
-
-class Min extends Reporter
-
-  constructor: (config) ->
-    super 'min', config
-
-class Doc extends Reporter
-
-  constructor: (config) ->
-    super 'doc', config
-
-class Teamcity extends Reporter
-
-  constructor: (config) ->
-    super 'teamcity', config
-
-class Xunit extends Reporter
-
-  constructor: (config) ->
-    super 'xunit', config
-
-class Json extends Reporter
-
-  constructor: (config) ->
-    super 'json', config
-
-class JsonCov extends Reporter
-
-  constructor: (config) ->
-    super 'json-cov', config
-
-class HtmlCov extends Reporter
-
-  constructor: (config) ->
-    super 'html-cov', config
 
 
-reporterString = system.args[2] || 'spec'
-reporterString = ("#{s.charAt(0).toUpperCase()}#{s.slice(1)}" for s in reporterString.split('-')).join('')
-reporterKlass  = try
-                   eval(reporterString)
-                 catch error
-                   undefined
+reporter = system.args[2] || 'spec'
+config   = JSON.parse system.args[3] || '{}'
 
-config = JSON.parse(system.args[3] || '{}')
+mocha = new Reporter reporter, config
+mocha.run()
 
-if reporterKlass
-  reporter = new reporterKlass config
-  reporter.run()
-else
-  console.log "Reporter class not implemented: #{reporterString}"
-  phantom.exit 1
