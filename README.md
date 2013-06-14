@@ -5,7 +5,7 @@
 The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install `mocha-phantomjs` via node's packaged modules and use the `mocha-phantomjs` binary wrapper. Tested with Mocha 1.9, Chai 1.6, and PhantomJS 1.9.1.
 
   * **Since version 3.0 of mocha-phantomjs, you must use PhantomJS 1.9.1 or higher.**
-  * **As of now Mocha 1.10.x is unsupported. We must lobby Mocha.js for a Mocha.process hook.**
+  * **As of now Mocha 1.10.x is unsupported. [We must lobby Mocha.js for a Mocha.process hook.](https://github.com/visionmedia/mocha/issues/770)**
 
 [![Build Status](https://secure.travis-ci.org/metaskills/mocha-phantomjs.png)](http://travis-ci.org/metaskills/mocha-phantomjs)
 
