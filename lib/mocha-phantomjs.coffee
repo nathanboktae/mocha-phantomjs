@@ -38,7 +38,7 @@ class Reporter
     @page = webpage.create
       settings: @config.settings
     @page.customHeaders = @config.headers if @config.headers
-    @page.addCookie(cookie) for cookie in @config.cookies
+    @page.addCookie(cookie) for cookie in @config.cookies or []
     @page.viewportSize = @config.viewportSize if @config.viewportSize
     @page.onConsoleMessage = (msg) -> system.stdout.writeLine(msg)
     @page.onError = (msg, traces) =>
