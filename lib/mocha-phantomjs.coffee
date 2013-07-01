@@ -21,7 +21,7 @@ class Reporter
 
   customizeMocha: (options) ->
     Mocha.reporters.Base.window.width = options.columns
-  
+
   customizeOptions: ->
     columns: @columns
 
@@ -62,8 +62,8 @@ class Reporter
       @onLoadFailed() if status isnt 'success'
       @waitForInitMocha()
     @page.onCallback = (data) =>
-      if data.hasOwnProperty 'process.stdout.write'
-        system.stdout.write data['process.stdout.write']
+      if data.hasOwnProperty 'Mocha.process.stdout.write'
+        system.stdout.write data['Mocha.process.stdout.write']
       else if data.hasOwnProperty 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
       true

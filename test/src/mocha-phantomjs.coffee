@@ -72,7 +72,7 @@ describe 'mocha-phantomjs', ->
     failRegExp   = (n) -> ///\u001b\[31m\s\s#{n}\)\sfails\s#{n}\u001b\[0m///
     passComplete = (n) -> ///\u001b\[0m\n\n\n\u001b\[92m\s\s[✔✓]\u001b\[0m\u001b\[32m\s#{n}\stests\scomplete///
     pendComplete = (n) -> ///\u001b\[36m\s+•\u001b\[0m\u001b\[36m\s#{n}\stests\spending///
-    failComplete = (x,y) -> ///\u001b\[91m\s\s✖\u001b\[0m\u001b\[31m\s#{x}\sof\s#{y}\stests\sfailed///
+    failComplete = (x,y) -> ///\u001b\[31m\s\s#{x}\sfailing\u001b\[0m///
 
     describe 'passing', ->
 
