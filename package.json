@@ -1,23 +1,36 @@
-{ 
-  "name" :         "mocha-phantomjs",
-  "description":   "PhantomJS Runners for Mocha",
-  "keywords":      ["phantomjs", "mocha", "test", "runner", "command line", "browser"],
-  "version":       "3.0.0",
-  "author":        "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
-  "licenses":      [{"type": "MIT", "url": "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"}],
-  "repository":    {"type": "git", "url": "http://github.com/metaskills/mocha-phantomjs.git"},
-  "bugs":          {"url": "http://github.com/metaskills/mocha-phantomjs/issues"},
-  "main":          "./lib/mocha-phantomjs.coffee",
-  "bin":           {"mocha-phantomjs": "./bin/mocha-phantomjs"},
-  "scripts":       {"test": "cake test"},
-  "dependencies": {
-    "mocha": "1.9.x",
-    "commander": "~ 1.0.5"
+{
+  "name"        : "mocha-phantomjs",
+  "description" : "PhantomJS Runners for Mocha",
+  "keywords"    : ["phantomjs", "mocha", "test", "runner", "command line", "browser"],
+  "version"     : "3.0.0",
+  "author"      : "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
+  "licenses"    : [{
+      "type" : "MIT",
+      "url"  : "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"
+    }
+  ],
+  "repository" : {
+    "type" : "git",
+    "url"  : "http://github.com/metaskills/mocha-phantomjs.git"
   },
-  "devDependencies": {
-    "chai": "1.6.x",
-    "async": "0.1.22",
-    "coffee-script": "1.4.x",
-    "requirejs": "2.0.6"
+  "bugs" : {
+    "url": "http://github.com/metaskills/mocha-phantomjs/issues"
+  },
+  "main" : "./lib/mocha-phantomjs.coffee",
+  "bin"  : {
+    "mocha-phantomjs" : "./bin/mocha-phantomjs"
+  },
+  "scripts" : {
+    "test" : "cake test"
+  },
+  "dependencies" : {
+    "mocha"     : "1.12.x",
+    "commander" : "1.2.x"
+  },
+  "devDependencies" : {
+    "chai"          : "1.7.x",
+    "async"         : "0.2.x",
+    "coffee-script" : "1.6.x",
+    "requirejs"     : "2.1.x"
   }
 }
