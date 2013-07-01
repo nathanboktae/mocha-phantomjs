@@ -1,4 +1,9 @@
 
+3.1.0 / 2013-07-01
+
+  * Update to Mocha 1.12.x and Chai 1.7.x
+
+
 3.0.0 / 2013-06-06
   
   * Focus on latest PhantomJS 1.9.1.
