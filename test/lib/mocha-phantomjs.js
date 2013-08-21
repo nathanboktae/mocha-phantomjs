@@ -275,7 +275,7 @@
         });
       });
     });
-    return describe('config', function() {
+    describe('config', function() {
       describe('user-agent', function() {
         /*
         $ ./bin/mocha-phantomjs -R spec test/user-agent.html
@@ -327,6 +327,14 @@
           return this.runner(done, ['-C', fileURL('mixed')], function(code, stdout, stderr) {
             return expect(stdout).to.not.match(/\u001b\[\d\dm/);
           });
+        });
+      });
+    });
+    return describe('env', function() {
+      return it('has passed environment variables', function(done) {
+        process.env.FOO = 'bar';
+        return this.runner(done, [fileURL('env')], function(code, stdout, stderr) {
+          return expect(stdout).to.match(/^bar/);
         });
       });
     });
