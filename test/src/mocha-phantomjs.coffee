@@ -276,3 +276,9 @@ describe 'mocha-phantomjs', ->
       it 'suppresses color output', (done) ->
         @runner done, ['-C', fileURL('mixed')], (code, stdout, stderr) ->
           expect(stdout).to.not.match /\u001b\[\d\dm/
+
+  describe 'env', ->
+    it 'has passed environment variables', (done) ->
+      process.env.FOO = 'bar'
+      @runner done, [fileURL('env')], (code, stdout, stderr) ->
+        expect(stdout).to.match /^bar/
