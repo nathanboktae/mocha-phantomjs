@@ -46,14 +46,16 @@ class Reporter
         traces[index] = "  #{file}:#{line}"
       @fail "#{msg}\n\n#{traces.join '\n'}"
     @page.onInitialized = =>
-      @page.evaluate ->
+      @page.evaluate (env)->
         window.mochaPhantomJS =
+          env: env
           failures: 0
           ended: false
           started: false
           run: ->
             mochaPhantomJS.started = true
             window.callPhantom 'mochaPhantomJS.run': true
+      , system.env
 
   loadPage: ->
     @page.open @url
