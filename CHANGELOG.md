@@ -1,4 +1,14 @@
 
+3.1.2 / 2013-08-22
+
+  * Add window.mochaPhantomJS.env. Fixes #91.
+
+
+3.1.1 / 2013-08-14
+
+  * Produce Mocha.process.stdout if it doesn't exist
+
+
 3.1.0 / 2013-07-01
 
   * Update to Mocha 1.12.x and Chai 1.7.x
