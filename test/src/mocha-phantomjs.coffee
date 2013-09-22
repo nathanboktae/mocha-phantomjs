@@ -4,7 +4,6 @@ describe 'mocha-phantomjs', ->
   spawn  = require('child_process').spawn
   url    = require('url')
   fs     = require('fs')
-  os     = require('os')
 
   fileURL = (file) ->
     fullPath = fs.realpathSync "#{process.cwd()}/test/#{file}.html"
