@@ -28,9 +28,8 @@ test = ->
   tester = (file) ->
     (callback) ->
       mochaCmd = 'mocha' + if process.platform is 'win32' then '.cmd' else ''
-      mocha = spawn mochaCmd, ['-u', 'bdd', '-R', 'spec', '-t', '20000', '--colors', "test/lib/#{file}"]
-      mocha.stdout.pipe process.stdout, end: false
-      mocha.stderr.pipe process.stderr, end: false
+      mocha = spawn mochaCmd, ['-u', 'bdd', '-R', 'spec', '-t', '20000', '--colors', "test/lib/#{file}"],
+        stdio: 'inherit'
       mocha.on 'exit', (code) -> callback?(code,code)
   testFiles = ['mocha-phantomjs.js']
   testers = (tester file for file in testFiles)
