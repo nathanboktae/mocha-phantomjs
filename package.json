@@ -11,7 +11,10 @@
   ],
   "version": "3.1.2",
   "author": "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
-  "licenses": [
+  "contributors": [
+    "Jonathan Chapman <chafnan@gmail.com> (https://github.com/chafnan)"
+  ],
+    "licenses": [
     {
       "type": "MIT",
       "url": "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"
