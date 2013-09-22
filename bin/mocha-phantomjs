@@ -91,6 +91,10 @@ var spawnArgs = [script, page, reporter, config];
 
 var phantomjs;
 if (program.path !== undefined) {
+  if (!exists(program.path)) {
+    print("PhantomJS does not exist at '" + program.path + "'\n");
+    process.exit(1)
+  }
   phantomjs = spawn(program.path, spawnArgs);
 }
 // try getting phantomjs from the path

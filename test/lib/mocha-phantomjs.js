@@ -325,11 +325,18 @@
           });
         });
       });
-      return describe('no-colors', function() {
+      describe('no-colors', function() {
         return it('suppresses color output', function(done) {
           return this.runner(done, ['-C', fileURL('mixed')], function(code, stdout, stderr) {
             return expect(stdout).to.not.match(/\u001b\[\d\dm/);
           });
+        });
+      });
+      describe('path', function() {});
+      return it.only('has used custom path', function(done) {
+        return this.runner(done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], function(code, stdout, stderr) {
+          expect(code).to.equal(1);
+          return expect(stdout).to.match(/PhantomJS does not exist at 'fake\/path\/to\/phantomjs'/);
         });
       });
     });
