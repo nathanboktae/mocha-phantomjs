@@ -332,11 +332,12 @@
           });
         });
       });
-      describe('path', function() {});
-      return it.only('has used custom path', function(done) {
-        return this.runner(done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], function(code, stdout, stderr) {
-          expect(code).to.equal(1);
-          return expect(stdout).to.match(/PhantomJS does not exist at 'fake\/path\/to\/phantomjs'/);
+      return describe('path', function() {
+        return it('has used custom path', function(done) {
+          return this.runner(done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], function(code, stdout, stderr) {
+            expect(code).to.equal(1);
+            return expect(stdout).to.match(/PhantomJS does not exist at 'fake\/path\/to\/phantomjs'/);
+          });
         });
       });
     });
