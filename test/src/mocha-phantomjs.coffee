@@ -8,7 +8,11 @@ describe 'mocha-phantomjs', ->
   fileURL = (file) ->
     fullPath = fs.realpathSync "#{process.cwd()}/test/#{file}.html"
     fullPath = fullPath.replace /\\/g, '\/'
-    urlString = url.format { protocol: 'file', hostname: '', pathname: fullPath }
+    # windows does not like the file protocol.  Skipping it for widows just return
+    # filePath
+    urlString = fullPath
+    if process.platform isnt 'win32'
+      urlString = url.format { protocol: 'file', hostname: '', pathname: fullPath }
     return urlString
 
   before ->
