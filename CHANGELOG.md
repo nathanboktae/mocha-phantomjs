@@ -2,6 +2,7 @@
 3.1.3 / 2013-09-22
 
   * Added check to find phantomjs in the path before looking in the module path. Fixes #92.
+  * Test with Chai.js v1.8.x
 
 
 3.1.2 / 2013-08-22

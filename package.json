@@ -32,7 +32,7 @@
     "which"     : "~1.0.5"
   },
   "devDependencies" : {
-    "chai"          : "1.7.x",
+    "chai"          : "1.8.x",
     "async"         : "0.2.x",
     "coffee-script" : "1.6.x",
     "requirejs"     : "2.1.x"
