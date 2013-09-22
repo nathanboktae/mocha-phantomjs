@@ -27,7 +27,7 @@
     "test" : "cake test"
   },
   "dependencies" : {
-    "mocha"     : "1.12.x",
+    "mocha"     : "1.13.x",
     "commander" : "1.2.x",
     "which"     : "~1.0.5"
   },

@@ -3,6 +3,7 @@
 
   * Added check to find phantomjs in the path before looking in the module path. Fixes #92.
   * Test with Chai.js v1.8.x
+  * Test with Mocha.js v1.13.x
 
 
 3.1.2 / 2013-08-22
