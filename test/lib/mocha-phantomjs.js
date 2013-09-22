@@ -10,11 +10,14 @@
       var fullPath, urlString;
       fullPath = fs.realpathSync("" + (process.cwd()) + "/test/" + file + ".html");
       fullPath = fullPath.replace(/\\/g, '\/');
-      urlString = url.format({
-        protocol: 'file',
-        hostname: '',
-        pathname: fullPath
-      });
+      urlString = fullPath;
+      if (process.platform !== 'win32') {
+        urlString = url.format({
+          protocol: 'file',
+          hostname: '',
+          pathname: fullPath
+        });
+      }
       return urlString;
     };
     before(function() {
