@@ -93,10 +93,6 @@ var phantomjs;
 if (program.path !== undefined) {
   phantomjs = spawn(program.path, spawnArgs);
 }
-// try getting phantomjs from the path
-// this should work in the case the node phantomjs package
-// is installed globally or manually by the user.
-// Fixes #92
 if (phantomjs === undefined) {
   cmd = which.sync('phantomjs');
   if (cmd) {
