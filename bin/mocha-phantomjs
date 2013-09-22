@@ -7,6 +7,7 @@ var program = require('commander'),
        path = require('path'),
      exists = fs.existsSync || path.existsSync,
         cwd = process.cwd(),
+      which = require('which'),
     cookies = [],
     headers = {},
    settings = {};
@@ -91,6 +92,16 @@ var spawnArgs = [script, page, reporter, config];
 var phantomjs;
 if (program.path !== undefined) {
   phantomjs = spawn(program.path, spawnArgs);
+}
+// try getting phantomjs from the path
+// this should work in the case the node phantomjs package
+// is installed globally or manually by the user.
+// Fixes:
+if (phantomjs === undefined) {
+  cmd = which.sync('phantomjs');
+  if (cmd) {
+    phantomjs = spawn(cmd, spawnArgs);
+  }
 }
 if (phantomjs === undefined) {
   for (var i=0; i < module.paths.length; i++) {
