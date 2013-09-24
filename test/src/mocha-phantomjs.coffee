@@ -284,8 +284,7 @@ describe 'mocha-phantomjs', ->
         # assumption here is that phantomjs is working correctly, so giving the wrong path
         # will cause the runner to fail, there should be an output to explain this to the user
         @runner done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], (code, stdout, stderr) ->
-          expect(code).to.equal 1
-          expect(stdout).to.match /PhantomJS does not exist at 'fake\/path\/to\/phantomjs'/
+          expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH."
 
   describe 'env', ->
     it 'has passed environment variables', (done) ->

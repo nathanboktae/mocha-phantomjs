@@ -335,8 +335,7 @@
       return describe('path', function() {
         return it('has used custom path', function(done) {
           return this.runner(done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], function(code, stdout, stderr) {
-            expect(code).to.equal(1);
-            return expect(stdout).to.match(/PhantomJS does not exist at 'fake\/path\/to\/phantomjs'/);
+            return expect(stderr).to.contain("PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH.");
           });
         });
       });

@@ -91,11 +91,11 @@ var spawnArgs = [script, page, reporter, config];
 
 var phantomjs;
 if (program.path !== undefined) {
-  if (!exists(program.path)) {
-    print("PhantomJS does not exist at '" + program.path + "'\n");
-    process.exit(1)
+  if (exists(program.path)) {
+    phantomjs = spawn(program.path, spawnArgs);
+  } else {
+    console.error("PhantomJS does not exist at '" + program.path + "'. Looking for PhantomJS in the PATH.");
   }
-  phantomjs = spawn(program.path, spawnArgs);
 }
 if (phantomjs === undefined) {
   cmd = which.sync('phantomjs');
