@@ -325,10 +325,17 @@
           });
         });
       });
-      return describe('no-colors', function() {
+      describe('no-colors', function() {
         return it('suppresses color output', function(done) {
           return this.runner(done, ['-C', fileURL('mixed')], function(code, stdout, stderr) {
             return expect(stdout).to.not.match(/\u001b\[\d\dm/);
+          });
+        });
+      });
+      return describe('path', function() {
+        return it('has used custom path', function(done) {
+          return this.runner(done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], function(code, stdout, stderr) {
+            return expect(stderr).to.contain("PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH.");
           });
         });
       });

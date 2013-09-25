@@ -87,38 +87,78 @@ var config = JSON.stringify({
   viewportSize: program.view,
   useColors: program.color
 });
-var spawnArgs = [script, page, reporter, config];
 
-var phantomjs;
-if (program.path !== undefined) {
-  phantomjs = spawn(program.path, spawnArgs);
+function startPhantomJS(cmdPath, args, callback) {
+  var cmd = getCmdFromPath(cmdPath)
+  if (cmd != null) {
+    return spawnPhantomJS(cmd, args)
+  }
+
+  getCmdByEnvironmentPath(function (err, cmdPath) {
+    if(err || !cmdPath) {
+      getCmdByModulePath(function(err, cmdPath) {
+        if (err) {
+          console.error('PhantomJS was not found.');
+          process.exit(1);
+        }
+        spawnPhantomJS(cmdPath, args)
+      });
+    } else {
+      spawnPhantomJS(cmdPath, args);
+    }
+  })
 }
-if (phantomjs === undefined) {
-  cmd = which.sync('phantomjs');
-  if (cmd) {
-    phantomjs = spawn(cmd, spawnArgs);
+
+function spawnPhantomJS(cmdPath, args) {
+  var phantomjs = spawn(cmdPath, args);
+
+  phantomjs.stdout.pipe(process.stdout);
+  phantomjs.stderr.pipe(process.stdout);
+
+  phantomjs.on('exit', function(code){
+    if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
+    process.exit(code);
+  });
+}
+
+function getCmdFromPath(cmdPath, callback) {
+  if (cmdPath === undefined) { return };
+  var result = null,
+      errorMessage = null,
+      tempPath = path.resolve(cmdPath);
+
+  if (exists(tempPath)) {
+    result = tempPath;
+  } else {
+    errorMessage = "PhantomJS does not exist at '" + cmdPath + "'. Looking for PhantomJS in the PATH."
+    if (!callback) {
+      console.error(errorMessage);
+    }
+  }
+
+  if (callback) {
+    callback(errorMessage, result);
+  } else {
+    return result;
   }
 }
-if (phantomjs === undefined) {
+
+function getCmdByEnvironmentPath(callback) {
+  which('phantomjs', callback);
+}
+
+function getCmdByModulePath(callback) {
   for (var i=0; i < module.paths.length; i++) {
     var bin = path.join(module.paths[i], '.bin/phantomjs');
     if (process.platform === 'win32') {
       bin += '.cmd';
     }
     if (exists(bin)) {
-      phantomjs = spawn(bin, spawnArgs);
-      break;
+      return callback(null, bin);
     }
   }
+  return callback('PhantomJS not found.', null)
+
 }
-if (phantomjs === undefined) { phantomjs = spawn('phantomjs', spawnArgs); }
 
-phantomjs.stdout.on('data', function(data){
-  print(data.toString());
-})
-
-phantomjs.on('exit', function(code){
-  if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
-  process.exit(code);
-})
-
+startPhantomJS(program.path, [script, page, reporter, config]);
