@@ -278,6 +278,14 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-C', fileURL('mixed')], (code, stdout, stderr) ->
           expect(stdout).to.not.match /\u001b\[\d\dm/
 
+    describe 'path', ->
+      it 'has used custom path', (done) ->
+        # test for issue #65
+        # assumption here is that phantomjs is working correctly, so giving the wrong path
+        # will cause the runner to fail, there should be an output to explain this to the user
+        @runner done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], (code, stdout, stderr) ->
+          expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH."
+
   describe 'env', ->
     it 'has passed environment variables', (done) ->
       process.env.FOO = 'bar'
