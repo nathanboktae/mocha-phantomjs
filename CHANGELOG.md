@@ -1,4 +1,8 @@
 
+3.1.4 / 2013-09-26
+
+  * Warn when phantomjs can not be found for --path argument. Fixes #95 and #92 again.
+
 3.1.3 / 2013-09-22
 
   * Added check to find phantomjs in the path before looking in the module path. Fixes #92.

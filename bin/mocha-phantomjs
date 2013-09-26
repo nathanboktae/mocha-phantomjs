@@ -88,33 +88,29 @@ var config = JSON.stringify({
   useColors: program.color
 });
 
-function startPhantomJS(cmdPath, args, callback) {
-  var cmd = getCmdFromPath(cmdPath)
-  if (cmd != null) {
-    return spawnPhantomJS(cmd, args)
-  }
 
-  getCmdByEnvironmentPath(function (err, cmdPath) {
-    if(err || !cmdPath) {
+function startPhantomJS(cmdPath, args, callback) {
+  var cmd = getCmdFromPath(cmdPath);
+  if (cmd != null) { return spawnPhantomJS(cmd, args); }
+  getCmdByEnvironmentPath(function (err, cmdPath){
+    if (err || !cmdPath) {
       getCmdByModulePath(function(err, cmdPath) {
         if (err) {
           console.error('PhantomJS was not found.');
           process.exit(1);
         }
-        spawnPhantomJS(cmdPath, args)
+        spawnPhantomJS(cmdPath, args);
       });
     } else {
       spawnPhantomJS(cmdPath, args);
     }
-  })
+  });
 }
 
 function spawnPhantomJS(cmdPath, args) {
   var phantomjs = spawn(cmdPath, args);
-
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stdout);
-
   phantomjs.on('exit', function(code){
     if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
     process.exit(code);
@@ -126,16 +122,12 @@ function getCmdFromPath(cmdPath, callback) {
   var result = null,
       errorMessage = null,
       tempPath = path.resolve(cmdPath);
-
   if (exists(tempPath)) {
     result = tempPath;
   } else {
     errorMessage = "PhantomJS does not exist at '" + cmdPath + "'. Looking for PhantomJS in the PATH."
-    if (!callback) {
-      console.error(errorMessage);
-    }
+    if (!callback) { console.error(errorMessage); }
   }
-
   if (callback) {
     callback(errorMessage, result);
   } else {
@@ -157,8 +149,8 @@ function getCmdByModulePath(callback) {
       return callback(null, bin);
     }
   }
-  return callback('PhantomJS not found.', null)
-
+  return callback('PhantomJS not found.', null);
 }
 
 startPhantomJS(program.path, [script, page, reporter, config]);
+
