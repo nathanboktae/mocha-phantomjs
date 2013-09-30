@@ -124,6 +124,31 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match failRegExp(3)
           expect(stdout).to.match failComplete(3,6)
 
+    describe 'failing async', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -R spec test/failing-async.html
+      $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing-async.js
+      ###
+
+      before ->
+        @args = [fileURL('failing-async')]
+
+      it 'returns a failing code equal to the number of mocha failures', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(code).to.equal 3
+
+      it 'writes all output in color', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(stdout).to.match /Tests Failing/
+          expect(stdout).to.match passRegExp(1)
+          expect(stdout).to.match passRegExp(2)
+          expect(stdout).to.match passRegExp(3)
+          expect(stdout).to.match failRegExp(1)
+          expect(stdout).to.match failRegExp(2)
+          expect(stdout).to.match failRegExp(3)
+          expect(stdout).to.match failComplete(3,6)
+
     describe 'requirejs', ->
 
       before ->
