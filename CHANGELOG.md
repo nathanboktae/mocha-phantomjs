@@ -1,4 +1,9 @@
 
+3.1.5 / 2013-10-01
+
+  * Report all failing async tests. Fixes #97.
+
+
 3.1.4 / 2013-09-26
 
   * Warn when phantomjs can not be found for --path argument. Fixes #95 and #92 again.
