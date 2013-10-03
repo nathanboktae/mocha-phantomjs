@@ -164,6 +164,33 @@
           });
         });
       });
+      describe('failing async', function() {
+        /*
+        $ ./bin/mocha-phantomjs -R spec test/failing-async.html
+        $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/failing-async.js
+        */
+
+        before(function() {
+          return this.args = [fileURL('failing-async')];
+        });
+        it('returns a failing code equal to the number of mocha failures', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            return expect(code).to.equal(3);
+          });
+        });
+        return it('writes all output in color', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            expect(stdout).to.match(/Tests Failing/);
+            expect(stdout).to.match(passRegExp(1));
+            expect(stdout).to.match(passRegExp(2));
+            expect(stdout).to.match(passRegExp(3));
+            expect(stdout).to.match(failRegExp(1));
+            expect(stdout).to.match(failRegExp(2));
+            expect(stdout).to.match(failRegExp(3));
+            return expect(stdout).to.match(failComplete(3, 6));
+          });
+        });
+      });
       return describe('requirejs', function() {
         before(function() {
           return this.args = [fileURL('requirejs')];

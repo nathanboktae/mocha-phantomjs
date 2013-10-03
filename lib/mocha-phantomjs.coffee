@@ -42,6 +42,7 @@ class Reporter
     @page.viewportSize = @config.viewportSize if @config.viewportSize
     @page.onConsoleMessage = (msg) -> system.stdout.writeLine(msg)
     @page.onError = (msg, traces) =>
+      return if @page.evaluate -> window.onerror?
       for {line, file}, index in traces
         traces[index] = "  #{file}:#{line}"
       @fail "#{msg}\n\n#{traces.join '\n'}"
