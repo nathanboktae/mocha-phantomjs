@@ -8,6 +8,7 @@ USAGE = """
 class Reporter
 
   constructor: (@reporter, @config) ->
+    @hooks = require(@config.hooks)  if @config.hooks
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
@@ -95,7 +96,11 @@ class Reporter
 
   waitForMocha: =>
     ended = @page.evaluate -> mochaPhantomJS.ended
-    if ended then @finish() else setTimeout @waitForMocha, 100
+    if ended
+      @hooks.onEnd this  if @hooks and @hooks.onEnd
+      @finish()
+    else
+      setTimeout @waitForMocha, 100
 
   waitForInitMocha: =>
     setTimeout @waitForInitMocha, 100 unless @checkStarted()
