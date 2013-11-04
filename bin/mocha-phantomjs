@@ -49,7 +49,7 @@ program
   .option('-A, --agent <userAgent>',     'specify the user agent to use')
   .option('-c, --cookies <Object>',      'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
   .option('-h, --header <name>=<value>', 'specify custom header', header)
-  .option('-k, --hooks <path>',          'path to hooks module')
+  .option('-k, --hooks <path>',          'path to hooks module', JSON.stringify({}))
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
   .option('-C, --no-color',              'disable color escape codes')
