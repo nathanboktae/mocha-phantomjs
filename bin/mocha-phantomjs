@@ -71,6 +71,7 @@ if (program.agent) { settings.userAgent = program.agent; }
 
 var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
 var reporter = program.reporter;
+var hooks = program.hooks;
 var page     = function(){
   var arg = program.args[0];
   if (arg.match(/file:\/\//))   { return arg; };
@@ -81,7 +82,6 @@ var page     = function(){
   return arg;
 }();
 var config = JSON.stringify({
-  hooks: program.hooks,
   timeout: program.timeout,
   cookies: cookies,
   headers: headers,
@@ -154,5 +154,5 @@ function getCmdByModulePath(callback) {
   return callback('PhantomJS not found.', null);
 }
 
-startPhantomJS(program.path, [script, page, reporter, config]);
+startPhantomJS(program.path, [script, page, reporter, hooks, config]);
 
