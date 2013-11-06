@@ -124,7 +124,9 @@ class Reporter
     catch error
       false
 
-
+if phantom.version.major isnt 1 or phantom.version.minor < 9
+  console.log 'mocha-phantomjs requires PhantomJS > 1.9.1'
+  phantom.exit -1
 
 reporter = system.args[2] || 'spec'
 config   = JSON.parse system.args[3] || '{}'
