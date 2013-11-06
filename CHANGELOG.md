@@ -1,4 +1,8 @@
 
+3.1.6 / 2013-11-06
+
+  * Ensure PhantomJS version to be >= 1.9 (the latest 1.9.x is recommended.)
+
 3.1.5 / 2013-10-01
 
   * Report all failing async tests. Fixes #97.
