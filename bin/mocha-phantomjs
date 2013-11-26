@@ -115,6 +115,9 @@ function spawnPhantomJS(cmdPath, args) {
     if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
     process.exit(code);
   });
+  phantomjs.on('error', function(error){
+    throw error;
+  });
 }
 
 function getCmdFromPath(cmdPath, callback) {
