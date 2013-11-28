@@ -41,6 +41,8 @@ class Reporter
     @page.addCookie(cookie) for cookie in @config.cookies or []
     @page.viewportSize = @config.viewportSize if @config.viewportSize
     @page.onConsoleMessage = (msg) -> system.stdout.writeLine(msg)
+    @page.onResourceError = (resErr) ->
+      system.stdout.writeLine "Error loading resource #{resErr.url} (#{resErr.errorCode}). Details: #{resErr.errorString}"
     @page.onError = (msg, traces) =>
       return if @page.evaluate -> window.onerror?
       for {line, file}, index in traces
