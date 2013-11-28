@@ -1,5 +1,6 @@
 system  = require 'system'
 webpage = require 'webpage'
+fs = require 'fs'
 
 USAGE = """
         Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [CONFIG]
@@ -31,7 +32,16 @@ class Reporter
     console.log msg if msg
     phantom.exit errno || 1
 
+  dumpVariables: ->
+    for variable, file of @config.dumps
+      result = @page.evaluate new Function """
+      var variable = #{variable};
+      return typeof variable === 'object' ? JSON.stringify(variable) : variable;
+      """
+      fs.write(file, result) if file and result
+
   finish: ->
+    @dumpVariables()
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->

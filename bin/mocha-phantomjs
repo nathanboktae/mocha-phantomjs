@@ -10,7 +10,8 @@ var program = require('commander'),
       which = require('which'),
     cookies = [],
     headers = {},
-   settings = {};
+   settings = {},
+      dumps = {};
 
 function keyValue(val, store) {
   val = val.split('=');
@@ -33,6 +34,13 @@ function header(val) {
 function setting(val) {
   return keyValue(val, settings);
 }
+function dump(val) {
+  var val = keyValue(val, dumps);
+  Object.keys(dumps).forEach(function (key) {
+    dumps[key] = path.resolve(cwd, dumps[key]);
+  });
+  return val;
+}
 function viewport(val) {
   val = val.split('x');
   return {
@@ -52,6 +60,7 @@ program
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
   .option('-C, --no-color',              'disable color escape codes')
+  .option('-d, --dump <variable>=<file>','dump window environment variable to file as json', dump)
   .option('-p, --path <path>',           'path to PhantomJS binary');
 
 program.on('--help', function(){
@@ -85,7 +94,8 @@ var config = JSON.stringify({
   headers: headers,
   settings: settings,
   viewportSize: program.view,
-  useColors: program.color
+  useColors: program.color,
+  dumps: dumps
 });
 
 

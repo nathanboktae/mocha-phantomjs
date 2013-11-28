@@ -4,6 +4,7 @@ describe 'mocha-phantomjs', ->
   spawn  = require('child_process').spawn
   url    = require('url')
   fs     = require('fs')
+  path   = require('path')
 
   fileURL = (file) ->
     fullPath = fs.realpathSync "#{process.cwd()}/test/#{file}.html"
@@ -308,6 +309,24 @@ describe 'mocha-phantomjs', ->
       it 'has used custom path', (done) ->
         @runner done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], (code, stdout, stderr) ->
           expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH."
+
+    describe 'dump', ->
+      file = path.resolve process.cwd(), './dump_result.json'
+
+      ###
+      $ ./bin/mocha-phantomjs -R spec test/dump.html
+      ###
+
+      after ->
+        fs.unlinkSync file if fs.existsSync file
+
+      it 'serializes object variables as JSON and writes them in file', (done) ->
+        @runner done, ['-d', "window.variableAsObject=#{file}", fileURL('dump')], (code, stdout, stderr) ->
+          expect(fs.readFileSync(file, 'utf8')).to.eql '{"a":0}'
+
+      it 'writes non-object variables in file as is', (done) ->
+        @runner done, ['-d', "window.variableAsString=#{file}", fileURL('dump')], (code, stdout, stderr) ->
+          expect(fs.readFileSync(file, 'utf8')).to.eql 'foo'
 
   describe 'env', ->
     it 'has passed environment variables', (done) ->
