@@ -1,3 +1,6 @@
+3.1.7 / 
+
+  * Log PhantomJS resource errors. Fixes #109.
 
 3.1.6 / 2013-11-06
 
