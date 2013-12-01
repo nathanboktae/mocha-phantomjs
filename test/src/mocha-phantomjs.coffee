@@ -309,6 +309,18 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], (code, stdout, stderr) ->
           expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH."
 
+    describe 'file', ->
+
+      it 'pipes reporter output to a file', (done) ->
+        @runner done, ['-f', 'reporteroutput.json', '-R', 'json', fileURL('file')], (code, stdout, stderr) ->
+          expect(stdout).to.contain 'Extraneous'
+          results = JSON.parse fs.readFileSync 'reporteroutput.json', { encoding: 'utf8' }
+          expect(results.passes.length).to.equal 6
+          expect(results.failures.length).to.equal 6
+
+      after ->
+        fs.unlinkSync 'reporteroutput.json'
+
   describe 'env', ->
     it 'has passed environment variables', (done) ->
       process.env.FOO = 'bar'

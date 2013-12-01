@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <title>Tests Reporter Output to File</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+      mocha.ui('bdd'); 
+      mocha.reporter('html');
+      expect = chai.expect;
+    </script>
+    <script src="lib/mixed.js"></script>
+    <script>
+      console.log("Extraneous output that is not part of the reporter output")
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
+    </script>
+  </body>
+</html>
+

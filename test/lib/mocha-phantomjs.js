@@ -359,11 +359,25 @@
           });
         });
       });
-      return describe('path', function() {
+      describe('path', function() {
         return it('has used custom path', function(done) {
           return this.runner(done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], function(code, stdout, stderr) {
             return expect(stderr).to.contain("PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH.");
           });
+        });
+      });
+      return describe('file', function() {
+        it('pipes reporter output to a file', function(done) {
+          return this.runner(done, ['-f', 'reporteroutput.json', '-R', 'json', fileURL('file')], function(code, stdout, stderr) {
+            var results;
+            expect(stdout).to.contain('Extraneous');
+            results = JSON.parse(fs.read('reporteroutput.json'));
+            results.passes.length.should.equal(6);
+            return results.failures.length.should.equal(6);
+          });
+        });
+        return after(function() {
+          return fs.remove('reporteroutput.json');
         });
       });
     });

@@ -13,6 +13,7 @@ class Reporter
     @mochaStarted = false
     @mochaStartWait = @config.timeout || 6000
     @startTime = Date.now()
+    @output = if @config.file then require('fs').open(@config.file, 'w') else system.stdout
     @fail(USAGE) unless @url
 
   run: ->
@@ -28,10 +29,12 @@ class Reporter
   # Private
 
   fail: (msg, errno) ->
+    @output.close() if @output and @config.file
     console.log msg if msg
     phantom.exit errno || 1
 
   finish: ->
+    @output.close() if @config.file
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 
   initPage: ->
@@ -68,7 +71,7 @@ class Reporter
       @waitForInitMocha()
     @page.onCallback = (data) =>
       if data.hasOwnProperty 'Mocha.process.stdout.write'
-        system.stdout.write data['Mocha.process.stdout.write']
+        @output.write data['Mocha.process.stdout.write']
       else if data.hasOwnProperty 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
       true
