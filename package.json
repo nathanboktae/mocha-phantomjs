@@ -29,7 +29,8 @@
   "dependencies" : {
     "mocha"     : "1.13.x",
     "commander" : "1.2.x",
-    "which"     : "~1.0.5"
+    "which"     : "~1.0.5",
+    "diveSync"  : "0.2.0"
   },
   "devDependencies" : {
     "chai"          : "1.8.x",

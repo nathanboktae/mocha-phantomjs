@@ -8,6 +8,7 @@ var program = require('commander'),
      exists = fs.existsSync || path.existsSync,
         cwd = process.cwd(),
       which = require('which'),
+       dive = require('diveSync'),
     cookies = [],
     headers = {},
    settings = {};
@@ -43,7 +44,7 @@ function viewport(val) {
 
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
-  .usage('[options] page')
+  .usage('[options] uri')
   .option('-R, --reporter <name>',       'specify the reporter to use', 'spec')
   .option('-t, --timeout <timeout>',     'specify the test startup timeout to use', parseInt, 6000)
   .option('-A, --agent <userAgent>',     'specify the user agent to use')
@@ -70,7 +71,7 @@ if (program.agent) { settings.userAgent = program.agent; }
 
 var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
 var reporter = program.reporter;
-var page     = function(){
+var uri      = function(){
   var arg = program.args[0];
   if (arg.match(/file:\/\//))   { return arg; };
   if (arg.match(/http:\/\//))   { return arg; };
@@ -91,7 +92,7 @@ var config = JSON.stringify({
 
 function startPhantomJS(cmdPath, args, callback) {
   var cmd = getCmdFromPath(cmdPath);
-  if (cmd != null) { return spawnPhantomJS(cmd, args); }
+  if (cmd != null) { return spawnPhantomJS(cmd, args, callback); }
   getCmdByEnvironmentPath(function (err, cmdPath){
     if (err || !cmdPath) {
       getCmdByModulePath(function(err, cmdPath) {
@@ -99,20 +100,21 @@ function startPhantomJS(cmdPath, args, callback) {
           console.error('PhantomJS was not found.');
           process.exit(1);
         }
-        spawnPhantomJS(cmdPath, args);
+        spawnPhantomJS(cmdPath, args, callback);
       });
     } else {
-      spawnPhantomJS(cmdPath, args);
+      spawnPhantomJS(cmdPath, args, callback);
     }
   });
 }
 
-function spawnPhantomJS(cmdPath, args) {
+function spawnPhantomJS(cmdPath, args, callback) {
   var phantomjs = spawn(cmdPath, args);
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stdout);
   phantomjs.on('exit', function(code){
     if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
+    if (callback) { return callback(); }
     process.exit(code);
   });
 }
@@ -152,5 +154,27 @@ function getCmdByModulePath(callback) {
   return callback('PhantomJS not found.', null);
 }
 
-startPhantomJS(program.path, [script, page, reporter, config]);
+function runSuite() {
+  var testFiles = [];
+  dive(uri, { directories: false, files:true }, function(err, file) {
+    if (!err && file.match(/^.*\/test.html$/)) {
+      testFiles.push(file);
+    }
+  });
 
+  var i = 0;
+  function iterate() {
+    if (i < testFiles.length) {
+      startPhantomJS(program.path, [script, testFiles[i], reporter, config],
+                     iterate);
+      i++;
+    }
+  }
+  iterate();
+}
+
+if (fs.lstatSync(uri).isDirectory()) {
+  runSuite();
+} else {
+  startPhantomJS(program.path, [script, uri, reporter, config]);
+}
