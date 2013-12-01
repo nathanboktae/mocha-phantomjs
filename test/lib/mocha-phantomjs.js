@@ -371,13 +371,15 @@
           return this.runner(done, ['-f', 'reporteroutput.json', '-R', 'json', fileURL('file')], function(code, stdout, stderr) {
             var results;
             expect(stdout).to.contain('Extraneous');
-            results = JSON.parse(fs.read('reporteroutput.json'));
-            results.passes.length.should.equal(6);
-            return results.failures.length.should.equal(6);
+            results = JSON.parse(fs.readFileSync('reporteroutput.json', {
+              encoding: 'utf8'
+            }));
+            expect(results.passes.length).to.equal(6);
+            return expect(results.failures.length).to.equal(6);
           });
         });
         return after(function() {
-          return fs.remove('reporteroutput.json');
+          return fs.unlinkSync('reporteroutput.json');
         });
       });
     });
