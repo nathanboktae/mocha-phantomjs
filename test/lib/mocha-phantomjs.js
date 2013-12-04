@@ -305,6 +305,36 @@
         });
       });
     });
+    describe('hooks', function() {
+      /*
+      $ ./bin/mocha-phantomjs -k test/before-start-hook.js test/passing.html
+      */
+
+      describe('before start', function() {
+        before(function() {
+          return this.args = ['-k', 'test/before-start-hook.js', fileURL('passing')];
+        });
+        return it('is called', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            return expect(stdout).to.contain('Before start called!');
+          });
+        });
+      });
+      return describe('after end', function() {
+        /*
+        $ ./bin/mocha-phantomjs -k test/after-end-hook.js test/passing.html
+        */
+
+        before(function() {
+          return this.args = ['-k', 'test/after-end-hook.js', fileURL('passing')];
+        });
+        return it('is called', function(done) {
+          return this.runner(done, this.args, function(code, stdout, stderr) {
+            return expect(stdout).to.contain('After end called!');
+          });
+        });
+      });
+    });
     describe('config', function() {
       describe('user-agent', function() {
         /*

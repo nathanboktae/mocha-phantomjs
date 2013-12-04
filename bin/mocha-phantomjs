@@ -40,6 +40,18 @@ function viewport(val) {
     height: parseFloat(val[1])
   };
 }
+function resolveHooks(val) {
+  var absPath = path.resolve(process.cwd(), val);
+
+  if (!exists(absPath)) {
+    for (var i = 0; i < module.paths.length - 1; i++) {
+      absPath = path.join(module.paths[i], val);
+      if (exists(absPath)) return absPath;
+    };
+  }
+
+  return absPath;
+}
 
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
@@ -49,6 +61,7 @@ program
   .option('-A, --agent <userAgent>',     'specify the user agent to use')
   .option('-c, --cookies <Object>',      'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
   .option('-h, --header <name>=<value>', 'specify custom header', header)
+  .option('-k, --hooks <path>',          'path to hooks module', resolveHooks)
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
   .option('-C, --no-color',              'disable color escape codes')
@@ -70,6 +83,7 @@ if (program.agent) { settings.userAgent = program.agent; }
 
 var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
 var reporter = program.reporter;
+var hooks = program.hooks;
 var page     = function(){
   var arg = program.args[0];
   if (arg.match(/file:\/\//))   { return arg; };
@@ -152,5 +166,5 @@ function getCmdByModulePath(callback) {
   return callback('PhantomJS not found.', null);
 }
 
-startPhantomJS(program.path, [script, page, reporter, config]);
+startPhantomJS(program.path, [script, page, reporter, hooks, config]);
 
