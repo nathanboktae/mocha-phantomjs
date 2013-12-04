@@ -85,7 +85,7 @@ class Reporter
 
   runMocha: ->
     if @config.useColors is false then @page.evaluate -> Mocha.reporters.Base.useColors = false
-    @hooks.beforeStart this  if @hooks.beforeStart
+    @hooks.beforeStart?(this)
     @page.evaluate @runner, @reporter
     @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
     if @mochaStarted
@@ -97,7 +97,7 @@ class Reporter
   waitForMocha: =>
     ended = @page.evaluate -> mochaPhantomJS.ended
     if ended
-      @hooks.afterEnd this  if @hooks.afterEnd
+      @hooks.afterEnd?(this)
       @finish()
     else
       setTimeout @waitForMocha, 100
