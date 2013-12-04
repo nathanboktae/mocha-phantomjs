@@ -7,8 +7,7 @@ USAGE = """
 
 class Reporter
 
-  constructor: (@reporter, @config) ->
-    @hooks = require(@config.hooks)  if @config.hooks
+  constructor: (@reporter, @hooks, @config) ->
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
@@ -86,6 +85,7 @@ class Reporter
 
   runMocha: ->
     if @config.useColors is false then @page.evaluate -> Mocha.reporters.Base.useColors = false
+    @hooks.beforeStart this  if @hooks.beforeStart
     @page.evaluate @runner, @reporter
     @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
     if @mochaStarted
@@ -96,11 +96,7 @@ class Reporter
 
   waitForMocha: =>
     ended = @page.evaluate -> mochaPhantomJS.ended
-    if ended
-      @hooks.onEnd this  if @hooks and @hooks.onEnd
-      @finish()
-    else
-      setTimeout @waitForMocha, 100
+    if ended then @finish() else setTimeout @waitForMocha, 100
 
   waitForInitMocha: =>
     setTimeout @waitForInitMocha, 100 unless @checkStarted()
@@ -129,11 +125,18 @@ class Reporter
     catch error
       false
 
-
+if phantom.version.major isnt 1 or phantom.version.minor < 9
+  console.log 'mocha-phantomjs requires PhantomJS > 1.9.1'
+  phantom.exit -1
 
 reporter = system.args[2] || 'spec'
-config   = JSON.parse system.args[3] || '{}'
 
-mocha = new Reporter reporter, config
+try
+  hooks = require(system.args[3])
+catch err
+  hooks = {}
+
+config   = JSON.parse system.args[4] || '{}'
+
+mocha = new Reporter reporter, hooks, config
 mocha.run()
-
