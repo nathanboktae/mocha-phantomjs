@@ -307,7 +307,7 @@
     });
     describe('hooks', function() {
       /*
-      $ ./bin/mocha-phantomjs -k test/on-start-hook.js test/passing.html
+      $ ./bin/mocha-phantomjs -k test/before-start-hook.js test/passing.html
       */
 
       return describe('before start', function() {

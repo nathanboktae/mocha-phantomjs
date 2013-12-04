@@ -258,7 +258,7 @@ describe 'mocha-phantomjs', ->
   describe 'hooks', ->
     
     ###
-    $ ./bin/mocha-phantomjs -k test/on-start-hook.js test/passing.html
+    $ ./bin/mocha-phantomjs -k test/before-start-hook.js test/passing.html
     ###
 
     describe 'before start', ->

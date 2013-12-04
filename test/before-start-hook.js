@@ -1,5 +1,5 @@
 module.exports = {
-  beforeStart: function() {
+  beforeStart: function(reporter) {
     console.log('Before start called!');
   }
 };
