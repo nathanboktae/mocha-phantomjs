@@ -270,6 +270,19 @@ describe 'mocha-phantomjs', ->
         @runner done, @args, (code, stdout, stderr) ->
           expect(stdout).to.contain 'Before start called!'
 
+    describe 'after end', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -k test/after-end-hook.js test/passing.html
+      ###
+
+      before ->
+        @args = ['-k', 'test/after-end-hook.js', fileURL('passing')]
+
+      it 'is called', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(stdout).to.contain 'After end called!'
+
 
   describe 'config', ->
 

@@ -96,7 +96,11 @@ class Reporter
 
   waitForMocha: =>
     ended = @page.evaluate -> mochaPhantomJS.ended
-    if ended then @finish() else setTimeout @waitForMocha, 100
+    if ended
+      @hooks.afterEnd this  if @hooks.afterEnd
+      @finish()
+    else
+      setTimeout @waitForMocha, 100
 
   waitForInitMocha: =>
     setTimeout @waitForInitMocha, 100 unless @checkStarted()
