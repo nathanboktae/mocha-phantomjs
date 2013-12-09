@@ -54,14 +54,17 @@ Usage: mocha-phantomjs [options] page
    -h, --help                   output usage information
    -V, --version                output the version number
    -R, --reporter <name>        specify the reporter to use
+   -f, --file <filename>        specify the file to dump reporter output
    -t, --timeout <timeout>      specify the test startup timeout to use
    -A, --agent <userAgent>      specify the user agent to use
-   -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
+   -c, --cookies <Object>       [phantomjs cookie object](http://git.io/RmPxgA)
    -h, --header <name>=<value>  specify custom header
-   -s, --setting <key>=<value>  specify phantomjs WebPage settings
-   -v, --view <width>x<height>  specify phantomjs viewport size
+   -k, --hooks <path>           path to hooks module
+   -s, --setting <key>=<value>  specify specific phantom settings
+   -v, --view <width>x<height>  specify phantom viewport size
    -C, --no-color               disable color escape codes
    -p, --path <path>            path to PhantomJS binary
+
 
  Examples:
 
@@ -247,11 +250,6 @@ Simple! Just clone the repo, then run `npm install` and the various node develop
 We also use Travis CI to run our tests too. The current build status:
 
 [![Build Status](https://secure.travis-ci.org/metaskills/mocha-phantomjs.png)](http://travis-ci.org/metaskills/mocha-phantomjs)
-
-
-# TODO
-
-* Create a `mocha-phantomjs` bin file for use in Node.js and publish a NPM.
 
 
 # Alternatives
