@@ -7,7 +7,7 @@ USAGE = """
 
 class Reporter
 
-  constructor: (@reporter, @hooks, @config) ->
+  constructor: (@reporter, @config) ->
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
     @mochaStarted = false
@@ -85,7 +85,7 @@ class Reporter
 
   runMocha: ->
     if @config.useColors is false then @page.evaluate -> Mocha.reporters.Base.useColors = false
-    @hooks.beforeStart?(this)
+    @config.hooks.beforeStart?(this)
     @page.evaluate @runner, @reporter
     @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
     if @mochaStarted
@@ -97,7 +97,7 @@ class Reporter
   waitForMocha: =>
     ended = @page.evaluate -> mochaPhantomJS.ended
     if ended
-      @hooks.afterEnd?(this)
+      @config.hooks.afterEnd?(this)
       @finish()
     else
       setTimeout @waitForMocha, 100
@@ -135,9 +135,12 @@ if phantom.version.major isnt 1 or phantom.version.minor < 9
 
 reporter = system.args[2] || 'spec'
 
-hooks = (if (system.args[3] isnt 'undefined') then require(system.args[3]) else {})
+config   = JSON.parse system.args[3] || '{}'
 
-config   = JSON.parse system.args[4] || '{}'
+if config.hooks
+  config.hooks = require(config.hooks)
+else
+  config.hooks = {}
 
-mocha = new Reporter reporter, hooks, config
+mocha = new Reporter reporter, config
 mocha.run()
