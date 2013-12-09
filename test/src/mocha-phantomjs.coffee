@@ -255,6 +255,35 @@ describe 'mocha-phantomjs', ->
         expect(stdout).to.match /<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/
 
 
+  describe 'hooks', ->
+    
+    ###
+    $ ./bin/mocha-phantomjs -k test/before-start-hook.js test/passing.html
+    ###
+
+    describe 'before start', ->
+
+      before ->
+        @args = ['-k', 'test/before-start-hook.js', fileURL('passing')]
+
+      it 'is called', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(stdout).to.contain 'Before start called!'
+
+    describe 'after end', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -k test/after-end-hook.js test/passing.html
+      ###
+
+      before ->
+        @args = ['-k', 'test/after-end-hook.js', fileURL('passing')]
+
+      it 'is called', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(stdout).to.contain 'After end called!'
+
+
   describe 'config', ->
 
     describe 'user-agent', ->
