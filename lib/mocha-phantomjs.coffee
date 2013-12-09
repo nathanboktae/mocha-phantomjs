@@ -135,10 +135,7 @@ if phantom.version.major isnt 1 or phantom.version.minor < 9
 
 reporter = system.args[2] || 'spec'
 
-try
-  hooks = require(system.args[3])
-catch err
-  hooks = {}
+hooks = (if (system.args[3] isnt 'undefined') then require(system.args[3]) else {})
 
 config   = JSON.parse system.args[4] || '{}'
 
