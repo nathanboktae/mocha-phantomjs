@@ -2,7 +2,7 @@
   "name"        : "mocha-phantomjs",
   "description" : "PhantomJS Runners for Mocha",
   "keywords"    : ["phantomjs", "mocha", "test", "runner", "command line", "browser"],
-  "version"     : "3.1.7",
+  "version"     : "3.2.0",
   "author"      : "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
   "licenses"    : [{
     "type" : "MIT",
@@ -10,7 +10,8 @@
   }
   ],
   "contributors" : [
-    "Jonathan Chapman <chafnan@gmail.com> (https://github.com/chafnan)"
+    "Jonathan Chapman <chafnan@gmail.com> (https://github.com/chafnan)",
+    "Nathan Black <nathan@nathanblack.org> (https://github.com/nathanboktae)"
   ],
   "repository" : {
     "type" : "git",

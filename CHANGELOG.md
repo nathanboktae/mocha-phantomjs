@@ -1,4 +1,9 @@
-3.1.7 / 
+3.2.0 / 2013-12-09
+
+  * --file option for piping reporter output to a file.
+  * --hooks option for providing a module of event handlers of mocha-phantomjs events. Two events are currently supported: `beforeStart` and `afterEnd`
+
+3.1.7 / 2013-11-28
 
   * Log PhantomJS resource errors. Fixes #109.
 
