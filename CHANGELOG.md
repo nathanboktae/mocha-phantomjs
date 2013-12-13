@@ -1,3 +1,7 @@
+3.3.0 / 2013-12-13
+
+  * Third party reporters are now supported via -R or --reporter
+
 3.2.0 / 2013-12-09
 
   * --file option for piping reporter output to a file.
