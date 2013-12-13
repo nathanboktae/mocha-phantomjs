@@ -254,6 +254,17 @@ describe 'mocha-phantomjs', ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/
 
+  describe 'third party', (done) ->
+
+    it 'loads and wraps node-style reporters to run in the browser', ->
+      @runner done, ['-R', 'test/3rd-party-reporter', fileURL('mixed')], (code, stdout, stderr) ->
+        expect(stdout).to.match /<section class="suite">/
+        expect(stdout).to.match /<h1>Tests Mixed<\/h1>/
+
+    it 'gives a useful error when trying to require a node module', ->
+      @runner done, ['-R', 'test/node-only', fileURL('mixed')], (code, stdout, stderr) ->
+        expect(stdout).to.match /Node modules cannot be required/
+      
 
   describe 'hooks', ->
     

@@ -1,5 +1,6 @@
 system  = require 'system'
 webpage = require 'webpage'
+fs = require 'fs'
 
 USAGE = """
         Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [CONFIG]
@@ -10,10 +11,9 @@ class Reporter
   constructor: (@reporter, @config) ->
     @url = system.args[1]
     @columns = parseInt(system.env.COLUMNS or 75) * .75 | 0
-    @mochaStarted = false
     @mochaStartWait = @config.timeout || 6000
     @startTime = Date.now()
-    @output = if @config.file then require('fs').open(@config.file, 'w') else system.stdout
+    @output = if @config.file then fs.open(@config.file, 'w') else system.stdout
     @fail(USAGE) unless @url
 
   run: ->
@@ -91,9 +91,33 @@ class Reporter
   runMocha: ->
     if @config.useColors is false then @page.evaluate -> Mocha.reporters.Base.useColors = false
     @config.hooks.beforeStart?(this)
-    @page.evaluate @runner, @reporter
-    @mochaStarted = @page.evaluate -> mochaPhantomJS.runner or false
-    if @mochaStarted
+
+    unless @page.evaluate @setupReporter, @reporter
+      customReporter = fs.read(@reporter)
+      wrapper = ->
+        require = (what) ->
+          what = what.replace /[^a-zA-Z0-9]/g, ''
+          for r of Mocha.reporters
+            return Mocha.reporters[r] if r.toLowerCase() is what
+          Mocha.process.stderr.write "Your custom reporter tried to require '#{what}', but Mocha
+            is not running in Node.js in mocha-phantomjs, so Node modules cannot be required - only other reporters"
+          return null
+
+        module = {}
+        exports = undefined
+        process = Mocha.process
+
+        'customreporter'
+        Mocha.reporters.Custom = exports or module.exports
+
+      wrappedReporter = wrapper.toString().replace "'customreporter'", "(function() {#{customReporter.toString()}})();"
+      # console.log wrappedReporter
+      @page.evaluate wrappedReporter
+
+      unless @page.evaluate @setupReporter
+        @fail "Failed to use load and use the custom reporter #{@reporter}"
+
+    if @page.evaluate @runner
       @mochaRunAt = new Date().getTime()
       @waitForMocha()
     else
@@ -119,9 +143,16 @@ class Reporter
       @fail "Failed to start mocha: Init timeout", 255
     started
 
-  runner: (reporter) ->
+  setupReporter: (reporter) ->
+    try 
+      mocha.setup
+        reporter: reporter or Mocha.reporters.Custom
+      true
+    catch error
+      false
+
+  runner: ->
     try
-      mocha.setup reporter: reporter
       mochaPhantomJS.runner = mocha.run()
       if mochaPhantomJS.runner
         cleanup = ->
@@ -131,6 +162,7 @@ class Reporter
           cleanup()
         else
           mochaPhantomJS.runner.on 'end', cleanup
+      !!mochaPhantomJS.runner
     catch error
       false
 

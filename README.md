@@ -57,7 +57,7 @@ Usage: mocha-phantomjs [options] page
    -f, --file <filename>        specify the file to dump reporter output
    -t, --timeout <timeout>      specify the test startup timeout to use
    -A, --agent <userAgent>      specify the user agent to use
-   -c, --cookies <Object>       [phantomjs cookie object](http://git.io/RmPxgA)
+   -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
    -h, --header <name>=<value>  specify custom header
    -k, --hooks <path>           path to hooks module
    -s, --setting <key>=<value>  specify specific phantom settings

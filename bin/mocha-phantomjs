@@ -104,6 +104,13 @@ var config = JSON.stringify({
   file: program.file
 });
 
+if (reporter) {
+  if (exists(reporter)) {
+    reporter = path.resolve(process.cwd(), reporter);
+  } else if (exists(reporter + '.js')) {
+    reporter = path.resolve(process.cwd(), reporter + '.js');
+  }
+}
 
 function startPhantomJS(cmdPath, args, callback) {
   var cmd = getCmdFromPath(cmdPath);

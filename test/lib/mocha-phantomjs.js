@@ -305,6 +305,19 @@
         });
       });
     });
+    describe('third party', function(done) {
+      it('loads and wraps node-style reporters to run in the browser', function() {
+        return this.runner(done, ['-R', 'test/3rd-party-reporter', fileURL('mixed')], function(code, stdout, stderr) {
+          expect(stdout).to.match(/<section class="suite">/);
+          return expect(stdout).to.match(/<h1>Tests Mixed<\/h1>/);
+        });
+      });
+      return it('gives a useful error when trying to require a node module', function() {
+        return this.runner(done, ['-R', 'test/node-only', fileURL('mixed')], function(code, stdout, stderr) {
+          return expect(stdout).to.match(/Node modules cannot be required/);
+        });
+      });
+    });
     describe('hooks', function() {
       /*
       $ ./bin/mocha-phantomjs -k test/before-start-hook.js test/passing.html
