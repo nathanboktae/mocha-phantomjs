@@ -6,6 +6,7 @@
   <body>
     <script src="../node_modules/mocha/mocha.js"></script>
     <script>
+      mocha.setup = function() {};
       mocha.run = function() { return false; };
       if (window.mochaPhantomJS) {
         mochaPhantomJS.run();

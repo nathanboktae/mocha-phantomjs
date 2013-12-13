@@ -58,13 +58,13 @@
     it('returns a failure code and notifies of no such runner class', function(done) {
       return this.runner(done, ['-R', 'nonesuch', fileURL('passing')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.match(/Failed to start mocha./);
+        return expect(stdout).to.match(/Unable to open file 'nonesuch'/);
       });
     });
     it('returns a failure code when mocha can not be found on the page', function(done) {
       return this.runner(done, [fileURL('blank')], function(code, stdout, stderr) {
         expect(code).to.equal(1);
-        return expect(stdout).to.match(/Failed to find mocha on the page./);
+        return expect(stdout).to.match(/Failed to find mocha on the page/);
       });
     });
     it('returns a failure code when mocha fails to start for any reason', function(done) {
@@ -302,6 +302,19 @@
       return it('basically works', function(done) {
         return this.runner(done, this.args, function(code, stdout, stderr) {
           return expect(stdout).to.match(/<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/);
+        });
+      });
+    });
+    describe('third party', function() {
+      it('loads and wraps node-style reporters to run in the browser', function(done) {
+        return this.runner(done, ['-R', 'test/3rd-party-reporter', fileURL('mixed')], function(code, stdout, stderr) {
+          expect(stdout).to.match(/<section class="suite">/);
+          return expect(stdout).to.match(/<h1>Tests Mixed<\/h1>/);
+        });
+      });
+      return it('gives a useful error when trying to require a node module', function(done) {
+        return this.runner(done, ['-R', 'test/node-only-reporter', fileURL('mixed')], function(code, stdout, stderr) {
+          return expect(stdout).to.match(/Node modules cannot be required/);
         });
       });
     });
