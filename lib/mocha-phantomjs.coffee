@@ -92,16 +92,14 @@ class Reporter
     if @config.useColors is false then @page.evaluate -> Mocha.reporters.Base.useColors = false
     @config.hooks.beforeStart?(this)
 
-    unless @page.evaluate @setupReporter, @reporter
+    unless @page.evaluate(@setupReporter, @reporter) is true
       customReporter = fs.read(@reporter)
       wrapper = ->
         require = (what) ->
           what = what.replace /[^a-zA-Z0-9]/g, ''
           for r of Mocha.reporters
             return Mocha.reporters[r] if r.toLowerCase() is what
-          Mocha.process.stderr.write "Your custom reporter tried to require '#{what}', but Mocha
-            is not running in Node.js in mocha-phantomjs, so Node modules cannot be required - only other reporters"
-          return null
+          throw new Error "Your custom reporter tried to require '#{what}', but Mocha is not running in Node.js in mocha-phantomjs, so Node modules cannot be required - only other reporters"
 
         module = {}
         exports = undefined
@@ -110,11 +108,10 @@ class Reporter
         'customreporter'
         Mocha.reporters.Custom = exports or module.exports
 
-      wrappedReporter = wrapper.toString().replace "'customreporter'", "(function() {#{customReporter.toString()}})();"
-      # console.log wrappedReporter
+      wrappedReporter = wrapper.toString().replace "'customreporter'", "(function() {#{customReporter.toString()}})()"
       @page.evaluate wrappedReporter
 
-      unless @page.evaluate @setupReporter
+      if @page.evaluate(-> !Mocha.reporters.Custom) or @page.evaluate(@setupReporter) isnt true
         @fail "Failed to use load and use the custom reporter #{@reporter}"
 
     if @page.evaluate @runner
@@ -149,7 +146,7 @@ class Reporter
         reporter: reporter or Mocha.reporters.Custom
       true
     catch error
-      false
+      error
 
   runner: ->
     try

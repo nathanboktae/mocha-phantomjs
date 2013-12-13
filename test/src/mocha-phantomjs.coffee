@@ -39,12 +39,12 @@ describe 'mocha-phantomjs', ->
   it 'returns a failure code and notifies of no such runner class', (done) ->
     @runner done, ['-R', 'nonesuch', fileURL('passing')], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.match /Failed to start mocha./
+      expect(stdout).to.match /Unable to open file 'nonesuch'/
 
   it 'returns a failure code when mocha can not be found on the page', (done) ->
     @runner done, [fileURL('blank')], (code, stdout, stderr) ->
       expect(code).to.equal 1
-      expect(stdout).to.match /Failed to find mocha on the page./
+      expect(stdout).to.match /Failed to find mocha on the page/
 
   it 'returns a failure code when mocha fails to start for any reason', (done) ->
     @runner done, [fileURL('bad')], (code, stdout, stderr) ->
@@ -254,15 +254,15 @@ describe 'mocha-phantomjs', ->
       @runner done, @args, (code, stdout, stderr) ->
         expect(stdout).to.match /<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/
 
-  describe 'third party', (done) ->
+  describe 'third party', ->
 
-    it 'loads and wraps node-style reporters to run in the browser', ->
+    it 'loads and wraps node-style reporters to run in the browser', (done) ->
       @runner done, ['-R', 'test/3rd-party-reporter', fileURL('mixed')], (code, stdout, stderr) ->
         expect(stdout).to.match /<section class="suite">/
         expect(stdout).to.match /<h1>Tests Mixed<\/h1>/
 
-    it 'gives a useful error when trying to require a node module', ->
-      @runner done, ['-R', 'test/node-only', fileURL('mixed')], (code, stdout, stderr) ->
+    it 'gives a useful error when trying to require a node module', (done) ->
+      @runner done, ['-R', 'test/node-only-reporter', fileURL('mixed')], (code, stdout, stderr) ->
         expect(stdout).to.match /Node modules cannot be required/
       
 
