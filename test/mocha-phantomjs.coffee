@@ -257,25 +257,25 @@ describe 'mocha-phantomjs', ->
   describe 'third party', ->
 
     it 'loads and wraps node-style reporters to run in the browser', (done) ->
-      @runner done, ['-R', 'test/3rd-party-reporter', fileURL('mixed')], (code, stdout, stderr) ->
+      @runner done, ['-R', 'test/reporters/3rd-party', fileURL('mixed')], (code, stdout, stderr) ->
         expect(stdout).to.match /<section class="suite">/
         expect(stdout).to.match /<h1>Tests Mixed<\/h1>/
 
     it 'gives a useful error when trying to require a node module', (done) ->
-      @runner done, ['-R', 'test/node-only-reporter', fileURL('mixed')], (code, stdout, stderr) ->
+      @runner done, ['-R', 'test/reporters/node-only', fileURL('mixed')], (code, stdout, stderr) ->
         expect(stdout).to.match /Node modules cannot be required/
       
 
   describe 'hooks', ->
     
     ###
-    $ ./bin/mocha-phantomjs -k test/before-start-hook.js test/passing.html
+    $ ./bin/mocha-phantomjs -k test/before-start.js test/passing.html
     ###
 
     describe 'before start', ->
 
       before ->
-        @args = ['-k', 'test/before-start-hook.js', fileURL('passing')]
+        @args = ['-k', 'test/hooks/before-start.js', fileURL('passing')]
 
       it 'is called', (done) ->
         @runner done, @args, (code, stdout, stderr) ->
@@ -284,11 +284,11 @@ describe 'mocha-phantomjs', ->
     describe 'after end', ->
 
       ###
-      $ ./bin/mocha-phantomjs -k test/after-end-hook.js test/passing.html
+      $ ./bin/mocha-phantomjs -k test/after-end.js test/passing.html
       ###
 
       before ->
-        @args = ['-k', 'test/after-end-hook.js', fileURL('passing')]
+        @args = ['-k', 'test/hooks/after-end.js', fileURL('passing')]
 
       it 'is called', (done) ->
         @runner done, @args, (code, stdout, stderr) ->
@@ -299,27 +299,19 @@ describe 'mocha-phantomjs', ->
 
     describe 'user-agent', ->
 
-      ###
-      $ ./bin/mocha-phantomjs -R spec test/user-agent.html
-      ###
-
       it 'has the default user agent', (done) ->
         @runner done, [fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /PhantomJS\//
 
       it 'has a custom user agent', (done) ->
-        @runner done, ['-A', 'cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^cakeUserAgent/
+        @runner done, ['-A', 'mochaUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
+          expect(stdout).to.match /^mochaUserAgent/
 
       it 'has a custom user agent via setting flag', (done) ->
-        @runner done, ['-s', 'userAgent=cakeUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^cakeUserAgent/
+        @runner done, ['-s', 'userAgent=mochaUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
+          expect(stdout).to.match /^mochaUserAgent/
 
     describe 'cookies', ->
-
-      ###
-      $ ./bin/mocha-phantomjs -R spec test/cookie.html
-      ###
 
       it 'has passed cookies', (done) ->
         c1Opt = '{"name":"foo","value":"bar"}'
@@ -328,10 +320,6 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match /foo=bar; baz=bat/
 
     describe 'viewport', ->
-
-      ###
-      $ ./bin/mocha-phantomjs -R spec test/viewport.html
-      ###
 
       it 'has passed cookies', (done) ->
         @runner done, ['-v', '123x456', fileURL('viewport')], (code, stdout, stderr) ->
