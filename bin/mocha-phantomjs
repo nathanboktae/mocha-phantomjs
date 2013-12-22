@@ -133,7 +133,7 @@ function startPhantomJS(cmdPath, args, callback) {
 function spawnPhantomJS(cmdPath, args) {
   var phantomjs = spawn(cmdPath, args);
   phantomjs.stdout.pipe(process.stdout);
-  phantomjs.stderr.pipe(process.stdout);
+  phantomjs.stderr.pipe(process.stderr);
   phantomjs.on('exit', function(code){
     if (code === 127) { print("Perhaps phantomjs is not installed?\n"); }
     process.exit(code);
