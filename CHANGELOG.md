@@ -1,3 +1,7 @@
+3.3.1 / 2014-01-02
+
+  * Send phantomjs stderr to stderr not stdout. Fixes #116
+
 3.3.0 / 2013-12-13
 
   * Third party reporters are now supported via -R or --reporter
