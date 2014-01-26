@@ -61,6 +61,7 @@ class Reporter
           run: ->
             mochaPhantomJS.started = true
             window.callPhantom 'mochaPhantomJS.run': true
+            mochaPhantomJS.runner
       , system.env
 
   loadPage: ->
