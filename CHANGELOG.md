@@ -1,3 +1,7 @@
+3.3.2 / 2014-02-12
+
+  * Exit with 1 if no exit code at all. Fixes #121
+
 3.3.1 / 2014-01-02
 
   * Send phantomjs stderr to stderr not stdout. Fixes #116
@@ -51,7 +55,7 @@
 
 
 3.0.0 / 2013-06-06
-  
+
   * Focus on latest PhantomJS 1.9.1.
   * Remove all Reporter subclasses. All reporter args should likely just work.
   * Set package.json to mocha 1.9.x and chai 1.6.x
@@ -77,7 +81,7 @@
 
 
 2.0.0 / 2013-01-25
-  
+
   * Lock down package.json to mocha 1.7, 1.8 after http://git.io/GYJCTw is resolved.
   * Notify if phantomjs is not installed.
 
