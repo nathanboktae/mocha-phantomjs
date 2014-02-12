@@ -137,7 +137,9 @@ function spawnPhantomJS(cmdPath, args) {
   phantomjs.on('exit', function(code){
     switch (code) {
       case null:
-        if (phantomjs.signalCode !== null) { print("phantomjs terminated with signal " + phantomjs.signalCode + "\n"); }
+        if (phantomjs.signalCode !== null) {
+          print("phantomjs terminated with signal " + phantomjs.signalCode + "\n");
+        }
         code = 1;
         break;
       case 127:
