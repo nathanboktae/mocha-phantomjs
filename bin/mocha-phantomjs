@@ -140,7 +140,7 @@ function spawnPhantomJS(cmdPath, args) {
         if (phantomjs.signalCode !== null) {
           print("phantomjs terminated with signal " + phantomjs.signalCode + "\n");
         }
-        code = 1;
+        code = -1;
         break;
       case 127:
         print("Perhaps phantomjs is not installed?\n");
