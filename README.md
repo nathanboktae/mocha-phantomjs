@@ -28,21 +28,7 @@ You can use your existing Mocha HTML file reporters side by side with mocha-phan
 
 We distribute [mocha-phantomjs as an npm](https://npmjs.org/package/mocha-phantomjs) that is easy to install. Once done, you will have a `mocha-phantomjs` binary. See the next usage section for docs or use the `-h` flag.
 
-We have an undeclared dependency on PhantomJS. This allows you to choose to install PhantomJS via the node package manager (npm), or to use system PhantomJS downloaded and installed from [the PhantomJS website](http://phantomjs.org). We have heard reports that Windows users have better results with the official PhantomJS download vs the npm.
-
-If you would like to use PhantomJS installed from npm:
-
-```
-$ npm install -g mocha-phantomjs phantomjs
-```
-
-Otherwise, once you have downloaded and installed PhantomJS yourself:
-
-```
-$ npm install -g mocha-phantomjs
-```
-
-If you don't install phantomjs using either of these approaches, you will get an unhelpful **ENOENT** error when you try to run `mocha-phantomjs`.
+Since 3.4, we now declare phantomjs as a peer dependency, and it will be installed adjacent to `mocha-phantomjs` automatically. You may use `-p` to provide an explicit path to phantomjs, or call phantomjs directly yourself via `phantomjs lib/mocha-phantomjs.coffee <page> <reporter> <config-as-JSON>`. The later approach is recommended for build system plugins to avoid another process fork. 
 
 # Usage
 
@@ -74,7 +60,7 @@ Usage: mocha-phantomjs [options] page
    $ mocha-phantomjs -p ~/bin/phantomjs /test/file.html
 ```
 
-Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. See the list of reporters below for acceptable options to the `--reporter` argument. See [phantomjs WebPage settings](https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#wiki-webpage-settings) for options that may be supplied to the `--setting` argument.
+Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. `--reporter` may be a built-in reporter or a path to your own reporter (see below). See [phantomjs WebPage settings](https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#wiki-webpage-settings) for options that may be supplied to the `--setting` argument.
 
 Your HTML file's structure should look something like this. The reporter set below to `html` is only needed for viewing the HTML page in your browser. The `mocha-phantomjs.coffee` script overrides that reporter value. The conditional run at the bottom allows the mixed mode feature described above.
 
