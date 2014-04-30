@@ -110,13 +110,15 @@ if (reporter) {
   }
 }
 
-var phantomPath = __dirname + '/../node_modules/.bin/phantomjs' + (process.platform === 'win32' ? '.cmd' : '');
+var phantomPath
 if (program.path) {
   phantomPath = path.resolve(program.path);
   if (!exists(phantomPath)) {
     console.error("PhantomJS does not exist at '" + program.path + "'");
     process.exit(-2);
   }
+} else {
+  phantomPath = path.join(path.dirname(require.resolve('phantomjs')), '../bin/phantomjs' + (process.platform === 'win32' ? '.cmd' : ''));
 }
 
 var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
