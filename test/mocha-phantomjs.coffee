@@ -340,7 +340,7 @@ describe 'mocha-phantomjs', ->
 
       it 'has used custom path', (done) ->
         @runner done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], (code, stdout, stderr) ->
-          expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'. Looking for PhantomJS in the PATH."
+          expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'"
 
     describe 'file', ->
 

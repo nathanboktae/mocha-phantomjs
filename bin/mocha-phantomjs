@@ -2,12 +2,10 @@
 
 var program = require('commander'),
       spawn = require('child_process').spawn,
-      print = require('util').print,
          fs = require('fs'),
        path = require('path'),
      exists = fs.existsSync || path.existsSync,
         cwd = process.cwd(),
-      which = require('which'),
     cookies = [],
     headers = {},
    settings = {};
@@ -112,80 +110,29 @@ if (reporter) {
   }
 }
 
-function startPhantomJS(cmdPath, args, callback) {
-  var cmd = getCmdFromPath(cmdPath);
-  if (cmd != null) { return spawnPhantomJS(cmd, args); }
-  getCmdByEnvironmentPath(function (err, cmdPath){
-    if (err || !cmdPath) {
-      getCmdByModulePath(function(err, cmdPath) {
-        if (err) {
-          console.error('PhantomJS was not found.');
-          process.exit(1);
-        }
-        spawnPhantomJS(cmdPath, args);
-      });
-    } else {
-      spawnPhantomJS(cmdPath, args);
-    }
-  });
-}
-
-function spawnPhantomJS(cmdPath, args) {
-  var phantomjs = spawn(cmdPath, args);
-  phantomjs.stdout.pipe(process.stdout);
-  phantomjs.stderr.pipe(process.stderr);
-  phantomjs.on('exit', function(code){
-    switch (code) {
-      case null:
-        if (phantomjs.signalCode !== null) {
-          print("phantomjs terminated with signal " + phantomjs.signalCode + "\n");
-        }
-        code = -1;
-        break;
-      case 127:
-        print("Perhaps phantomjs is not installed?\n");
-        break;
-    }
-
-    process.exit(code);
-  });
-}
-
-function getCmdFromPath(cmdPath, callback) {
-  if (cmdPath === undefined) { return };
-  var result = null,
-      errorMessage = null,
-      tempPath = path.resolve(cmdPath);
-  if (exists(tempPath)) {
-    result = tempPath;
-  } else {
-    errorMessage = "PhantomJS does not exist at '" + cmdPath + "'. Looking for PhantomJS in the PATH."
-    if (!callback) { console.error(errorMessage); }
+var phantomPath
+if (program.path) {
+  phantomPath = path.resolve(program.path);
+  if (!exists(phantomPath)) {
+    console.error("PhantomJS does not exist at '" + program.path + "'");
+    process.exit(-2);
   }
-  if (callback) {
-    callback(errorMessage, result);
-  } else {
-    return result;
-  }
+} else {
+  phantomPath = path.join(path.dirname(require.resolve('phantomjs')), '../bin/phantomjs' + (process.platform === 'win32' ? '.cmd' : ''));
 }
 
-function getCmdByEnvironmentPath(callback) {
-  which('phantomjs', callback);
-}
-
-function getCmdByModulePath(callback) {
-  for (var i=0; i < module.paths.length; i++) {
-    var bin = path.join(module.paths[i], '.bin/phantomjs');
-    if (process.platform === 'win32') {
-      bin += '.cmd';
+var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
+phantomjs.stdout.pipe(process.stdout);
+phantomjs.stderr.pipe(process.stderr);
+phantomjs.on('exit', function(code){
+  if (code == null) {
+    if (phantomjs.signalCode !== null) {
+      console.log("phantomjs terminated with signal " + phantomjs.signalCode);
     }
-    if (exists(bin)) {
-      return callback(null, bin);
-    }
+    code = -1;
+  } else if (code === 127) {
+    console.log("Perhaps phantomjs is not installed?");
   }
-  return callback('PhantomJS not found.', null);
-}
 
-startPhantomJS(program.path, [script, page, reporter, config]);
-
-
+  process.exit(code);
+});
