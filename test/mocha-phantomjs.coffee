@@ -41,6 +41,12 @@ describe 'mocha-phantomjs', ->
       expect(code).to.equal 1
       expect(stdout).to.match /Unable to open file 'nonesuch'/
 
+  it 'returns a success code when a directory exists with the same name as a built-in runner', (done) ->
+    fs.mkdir 'spec'
+    @runner done, ['-R', 'spec', fileURL('passing')], (code, stdout, stderr) ->
+      fs.rmdir 'spec'
+      expect(code).to.equal 0
+
   it 'returns a failure code when mocha can not be found on the page', (done) ->
     @runner done, [fileURL('blank')], (code, stdout, stderr) ->
       expect(code).to.equal 1
