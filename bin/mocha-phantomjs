@@ -5,6 +5,9 @@ var program = require('commander'),
          fs = require('fs'),
        path = require('path'),
      exists = fs.existsSync || path.existsSync,
+ fileExists = function (path) {
+                return fs.existsSync(path) && !fs.statSync(path).isDirectory();
+              },
         cwd = process.cwd(),
     cookies = [],
     headers = {},
@@ -103,9 +106,9 @@ var config = JSON.stringify({
 });
 
 if (reporter) {
-  if (exists(reporter)) {
+  if (fileExists(reporter)) {
     reporter = path.resolve(process.cwd(), reporter);
-  } else if (exists(reporter + '.js')) {
+  } else if (fileExists(reporter + '.js')) {
     reporter = path.resolve(process.cwd(), reporter + '.js');
   }
 }
