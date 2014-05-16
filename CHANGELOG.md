@@ -1,3 +1,12 @@
+3.4.1 / 2014-05-15
+
+  * Ensure that a custom reporter is a file
+  * Use the phantomjs module correctly. Fixes #136.
+
+3.4.0 / 2014-05-07
+
+  * phantomjs is now a peer dependency for easier installation and local isolation. 
+
 3.3.2 / 2014-02-12
 
   * Exit with 1 if no exit code at all. Fixes #121
