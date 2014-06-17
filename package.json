@@ -20,7 +20,7 @@
   "bugs" : {
     "url": "http://github.com/metaskills/mocha-phantomjs/issues"
   },
-  "main" : "./lib/mocha-phantomjs.coffee",
+  "main" : "./index.js",
   "bin"  : {
     "mocha-phantomjs" : "./bin/mocha-phantomjs"
   },
