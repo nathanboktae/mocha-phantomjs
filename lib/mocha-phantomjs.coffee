@@ -71,9 +71,9 @@ class Reporter
       @onLoadFailed() if status isnt 'success'
       @waitForInitMocha()
     @page.onCallback = (data) =>
-      if data.hasOwnProperty 'Mocha.process.stdout.write'
+      if data?.hasOwnProperty 'Mocha.process.stdout.write'
         @output.write data['Mocha.process.stdout.write']
-      else if data.hasOwnProperty 'mochaPhantomJS.run'
+      else if data?.hasOwnProperty 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
       true
 
