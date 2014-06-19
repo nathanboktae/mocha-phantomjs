@@ -31,7 +31,7 @@
     "phantomjs": "~1.9.1"
   },
   "dependencies" : {
-    "mocha"     : "1.13.x",
+    "mocha"     : "~1.20.1",
     "commander" : "1.2.x"
   },
   "devDependencies" : {
