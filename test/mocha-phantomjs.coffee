@@ -348,6 +348,10 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-p', 'fake/path/to/phantomjs', fileURL('passing')], (code, stdout, stderr) ->
           expect(stderr).to.contain "PhantomJS does not exist at 'fake/path/to/phantomjs'"
 
+      it 'provides a useful error when phantomjs cannot be launched', (done) ->
+        @runner done, ['-p', 'package.json', fileURL('passing')], (code, stdout, stderr) ->
+          expect(stderr).to.contain "An error occurred trying to launch phantomjs"
+
     describe 'file', ->
 
       it 'pipes reporter output to a file', (done) ->

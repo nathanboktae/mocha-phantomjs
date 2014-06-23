@@ -121,7 +121,7 @@ if (program.path) {
     process.exit(-2);
   }
 } else {
-  phantomPath = require('phantomjs').path;
+  phantomPath = require('phantomjs').path || '/usr/local/bin/phantomjs';
 }
 
 var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
@@ -138,4 +138,11 @@ phantomjs.on('exit', function(code){
   }
 
   process.exit(code);
+});
+phantomjs.on('error', function(e) {
+  console.error('An error occurred trying to launch phantomjs at "' + phantomPath + '": ' + e);
+  if (!program.path) {
+    console.error('You can specify an explicit path to phantomjs via the `-p` option.');
+  }
+  process.exit(-2);
 });
