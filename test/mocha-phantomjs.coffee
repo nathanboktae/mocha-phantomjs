@@ -342,6 +342,10 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-C', fileURL('mixed')], (code, stdout, stderr) ->
           expect(stdout).to.not.match /\u001b\[\d\dm/
 
+      it 'suppresses color output plural long form', (done) ->
+        @runner done, ['--no-colors', fileURL('mixed')], (code, stdout, stderr) ->
+          expect(stdout).to.not.match /\u001b\[\d\dm/
+
     describe 'path', ->
 
       it 'has used custom path', (done) ->
