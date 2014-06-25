@@ -1,3 +1,10 @@
+3.5.0 / 2014-06-24 
+
+ * Add a test for --no-colors. fixes #137
+ * Upgrade mocha to ~1.20.1 and commander to ~2.0.0. Fixes #143
+ * Provide a more informative error if an error occurs while launching phantomjs. Fixes #141
+ * Robustly handle phantomjs callbacks. Fixes #140
+
 3.4.1 / 2014-05-15
 
   * Ensure that a custom reporter is a file
