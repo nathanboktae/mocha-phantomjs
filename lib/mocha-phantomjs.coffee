@@ -164,7 +164,7 @@ class Reporter
     catch error
       false
 
-if phantom.version.major < 1 or (phantom.version.major = 1 and phantom.version.minor < 9)
+if phantom.version.major < 1 or (phantom.version.major is 1 and phantom.version.minor < 9)
   console.log 'mocha-phantomjs requires PhantomJS > 1.9.1'
   phantom.exit -1
 
