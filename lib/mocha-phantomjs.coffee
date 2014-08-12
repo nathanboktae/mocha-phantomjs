@@ -28,12 +28,19 @@ class Reporter
 
   # Private
 
+  gatherAndWriteToFile: ->
+    reporterOutput = @page.evaluate -> mocha.reporterInstance.output
+    fs.write(@config.reporterFile, reporterOutput, 'w')
+
   fail: (msg, errno) ->
     @output.close() if @output and @config.file
     console.log msg if msg
     phantom.exit errno || 1
 
   finish: ->
+    # write out info from reporter to file if configured to do so
+    @gatherAndWriteToFile() if @config.reporterFile
+
     @output.close() if @config.file
     phantom.exit @page.evaluate -> mochaPhantomJS.failures
 

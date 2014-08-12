@@ -57,17 +57,18 @@ function resolveHooks(val) {
 program
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
-  .option('-R, --reporter <name>',       'specify the reporter to use', 'spec')
-  .option('-f, --file <filename>',       'specify the file to dump reporter output')
-  .option('-t, --timeout <timeout>',     'specify the test startup timeout to use', parseInt, 6000)
-  .option('-A, --agent <userAgent>',     'specify the user agent to use')
-  .option('-c, --cookies <Object>',      'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
-  .option('-h, --header <name>=<value>', 'specify custom header', header)
-  .option('-k, --hooks <path>',          'path to hooks module', resolveHooks)
-  .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
-  .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
-  .option('-C, --no-color',              'disable color escape codes')
-  .option('-p, --path <path>',           'path to PhantomJS binary');
+  .option('-R, --reporter <name>',         'specify the reporter to use', 'spec')
+  .option('-o, --reporterFile <filename>', 'specify the file to write reporter output without capturing all console text')
+  .option('-f, --file <filename>',         'specify the file to dump reporter output')
+  .option('-t, --timeout <timeout>',       'specify the test startup timeout to use', parseInt, 6000)
+  .option('-A, --agent <userAgent>',       'specify the user agent to use')
+  .option('-c, --cookies <Object>',        'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
+  .option('-h, --header <name>=<value>',   'specify custom header', header)
+  .option('-k, --hooks <path>',            'path to hooks module', resolveHooks)
+  .option('-s, --setting <key>=<value>',   'specify specific phantom settings', setting)
+  .option('-v, --view <width>x<height>',   'specify phantom viewport size', viewport)
+  .option('-C, --no-color',                'disable color escape codes')
+  .option('-p, --path <path>',             'path to PhantomJS binary');
 
 program.on('--help', function(){
   console.log('  Examples:');
@@ -102,7 +103,8 @@ var config = JSON.stringify({
   settings: settings,
   viewportSize: program.view,
   useColors: program.color,
-  file: program.file
+  file: program.file,
+  reporterFile: program.reporterFile
 });
 
 if (reporter) {
