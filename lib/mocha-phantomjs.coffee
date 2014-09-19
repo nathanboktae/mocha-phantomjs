@@ -75,6 +75,11 @@ class Reporter
         @output.write data['Mocha.process.stdout.write']
       else if data?.hasOwnProperty 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
+      else if data?.hasOwnProperty('screenshot')
+        name=data['screenshot']
+        if !name
+          name = "#{new Date().getTime()}"
+        @page.render("phantom-screenshot-#{name}.png")
       true
 
   onLoadFailed: ->
