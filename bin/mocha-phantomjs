@@ -15,14 +15,17 @@ var program = require('commander'),
 
 function keyValue(val, store) {
   val = val.split('=');
-  if (val[1] === 'true') {
-    val[1] = true;
-  } else if (val[1] === 'false') {
-    val[1] = false;
+  key = val.shift();
+  val = val.join('=');
+  if (val === 'true') {
+    val = true;
+  } else if (val === 'false') {
+    val = false;
   }
-  store[val[0]] = val[1];
+  store[key] = val;
   return val;
 }
+
 function cookiesParser(val) {
   val = JSON.parse(val);
   cookies.push(val);

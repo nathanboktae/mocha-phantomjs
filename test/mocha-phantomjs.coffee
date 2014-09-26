@@ -318,9 +318,9 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-A', 'mochaUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
           expect(stdout).to.match /^mochaUserAgent/
 
-      it 'has a custom user agent via setting flag', (done) ->
-        @runner done, ['-s', 'userAgent=mochaUserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
-          expect(stdout).to.match /^mochaUserAgent/
+      it 'has a custom user agent via setting flag and 2 equal signs', (done) ->
+        @runner done, ['-s', 'userAgent=mocha=UserAgent', fileURL('user-agent')], (code, stdout, stderr) ->
+          expect(stdout).to.match /^mocha=UserAgent/
 
     describe 'cookies', ->
 
