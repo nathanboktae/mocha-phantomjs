@@ -1,3 +1,7 @@
+3.5.1 / 2014-10-07 
+
+ * fixed keyval parser to support multiple '=' signs (#155)
+
 3.5.0 / 2014-06-24 
 
  * Add a test for --no-colors. fixes #137
