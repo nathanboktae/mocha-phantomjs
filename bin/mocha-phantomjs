@@ -63,6 +63,7 @@ program
   .option('-R, --reporter <name>',       'specify the reporter to use', 'spec')
   .option('-f, --file <filename>',       'specify the file to dump reporter output')
   .option('-t, --timeout <timeout>',     'specify the test startup timeout to use', parseInt, 6000)
+  .option('-S, --slow <slow>',           '"slow" test threshold in milliseconds', parseInt, 6000)
   .option('-A, --agent <userAgent>',     'specify the user agent to use')
   .option('-c, --cookies <Object>',      'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
   .option('-h, --header <name>=<value>', 'specify custom header', header)
@@ -100,6 +101,7 @@ var page     = function(){
 var config = JSON.stringify({
   hooks: program.hooks,
   timeout: program.timeout,
+  slow: program.slow,
   cookies: cookies,
   headers: headers,
   settings: settings,
