@@ -77,14 +77,14 @@ describe 'mocha-phantomjs', ->
       expect(stdout).to.not.match /Failed via an Event/m
       expect(code).to.equal 1
 
-  describe 'spec', ->
+  passRegExp   = (n) -> ///\u001b\[32m\s\s[✔✓]\u001b\[0m\u001b\[90m\spasses\s#{n}///
+  skipRegExp   = (n) -> ///\u001b\[36m\s\s-\sskips\s#{n}\u001b\[0m///
+  failRegExp   = (n) -> ///\u001b\[31m\s\s#{n}\)\sfails\s#{n}\u001b\[0m///
+  passComplete = (n) -> ///\u001b\[0m\n\n\n\u001b\[92m\s\s[✔✓]\u001b\[0m\u001b\[32m\s#{n}\stests\scomplete///
+  pendComplete = (n) -> ///\u001b\[36m\s+•\u001b\[0m\u001b\[36m\s#{n}\stests\spending///
+  failComplete = (x,y) -> ///\u001b\[31m\s\s#{x}\sfailing\u001b\[0m///
 
-    passRegExp   = (n) -> ///\u001b\[32m\s\s[✔✓]\u001b\[0m\u001b\[90m\spasses\s#{n}///
-    skipRegExp   = (n) -> ///\u001b\[36m\s\s-\sskips\s#{n}\u001b\[0m///
-    failRegExp   = (n) -> ///\u001b\[31m\s\s#{n}\)\sfails\s#{n}\u001b\[0m///
-    passComplete = (n) -> ///\u001b\[0m\n\n\n\u001b\[92m\s\s[✔✓]\u001b\[0m\u001b\[32m\s#{n}\stests\scomplete///
-    pendComplete = (n) -> ///\u001b\[36m\s+•\u001b\[0m\u001b\[36m\s#{n}\stests\spending///
-    failComplete = (x,y) -> ///\u001b\[31m\s\s#{x}\sfailing\u001b\[0m///
+  describe 'spec', ->
 
     describe 'passing', ->
 
@@ -345,6 +345,12 @@ describe 'mocha-phantomjs', ->
       it 'suppresses color output plural long form', (done) ->
         @runner done, ['--no-colors', fileURL('mixed')], (code, stdout, stderr) ->
           expect(stdout).to.not.match /\u001b\[\d\dm/
+
+    describe 'bail', ->
+
+      it 'should bail on the first error', (done) ->
+        @runner done, ['-b', fileURL('mixed')], (code, stdout, stderr) ->
+          expect(stdout).to.match failRegExp 1
 
     describe 'path', ->
 

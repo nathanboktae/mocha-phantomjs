@@ -91,6 +91,7 @@ class Reporter
 
   runMocha: ->
     if @config.useColors is false then @page.evaluate -> mocha.useColors false
+    if @config.bail then @page.evaluate -> mocha.bail true
     @config.hooks.beforeStart?(this)
 
     unless @page.evaluate(@setupReporter, @reporter) is true

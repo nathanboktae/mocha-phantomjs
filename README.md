@@ -42,6 +42,7 @@ Usage: mocha-phantomjs [options] page
    -R, --reporter <name>        specify the reporter to use
    -f, --file <filename>        specify the file to dump reporter output
    -t, --timeout <timeout>      specify the test startup timeout to use
+   -b, --bail                   exit on the first test failure
    -A, --agent <userAgent>      specify the user agent to use
    -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
    -h, --header <name>=<value>  specify custom header
