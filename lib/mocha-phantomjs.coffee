@@ -6,6 +6,9 @@ USAGE = """
         Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [CONFIG]
         """
 
+console.error = ->
+  require("system").stderr.write(Array.prototype.join.call(arguments, ' ') + '\n')
+
 class Reporter
 
   constructor: (@reporter, @config) ->
@@ -30,7 +33,7 @@ class Reporter
 
   fail: (msg, errno) ->
     @output.close() if @output and @config.file
-    console.log msg if msg
+    console.error msg if msg
     phantom.exit errno || 1
 
   finish: ->
