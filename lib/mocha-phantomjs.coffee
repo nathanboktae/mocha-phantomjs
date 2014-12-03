@@ -6,9 +6,6 @@ USAGE = """
         Usage: phantomjs mocha-phantomjs.coffee URL REPORTER [CONFIG]
         """
 
-console.error = ->
-  require("system").stderr.write(Array.prototype.join.call(arguments, ' ') + '\n')
-
 class Reporter
 
   constructor: (@reporter, @config) ->
@@ -33,7 +30,7 @@ class Reporter
 
   fail: (msg, errno) ->
     @output.close() if @output and @config.file
-    console.error msg if msg
+    system.stderr.writeLine msg if msg
     phantom.exit errno || 1
 
   finish: ->
@@ -146,7 +143,7 @@ class Reporter
     started
 
   setupReporter: (reporter) ->
-    try 
+    try
       mocha.setup
         reporter: reporter or Mocha.reporters.Custom
       true
@@ -169,7 +166,7 @@ class Reporter
       false
 
 if phantom.version.major < 1 or (phantom.version.major is 1 and phantom.version.minor < 9)
-  console.log 'mocha-phantomjs requires PhantomJS > 1.9.1'
+  system.stdout.writeLine 'mocha-phantomjs requires PhantomJS > 1.9.1'
   phantom.exit -1
 
 reporter = system.args[2] || 'spec'
