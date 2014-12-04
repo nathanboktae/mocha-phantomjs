@@ -170,7 +170,7 @@ describe 'mocha-phantomjs', ->
       before ->
         @args = [fileURL('screenshot')]
 
-      it 'takes a screenshot', (done) ->
+      it 'takes a screenshot into given file, suffixed with .png', (done) ->
         @runner done, @args, (code, stdout, stderr) ->
           expect(code).to.equal 0
           fileName = "screenshot.png"
