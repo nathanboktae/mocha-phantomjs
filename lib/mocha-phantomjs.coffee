@@ -75,6 +75,8 @@ class Reporter
         @output.write data['Mocha.process.stdout.write']
       else if data?.hasOwnProperty 'mochaPhantomJS.run'
         @waitForRunMocha() if @injectJS()
+      else if typeof data?.screenshot is "string"
+        @page.render(data.screenshot + ".png")
       true
 
   onLoadFailed: ->

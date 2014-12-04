@@ -160,6 +160,23 @@ describe 'mocha-phantomjs', ->
           expect(stdout).to.match failRegExp(3)
           expect(stdout).to.match failComplete(3,6)
 
+    describe 'screenshot', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -R spec test/screenshot.html
+      $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/screenshot.js
+      ###
+
+      before ->
+        @args = [fileURL('screenshot')]
+
+      it 'takes a screenshot into given file, suffixed with .png', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(code).to.equal 0
+          fileName = "screenshot.png"
+          expect(fs.existsSync(fileName)).to.equal(true)
+          fs.unlinkSync(fileName)
+
     describe 'requirejs', ->
 
       before ->

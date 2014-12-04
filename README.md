@@ -89,6 +89,30 @@ Your HTML file's structure should look something like this. The reporter set bel
 </html>
 ```
 
+# Screenshots
+
+Mocha-phantomjs supports creating screenshots from your test code. For example, you could write a function like below into your test code.
+
+```javascript
+function takeScreenshot() {
+  if (window.callPhantom) {
+    var date = new Date()
+    var filename = "screenshots/" + date.getTime()
+    console.log("Taking screenshot " + filename)
+    callPhantom({'screenshot': filename})
+  }
+}
+```
+
+If you want to generate a screenshot for each test failure you could add the following into your test code.
+
+```javascript
+  afterEach(function () {
+    if (this.currentTest.state == 'failed') {
+      takeScreenshot()
+    }
+  })
+```
 
 # Supported Reporters
 
