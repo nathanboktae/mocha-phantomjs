@@ -79,7 +79,7 @@ class Reporter
         name=data['screenshot']
         if !name
           name = "#{new Date().getTime()}"
-        @page.render("phantom-screenshot-#{name}.png")
+        @page.render("#{name}.png")
       true
 
   onLoadFailed: ->
