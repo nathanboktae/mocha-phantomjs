@@ -1,8 +1,12 @@
-3.5.1 / 2014-10-07 
+3.5.2 / 2014-12-05
+
+ * Added screenshot support. Fixes #130 and #165.
+
+3.5.1 / 2014-10-07
 
  * fixed keyval parser to support multiple '=' signs (#155)
 
-3.5.0 / 2014-06-24 
+3.5.0 / 2014-06-24
 
  * Add a test for --no-colors. fixes #137
  * Upgrade mocha to ~1.20.1 and commander to ~2.0.0. Fixes #143
@@ -16,7 +20,7 @@
 
 3.4.0 / 2014-05-07
 
-  * phantomjs is now a peer dependency for easier installation and local isolation. 
+  * phantomjs is now a peer dependency for easier installation and local isolation.
 
 3.3.2 / 2014-02-12
 
