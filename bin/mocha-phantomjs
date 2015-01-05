@@ -71,8 +71,9 @@ program
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
   .option('-C, --no-color',              'disable color escape codes')
-  .option('-p, --path <path>',           'path to PhantomJS binary');
-
+  .option('-p, --path <path>',           'path to PhantomJS binary')
+  .option('--ignore-resource-errors',    'ignore resource errors');
+  
 program.on('--help', function(){
   console.log('  Examples:');
   console.log('');
@@ -107,7 +108,8 @@ var config = JSON.stringify({
   viewportSize: program.view,
   useColors: program.color,
   bail: program.bail,
-  file: program.file
+  file: program.file,
+  ignoreResourceErrors: program.ignoreResourceErrors
 });
 
 if (reporter) {
