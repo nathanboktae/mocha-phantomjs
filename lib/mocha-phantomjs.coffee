@@ -45,7 +45,7 @@ class Reporter
     @page.viewportSize = @config.viewportSize if @config.viewportSize
     @page.onConsoleMessage = (msg) -> system.stdout.writeLine(msg)
     @page.onResourceError = (resErr) =>
-      if @config.showResourceErrors
+      if !@config.ignoreResourceErrors
         system.stdout.writeLine "Error loading resource #{resErr.url} (#{resErr.errorCode}). Details: #{resErr.errorString}" 
     @page.onError = (msg, traces) =>
       return if @page.evaluate -> window.onerror?
