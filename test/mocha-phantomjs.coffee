@@ -391,6 +391,16 @@ describe 'mocha-phantomjs', ->
       after ->
         fs.unlinkSync 'reporteroutput.json'
 
+    describe 'ignore resource errors', ->
+
+      it 'by default shows resource errors', (done) ->
+        @runner done, [fileURL('resource-errors')], (code, stdout, stderr) ->
+          expect(stdout).to.contain('Error loading resource').and.contain('nonexistant-file.css')
+
+      it 'can suppress resource errors', (done) ->
+        @runner done, ['--ignore-resource-errors', fileURL('resource-errors')], (code, stdout, stderr) ->
+          expect(stdout).to.not.contain('Error loading resource')
+
   describe 'env', ->
     it 'has passed environment variables', (done) ->
       process.env.FOO = 'bar'
