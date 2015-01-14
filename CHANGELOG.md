@@ -1,3 +1,9 @@
+
+3.5.3 / 2015-01-14 
+
+ * Implement the grep option, -g, and -i for inverting it. Fixes #145
+ * Add --ignore-resource-errors switch to hide resource errors from output (#169)
+
 3.5.2 / 2014-12-05
 
  * Added screenshot support. Fixes #130 and #165.
