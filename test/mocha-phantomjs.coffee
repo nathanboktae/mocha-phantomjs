@@ -353,6 +353,18 @@ describe 'mocha-phantomjs', ->
         @runner done, ['-v', '123x456', fileURL('viewport')], (code, stdout, stderr) ->
           expect(stdout).to.match /123x456/
 
+    describe 'grep', ->
+
+      it 'filters tests to match the criteria', (done) ->
+        @runner done, ['-g', 'pass', fileURL('mixed')], (code, stdout, stderr) ->
+          expect(code).to.equal 0
+          expect(stdout).to.not.match /fail/
+
+      it 'can be inverted to filter out tests matching the criteria', (done) ->
+        @runner done, ['-g', 'pass', '-i', fileURL('mixed')], (code, stdout, stderr) ->
+          expect(code).to.equal 6
+          expect(stdout).to.not.match /passes/
+
     describe 'no-colors', ->
 
       it 'suppresses color output', (done) ->
