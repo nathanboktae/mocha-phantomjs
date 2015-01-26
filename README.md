@@ -1,6 +1,6 @@
 # PhantomJS Runners for Mocha
 
-[Mocha](http://visionmedia.github.com/mocha/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.
+[Mocha](http://mochajs.org/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.
 
 The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and extensions to drive PhantomJS while testing your HTML pages with Mocha from the console. The preferred usage is to install `mocha-phantomjs` via node's packaged modules and use the `mocha-phantomjs` binary wrapper. Tested with Mocha 1.12.x, Chai 1.7.x, and PhantomJS 1.9.1.
 
@@ -148,7 +148,7 @@ The PhantomJS process has no way of knowing anything about your console window's
 env COLUMNS=$COLUMNS phantomjs mocha-phantomjs.coffee URL dot
 ```
 
-[Bundled](http://visionmedia.github.io/mocha/#reporters) and tested reporters include:
+[Bundled](http://mochajs.org/#reporters) and tested reporters include:
 
 ````
 tap
@@ -166,7 +166,7 @@ markdown
 
 ### Third Party Reporters
 
-Mocha has support for custom [3rd party reporters](https://github.com/visionmedia/mocha/wiki/Third-party-reporters), and mocha-phantomjs does support 3rd party reporters, but keep in mind - *the reporter does not run in Node.js, but in the browser, and node modules can't be required.* You need to only use basic, vanilla JavaScript when using third party reporters. However, some things are available:
+Mocha has support for custom [3rd party reporters](https://github.com/mochajs/mocha/wiki/Third-party-reporters), and mocha-phantomjs does support 3rd party reporters, but keep in mind - *the reporter does not run in Node.js, but in the browser, and node modules can't be required.* You need to only use basic, vanilla JavaScript when using third party reporters. However, some things are available:
 
 - `require`: You can only require other reporters, like `require('./base')` to build off of the BaseReporter
 - `exports`, `module`: Export your reporter class as normal
