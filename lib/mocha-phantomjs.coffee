@@ -78,6 +78,8 @@ class Reporter
         @waitForRunMocha() if @injectJS()
       else if typeof data?.screenshot is "string"
         @page.render(data.screenshot + ".png")
+      else if data?.hasOwnProperty 'sendEvent'
+        @page.sendEvent.apply(this, data.sendEvent)
       true
 
   onLoadFailed: ->
