@@ -33,19 +33,19 @@
     "mocha-phantomjs": "./bin/mocha-phantomjs"
   },
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script test/mocha-phantomjs.coffee -t 20000 -R spec"
+    "test": "mocha --compilers coffee:coffee-script/register test/mocha-phantomjs.coffee -t 20000 -R spec"
   },
   "peerDependencies": {
-    "phantomjs": "~1.9.1"
+    "phantomjs": "1.9.16"
   },
   "dependencies": {
-    "mocha": "~1.20.1",
-    "commander": "~2.0.0"
+    "mocha": "2.2.1",
+    "commander": "2.7.1"
   },
   "devDependencies": {
-    "phantomjs": "~1.9.1",
-    "chai": "1.8.x",
-    "coffee-script": "1.6.x",
-    "requirejs": "2.1.x"
+    "phantomjs": "1.9.16",
+    "chai": "2.1.2",
+    "coffee-script": "1.9.1",
+    "requirejs": "2.1.16"
   }
 }
