@@ -10,7 +10,6 @@ describe 'mocha-phantomjs', ->
     fullPath = fullPath.replace /\\/g, '\/'
     urlString = fullPath
     urlString = url.format { protocol: 'file', hostname: '', pathname: fullPath } if process.platform isnt 'win32'
-    urlString
 
   before ->
     @runner = (done, args, callback) ->
@@ -76,6 +75,10 @@ describe 'mocha-phantomjs', ->
     @runner done, [fileURL('mocha-runner')], (code, stdout, stderr) ->
       expect(stdout).to.not.match /Failed via an Event/m
       expect(code).to.equal 1
+
+  it 'passes the arguments along to mocha.run', (done) ->
+    @runner done, [fileURL('mocha-runner')], (code, stdout, stderr) ->
+      expect(stdout).to.match /Run callback fired/m
 
   passRegExp   = (n) -> ///\u001b\[32m\s\s[✔✓]\u001b\[0m\u001b\[90m\spasses\s#{n}///
   skipRegExp   = (n) -> ///\u001b\[36m\s\s-\sskips\s#{n}\u001b\[0m///

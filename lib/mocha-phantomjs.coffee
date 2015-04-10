@@ -60,6 +60,7 @@ class Reporter
           ended: false
           started: false
           run: ->
+            mochaPhantomJS.runArgs = arguments
             mochaPhantomJS.started = true
             window.callPhantom 'mochaPhantomJS.run': true
             mochaPhantomJS.runner
@@ -160,7 +161,7 @@ class Reporter
 
   runner: ->
     try
-      mochaPhantomJS.runner = mocha.run()
+      mochaPhantomJS.runner = mocha.run.apply mocha, mochaPhantomJS.runArgs
       if mochaPhantomJS.runner
         cleanup = ->
           mochaPhantomJS.failures = mochaPhantomJS.runner.failures

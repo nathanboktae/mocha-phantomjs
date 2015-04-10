@@ -25,7 +25,9 @@
     <script>
       var runner;
       if (window.mochaPhantomJS) {
-        runner = mochaPhantomJS.run();
+        runner = mochaPhantomJS.run(function() {
+          console.log('Run callback fired');
+        });
       } else {
         runner = mocha.run();
       }
