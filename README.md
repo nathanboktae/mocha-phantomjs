@@ -71,6 +71,7 @@ Your HTML file's structure should look something like this. The reporter set bel
 <html>
   <head>
     <meta charset="utf-8">
+    <!-- encoding must be set for mocha's special characters to render properly -->
     <link rel="stylesheet" href="mocha.css" />
   </head>
   <body>
