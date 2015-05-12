@@ -95,6 +95,7 @@ class Reporter
 
   runMocha: ->
     @page.evaluate (config) ->
+      mocha.options.reportOptions = config.reportOptions
       mocha.useColors config.useColors
       mocha.bail config.bail
       mocha.grep config.grep if config.grep
@@ -186,6 +187,10 @@ if config.hooks
   config.hooks = require(config.hooks)
 else
   config.hooks = {}
+
+reportOptions   = JSON.parse system.args[4] || '{}'
+if(reportOptions)
+  config.reportOptions = reportOptions
 
 mocha = new Reporter reporter, config
 mocha.run()
