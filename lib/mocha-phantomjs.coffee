@@ -188,8 +188,8 @@ if config.hooks
 else
   config.hooks = {}
 
-reportOptions   = JSON.parse system.args[4] || '{}'
-if(reportOptions)
+reporterOptions   = JSON.parse system.args[4] || '{}'
+if(reporterOptions)
   config.reporterOptions = reporterOptions
 
 mocha = new Reporter reporter, config
