@@ -71,6 +71,11 @@ describe 'mocha-phantomjs', ->
       expect(stdout).to.not.match /Failed to load the page\./m
       expect(code).to.equal 0
 
+  it 'does not fail when console.log is used with circular reference object', (done) ->
+    @runner done, [fileURL('console-log')], (code, stdout, stderr) ->
+      expect(stdout).to.not.match /cannot serialize cyclic structures\./m
+      expect(code).to.equal 0
+
   it 'returns the mocha runner from run() and allows modification of it', (done) ->
     @runner done, [fileURL('mocha-runner')], (code, stdout, stderr) ->
       expect(stdout).to.not.match /Failed via an Event/m
