@@ -35,17 +35,15 @@
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script test/mocha-phantomjs.coffee -t 20000 -R spec"
   },
-  "peerDependencies": {
-    "phantomjs": "~1.9.1"
-  },
   "dependencies": {
-    "mocha": "~1.20.1",
-    "commander": "~2.0.0"
+    "phantomjs": "~1.9.1",
+    "mocha-phantomjs-core": "< 2.0.0",
+    "commander": "^2.8.1"
   },
   "devDependencies": {
-    "phantomjs": "~1.9.1",
-    "chai": "1.8.x",
+    "chai": "^2.3.0",
     "coffee-script": "1.6.x",
+    "mocha": "^2.2.5",
     "requirejs": "2.1.x"
   }
 }
