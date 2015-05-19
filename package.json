@@ -1,6 +1,6 @@
 {
   "name": "mocha-phantomjs",
-  "description": "PhantomJS Runners for Mocha",
+  "description": "Run nocha browser tests in phantomjs via the command line",
   "keywords": [
     "phantomjs",
     "mocha",
@@ -9,7 +9,7 @@
     "command line",
     "browser"
   ],
-  "version": "3.5.3",
+  "version": "4.0.0-beta1",
   "author": "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
   "licenses": [
     {
@@ -28,12 +28,12 @@
   "bugs": {
     "url": "http://github.com/metaskills/mocha-phantomjs/issues"
   },
-  "main": "./lib/mocha-phantomjs.coffee",
+  "main": "./bin/mocha-phantomjs",
   "bin": {
     "mocha-phantomjs": "./bin/mocha-phantomjs"
   },
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script test/mocha-phantomjs.coffee -t 20000 -R spec"
+    "test": "mocha --harmony --compilers coffee:coffee-script/register test/mocha-phantomjs.coffee -t 5000"
   },
   "dependencies": {
     "phantomjs": "~1.9.1",
@@ -41,9 +41,10 @@
     "commander": "^2.8.1"
   },
   "devDependencies": {
+    "bluebird": "^2.9.25",
     "chai": "^2.3.0",
-    "coffee-script": "1.6.x",
-    "mocha": "^2.2.5",
+    "co-mocha": "^1.1.0",
+    "coffee-script": "^1.9.2",
     "requirejs": "2.1.x"
   }
 }
