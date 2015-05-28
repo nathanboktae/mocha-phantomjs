@@ -44,7 +44,6 @@
     "bluebird": "^2.9.25",
     "chai": "^2.3.0",
     "co-mocha": "^1.1.0",
-    "coffee-script": "^1.9.2",
-    "requirejs": "2.1.x"
+    "coffee-script": "^1.9.2"
   }
 }

@@ -25,18 +25,6 @@ describe 'mocha-phantomjs', ->
         resolve { code, stdout, stderr }
       mochaPhantomJS.on 'error', (err) -> reject err
 
-  before ->
-    @runner = (done, args, callback) ->
-      stdout = ''
-      stderr = ''
-      spawnArgs = ["#{process.cwd()}/bin/mocha-phantomjs"].concat(args)
-      mochaPhantomJS = spawn 'node', spawnArgs
-      mochaPhantomJS.stdout.on 'data', (data) -> stdout = stdout.concat data.toString()
-      mochaPhantomJS.stderr.on 'data', (data) -> stderr = stderr.concat data.toString()
-      mochaPhantomJS.on 'exit', (code) ->
-        callback?(code, stdout, stderr)
-        done?()
-
   it 'returns a failure code and shows usage when no args are given', ->
     { code, stdout } = yield run []
     code.should.equal 1
@@ -55,13 +43,9 @@ describe 'mocha-phantomjs', ->
     code.should.equal 1
     stderr.should.match /Unable to open file 'nonesuch'/
 
-  it 'returns a failure code when mocha can not be found on the page', ->
-    { code, stderr } = yield run [fileURL('blank')]
-    code.should.equal 1
-    stderr.should.match /Failed to run any tests/
-
-  it 'returns a failure code when mocha fails to start for any reason', ->
-    { code, stderr } = yield run [fileURL('bad')]
+  # https://github.com/nathanboktae/mocha-phantomjs-core/issues/5
+  xit 'returns a failure code when mocha fails to run any tests', ->
+    { code, stderr } = yield run [fileURL('no-tests')]
     code.should.equal 1
     stderr.should.match /Failed to run any tests/
 
@@ -75,13 +59,8 @@ describe 'mocha-phantomjs', ->
     code.should.equal 1
     stderr.should.match /ReferenceError/
 
-  it 'does not fail when an iframe is used', ->
-    { code, stdout, stderr } = yield run [fileURL('iframe')]
-    stderr.should.not.match /Failed to load the page\./m
-    stdout.should.not.match /Failed to load the page\./m
-    code.should.equal 0
-
-  it 'does not fail when console.log is used with circular reference object', ->
+  # https://github.com/nathanboktae/mocha-phantomjs-core/issues/2
+  xit 'does not fail when console.log is used with circular reference object', ->
     { code, stdout, stderr } = yield run [fileURL('console-log')]
     code.should.equal 0
     stderr.should.not.match /cannot serialize cyclic structures\./m
@@ -127,11 +106,6 @@ describe 'mocha-phantomjs', ->
       fs.existsSync(fileName).should.be.true
       fs.unlinkSync(fileName)
 
-  it 'returns a passing code when scripts are loaded asyncrounously, like with requirejs', ->
-    { code } = yield run fileURL('requirejs')
-    code.should.equal 0
-
-
   describe 'third party reporters', ->
     it 'loads and wraps node-style reporters to run in the browser', ->
       { stdout } = yield run ['-R', 'test/reporters/3rd-party', fileURL('mixed')]
@@ -144,8 +118,6 @@ describe 'mocha-phantomjs', ->
 
       stderr.should.match /Node modules cannot be required/
       code.should.not.equal 0      
-      
-
 
   describe 'hooks', ->
     it 'should fail gracefully if they do not exist', ->
@@ -167,7 +139,6 @@ describe 'mocha-phantomjs', ->
       code.should.equal 0
 
   describe 'parameters', ->
-
     describe 'user-agent', ->
       it 'has the default user agent', ->
         { stdout } = yield run [fileURL('user-agent')]
@@ -207,7 +178,7 @@ describe 'mocha-phantomjs', ->
 
     describe 'no-colors', ->
       it 'by default will output in color', ->
-        { stdout } = yield run [fileURL('mixed')]
+        { stdout } = yield run ['-R', 'dot', fileURL('mixed')]
         
         stdout.should.match /\u001b\[90m\․\u001b\[0m/ # grey
         stdout.should.match /\u001b\[36m\․\u001b\[0m/ # cyan

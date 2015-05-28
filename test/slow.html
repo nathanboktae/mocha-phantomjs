@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Slow tests</title>
@@ -15,11 +16,7 @@
     </script>
     <script src="lib/slow.js"></script>
     <script>
-      if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-      } else {
-        mocha.run();
-      }
+      mocha.run();
     </script>
   </body>
 </html>

@@ -140,25 +140,32 @@ if (program.path) {
   phantomPath = require('phantomjs').path || '/usr/local/bin/phantomjs';
 }
 
-var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
-phantomjs.stdout.pipe(process.stdout);
-phantomjs.stderr.pipe(process.stderr);
-phantomjs.on('exit', function(code){
-  if (code == null) {
-    if (phantomjs.signalCode !== null) {
-      console.log("phantomjs terminated with signal " + phantomjs.signalCode);
-    }
-    code = -1;
-  } else if (code === 127) {
-    console.log("Perhaps phantomjs is not installed?");
-  }
-
-  process.exit(code);
-});
-phantomjs.on('error', function(e) {
+function launchFailure(e) {
   console.error('An error occurred trying to launch phantomjs at "' + phantomPath + '": ' + e);
   if (!program.path) {
     console.error('You can specify an explicit path to phantomjs via the `-p` option.');
   }
   process.exit(-2);
-});
+}
+
+try {
+  var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
+  phantomjs.stdout.pipe(process.stdout);
+  phantomjs.stderr.pipe(process.stderr);
+  phantomjs.on('exit', function(code){
+    if (code == null) {
+      if (phantomjs.signalCode !== null) {
+        console.log("phantomjs terminated with signal " + phantomjs.signalCode);
+      }
+      code = -1;
+    } else if (code === 127) {
+      console.log("Perhaps phantomjs is not installed?");
+    }
+
+    process.exit(code);
+  });
+  phantomjs.on('error', launchFailure);
+}
+catch (e) {
+  launchFailure(e);
+}
