@@ -137,7 +137,7 @@ if (program.path) {
     process.exit(-2);
   }
 } else {
-  phantomPath = require('phantomjs').path || '/usr/local/bin/phantomjs';
+  phantomPath = require('phantomjs2').path || '/usr/local/bin/phantomjs';
 }
 
 function launchFailure(e) {

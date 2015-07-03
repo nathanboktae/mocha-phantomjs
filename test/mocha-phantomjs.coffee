@@ -38,7 +38,7 @@ describe 'mocha-phantomjs', ->
     stderr.should.match /foo\/bar.html/i
 
   # https://github.com/ariya/phantomjs/issues/12973
-  it 'returns a failure code and notifies of no such runner class', !process.env.PHANTOMJS2 and ->
+  xit 'returns a failure code and notifies of no such runner class', ->
     { code, stderr } = yield run ['-R', 'nonesuch', fileURL('passing')]
     code.should.equal 1
     stderr.should.match /Unable to open file 'nonesuch'/
@@ -59,8 +59,7 @@ describe 'mocha-phantomjs', ->
     code.should.equal 1
     stderr.should.match /ReferenceError/
 
-  # https://github.com/nathanboktae/mocha-phantomjs-core/issues/2
-  xit 'does not fail when console.log is used with circular reference object', ->
+  it 'does not fail when console.log is used with circular reference object', ->
     { code, stdout, stderr } = yield run [fileURL('console-log')]
     code.should.equal 0
     stderr.should.not.match /cannot serialize cyclic structures\./m
@@ -154,7 +153,7 @@ describe 'mocha-phantomjs', ->
 
     describe 'cookies', ->
       # https://github.com/nathanboktae/mocha-phantomjs-core/issues/4
-      it 'has passed cookies', !process.env.PHANTOMJS2 and ->
+      xit 'has passed cookies', ->
         c1Opt = '{"name":"foo","value":"bar"}'
         c2Opt = '{"name":"baz","value":"bat","path":"/"}'
         { stdout } = yield run ['-c', c1Opt, '--cookies', c2Opt, fileURL('cookie')]
