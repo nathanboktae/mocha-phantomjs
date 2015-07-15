@@ -6,7 +6,7 @@ The mocha-phantomjs project provides a `mocha-phantomjs.coffee` script file and 
 
   * **Since version 3.0 of mocha-phantomjs, you must use PhantomJS 1.9.1 or higher.**
 
-[![Build Status](https://secure.travis-ci.org/metaskills/mocha-phantomjs.png)](http://travis-ci.org/metaskills/mocha-phantomjs)
+[![Build Status](https://secure.travis-ci.org/nathanboktae/mocha-phantomjs.png)](http://travis-ci.org/nathanboktae/mocha-phantomjs)
 
 
 # Key Features
@@ -122,17 +122,17 @@ If you want to generate a screenshot for each test failure you could add the fol
 Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.
 
 <div style="text-align:center;">
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
+  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
 </div>
 
-The following is a list of tested reporters. Since moving PhantomJS 1.9.1, most core Mocha reporters should "just work" since we now support stdout properly. Reporters with node dependencies will not work, like `html-cov`. If you have an issue with a reporter, [open a github issue](https://github.com/metaskills/mocha-phantomjs/issues) and let me know.
+The following is a list of tested reporters. Since moving PhantomJS 1.9.1, most core Mocha reporters should "just work" since we now support stdout properly. Reporters with node dependencies will not work, like `html-cov`. If you have an issue with a reporter, [open a github issue](https://github.com/nathanboktae/mocha-phantomjs/issues) and let me know.
 
 ### Spec Reporter (default)
 
 The default reporter. You can force it using `spec` for the reporter argument.
 
 <div style="text-align:center;">
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="616">
+  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="616">
 </div>
 
 ### Dot Matrix Reporter
@@ -140,7 +140,7 @@ The default reporter. You can force it using `spec` for the reporter argument.
 Use `dot` for the reporter argument.
 
 <div style="text-align:center;">
-  <img src="https://raw.github.com/metaskills/mocha-phantomjs/master/public/images/reporter_dot.gif" alt="Dot Matrix Reporter" width="616">
+  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/reporter_dot.gif" alt="Dot Matrix Reporter" width="616">
 </div>
 
 The PhantomJS process has no way of knowing anything about your console window's width. So we default the width to 75 columns. But if you pass down the `COLUMNS` environment variable, it will pick that up and adjust to your current terminal width. For example, using the `$COLUMNS` variable like so.
@@ -181,7 +181,7 @@ Simple! Just clone the repo, then run `npm install` and the various node develop
 
 We also use Travis CI to run our tests too. The current build status:
 
-[![Build Status](https://secure.travis-ci.org/metaskills/mocha-phantomjs.png)](http://travis-ci.org/metaskills/mocha-phantomjs)
+[![Build Status](https://secure.travis-ci.org/nathanboktae/mocha-phantomjs.png)](http://travis-ci.org/nathanboktae/mocha-phantomjs)
 
 
 # Alternatives
