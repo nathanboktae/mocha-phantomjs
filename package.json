@@ -9,7 +9,7 @@
     "command line",
     "browser"
   ],
-  "version": "3.5.6",
+  "version": "3.6.0",
   "author": "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
   "licenses": [
     {
@@ -36,14 +36,14 @@
     "test": "mocha --compilers coffee:coffee-script test/mocha-phantomjs.coffee -t 20000 -R spec"
   },
   "peerDependencies": {
-    "phantomjs": "~1.9.1"
+    "phantomjs": "1.9.1 - 1.9.7-15"
   },
   "dependencies": {
     "mocha": "~1.20.1",
     "commander": "~2.0.0"
   },
   "devDependencies": {
-    "phantomjs": "~1.9.1",
+    "phantomjs": "1.9.1 - 1.9.7-15",
     "chai": "1.8.x",
     "coffee-script": "1.6.x",
     "requirejs": "2.1.x"
