@@ -14,7 +14,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"
+      "url": "http://github.com/nathanboktae/mocha-phantomjs/blob/master/MIT-LICENSE"
     }
   ],
   "contributors": [
@@ -23,10 +23,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/metaskills/mocha-phantomjs.git"
+    "url": "http://github.com/nathanboktae/mocha-phantomjs.git"
   },
   "bugs": {
-    "url": "http://github.com/metaskills/mocha-phantomjs/issues"
+    "url": "http://github.com/nathanboktae/mocha-phantomjs/issues"
   },
   "main": "./bin/mocha-phantomjs",
   "bin": {
