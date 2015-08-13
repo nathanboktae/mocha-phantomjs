@@ -74,7 +74,10 @@ program
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
   .option('-C, --no-color',              'disable color escape codes')
   .option('-p, --path <path>',           'path to PhantomJS binary')
-  .option('--ignore-resource-errors',    'ignore resource errors');
+  .option('--ssl-protocol <protocol>',   'sets the SSL protocol for secure connections [tlsv1|sslv2|sslv3|any]', 'tlsv1')
+  .option('--ignore-resource-errors',    'ignore resource errors')
+  .option('--ignore-ssl-errors',         'ignore SSL errors');
+
   
 program.on('--help', function(){
   console.log('  Examples:');
@@ -149,7 +152,11 @@ function launchFailure(e) {
 }
 
 try {
-  var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
+  var phantomjs = spawn(phantomPath, [
+    '--ssl-protocol=' + program.sslProtocol,
+    '--ignore-ssl-errors=' + program.ignoreSslErrors.toString(),
+    script, page, reporter, config
+  ]);
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stderr);
   phantomjs.on('exit', function(code){
