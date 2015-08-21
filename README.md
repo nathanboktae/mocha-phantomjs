@@ -28,7 +28,9 @@ You can use your existing Mocha HTML file reporters side by side with mocha-phan
 
 We distribute [mocha-phantomjs as an npm](https://npmjs.org/package/mocha-phantomjs) that is easy to install. Once done, you will have a `mocha-phantomjs` binary. See the next usage section for docs or use the `-h` flag.
 
-Since 3.4, we now declare phantomjs as a peer dependency, and it will be installed adjacent to `mocha-phantomjs` automatically. You may use `-p` to provide an explicit path to phantomjs, or call phantomjs directly yourself via `phantomjs lib/mocha-phantomjs.coffee <page> <reporter> <config-as-JSON>`. The later approach is recommended for build system plugins to avoid another process fork. 
+Since 3.4, we now declare phantomjs as a peer dependency, and it will be installed adjacent to `mocha-phantomjs` automatically. You may use `-p` to provide an explicit path to phantomjs, or call phantomjs directly yourself via `phantomjs lib/mocha-phantomjs.coffee <page> <reporter> <config-as-JSON>`. The later approach is recommended for build system plugins to avoid another process fork.
+
+Due to [a bug in phantomjs 1.9.8+](https://github.com/nathanboktae/mocha-phantomjs/issues/167), mocha-phantomjs currnently caps its peer depedency to `1.9.7-15`. If you are having install errors due to peer depdendency resolution conflics, expliclity declare your dependency as `"phantomjs": "1.9.7-15"`, or expliclity install 1.9.7, like `npm install phantomjs@1.9.7-15`.
 
 # Usage
 
