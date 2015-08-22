@@ -119,6 +119,14 @@ If you want to generate a screenshot for each test failure you could add the fol
   })
 ```
 
+# Send Events
+
+To request events be sent to the PhantomJS page, call callPhantom with an object containing `sendEvent` and an array of the standard PhantomJS sendEvent parameters:
+
+```javascript
+  callPhantom({sendEvent: ['keydown', 16777235]}); //Press the up arrow key
+```
+
 # Supported Reporters
 
 Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.

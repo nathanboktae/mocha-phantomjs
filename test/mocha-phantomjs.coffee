@@ -185,6 +185,20 @@ describe 'mocha-phantomjs', ->
           expect(fs.existsSync(fileName)).to.equal(true)
           fs.unlinkSync(fileName)
 
+    describe 'send-event', ->
+
+      ###
+      $ ./bin/mocha-phantomjs -R spec test/send-event.html
+      $ mocha -r chai/chai.js -R spec --globals chai.expect test/lib/send-event.js
+      ###
+
+      before ->
+        @args = [fileURL('send-event')]
+
+      it 'Send a keydown event', (done) ->
+        @runner done, @args, (code, stdout, stderr) ->
+          expect(code).to.equal 0
+
     describe 'requirejs', ->
 
       before ->
