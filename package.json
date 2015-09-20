@@ -36,7 +36,7 @@
     "test": "mocha --harmony --compilers coffee:coffee-script/register test/mocha-phantomjs.coffee -t 5000"
   },
   "dependencies": {
-    "phantomjs": "git://github.com/Lochlan/phantomjs2.git#2.0.0",
+    "phantomjs": "1.9.7-15",
     "mocha-phantomjs-core": "< 2.0.0",
     "commander": "^2.8.1"
   },

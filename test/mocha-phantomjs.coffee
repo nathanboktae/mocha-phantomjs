@@ -37,8 +37,7 @@ describe 'mocha-phantomjs', ->
     stderr.should.match /check the url/i
     stderr.should.match /foo\/bar.html/i
 
-  # https://github.com/ariya/phantomjs/issues/12973
-  xit 'returns a failure code and notifies of no such runner class', ->
+  it 'returns a failure code and notifies of no such runner class', ->
     { code, stderr } = yield run ['-R', 'nonesuch', fileURL('passing')]
     code.should.equal 1
     stderr.should.match /Unable to open file 'nonesuch'/
@@ -152,8 +151,7 @@ describe 'mocha-phantomjs', ->
         stdout.should.match /^mocha=UserAgent/
 
     describe 'cookies', ->
-      # https://github.com/nathanboktae/mocha-phantomjs-core/issues/4
-      xit 'has passed cookies', ->
+      it 'has passed cookies', ->
         c1Opt = '{"name":"foo","value":"bar"}'
         c2Opt = '{"name":"baz","value":"bat","path":"/"}'
         { stdout } = yield run ['-c', c1Opt, '--cookies', c2Opt, fileURL('cookie')]
