@@ -58,6 +58,7 @@ function resolveHooks(val) {
 }
 
 program
+  .allowUnknownOption()
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
   .option('-R, --reporter <name>',       'specify the reporter to use', 'spec')
@@ -77,6 +78,8 @@ program
   .option('--ignore-resource-errors',    'ignore resource errors');
   
 program.on('--help', function(){
+  console.log('  Any other options are passed to phantomjs (see `phantomjs --help`)');
+  console.log('');
   console.log('  Examples:');
   console.log('');
   console.log('    $ mocha-phantomjs -R dot /test/file.html');
@@ -148,8 +151,13 @@ function launchFailure(e) {
   process.exit(-2);
 }
 
+var unknownOptions = program.rawArgs.slice(2).filter(function(a) {
+  return program.args.indexOf(a) === -1
+})
+console.dir(unknownOptions)
+
 try {
-  var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
+  var phantomjs = spawn(phantomPath, unknownOptions.concat([script, page, reporter, config]))
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stderr);
   phantomjs.on('exit', function(code){

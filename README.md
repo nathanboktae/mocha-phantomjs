@@ -1,6 +1,6 @@
 # PhantomJS Runners for Mocha
 
-[Mocha](http://mochajs.org/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript/CoffeeScript API. It has fast and native support for various web standards like DOM handling, CSS selectors, JSON, Canvas, and SVG.
+[Mocha](http://mochajs.org/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript API.
 
 Since 4.0, the phantomjs code now is in [mocha-phantomjs-core](https://github.com/nathanboktae/mocha-phantomjs-core). If you need full control over which phantomjs version to use and where to get it, or want to use it more programatically like a build system plugin, please use that package directly. This project is a node.js CLI around it.
 
@@ -22,12 +22,12 @@ You can use your existing Mocha HTML file reporters side by side with mocha-phan
 
 # Installation
 
-We distribute [mocha-phantomjs as an npm](https://npmjs.org/package/mocha-phantomjs) that is easy to install. Once done, you will have a `mocha-phantomjs` binary. See the next usage section for docs or use the `-h` flag.
+We distribute [mocha-phantomjs as an npm package](https://npmjs.org/package/mocha-phantomjs) that is easy to install. Once done, you will have a `mocha-phantomjs` binary. See the next usage section for docs or use the `-h` flag.
 
 # Usage
 
 ```
-Usage: mocha-phantomjs [options] page
+ Usage: mocha-phantomjs [options] page
 
  Options:
 
@@ -48,6 +48,7 @@ Usage: mocha-phantomjs [options] page
    -C, --no-color               disable color escape codes
    -p, --path <path>            path to PhantomJS binary
 
+ Any other options are passed to phantomjs (see `phantomjs --help`)
 
  Examples:
 
@@ -73,12 +74,13 @@ Since 4.0, you need no modifications to your test harness markup file to run. He
     <script src="mocha.js"></script>
     <script src="chai.js"></script>
     <script>
-      mocha.ui('bdd');
-      expect = chai.expect;
+      mocha.ui('bdd')
+      expect = chai.expect
     </script>
+    <script src="src/mycode.js"></script>
     <script src="test/mycode.js"></script>
     <script>
-      mocha.run();
+      mocha.run()
     </script>
   </body>
 </html>
@@ -176,13 +178,7 @@ We also use Travis CI to run our tests too. The current build status:
 [![Build Status](https://secure.travis-ci.org/nathanboktae/mocha-phantomjs.png)](http://travis-ci.org/nathanboktae/mocha-phantomjs)
 
 
-# Alternatives
-
-* OpenPhantomScripts - https://github.com/mark-rushakoff/OpenPhantomScripts
-* Front Tests - https://github.com/Backbonist/front-tests
-
-
 # License
 
-Released under the MIT license. Copyright (c) 2012 Ken Collins.
+Released under the MIT license. Copyright (c) 2015 Ken Collins, Nathan Black, and many generous GitHub Contributors.
 

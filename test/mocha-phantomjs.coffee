@@ -79,6 +79,10 @@ describe 'mocha-phantomjs', ->
     { stdout } = yield run [fileURL('mocha-runner')]
     stdout.should.match /Run callback fired/m
 
+  it 'passes all unknown arguments to phantomjs', ->
+    { stderr } = yield run ['--unknown=true', fileURL('mocha-runner')]
+    stderr.should.match /Error: Unknown option: unknown/m
+
   it 'can use a different reporter', ->
     { stdout } = yield run ['-R', 'xunit', fileURL('mixed')]
     stdout.should.match /<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/
