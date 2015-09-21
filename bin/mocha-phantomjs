@@ -151,13 +151,12 @@ function launchFailure(e) {
   process.exit(-2);
 }
 
-var unknownOptions = program.rawArgs.slice(2).filter(function(a) {
-  return program.args.indexOf(a) === -1
+var unknown = program.parseOptions(process.argv).unknown.filter(function(u) {
+  return u !== program.args[0]
 })
-console.dir(unknownOptions)
 
 try {
-  var phantomjs = spawn(phantomPath, unknownOptions.concat([script, page, reporter, config]))
+  var phantomjs = spawn(phantomPath, unknown.concat([script, page, reporter, config]))
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stderr);
   phantomjs.on('exit', function(code){
