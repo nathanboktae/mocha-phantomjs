@@ -42,16 +42,15 @@ describe 'mocha-phantomjs', ->
     code.should.equal 1
     stderr.should.match /Unable to open file 'nonesuch'/
 
-  # https://github.com/nathanboktae/mocha-phantomjs-core/issues/5
-  xit 'returns a failure code when mocha fails to run any tests', ->
+  it 'returns a failure code when mocha fails to run any tests', ->
     { code, stderr } = yield run [fileURL('no-tests')]
     code.should.equal 1
-    stderr.should.match /Failed to run any tests/
+    stderr.should.match /mocha.run\(\) was called with no tests/
 
   it 'returns a failure code when mocha is not started in a timely manner', ->
     { code, stderr } = yield run ['-t', 500, fileURL('timeout')]
+    stderr.should.match /mocha.run\(\) was not called within 500ms of the page loading/
     code.should.not.equal 0
-    stderr.should.match /Failed to run any tests/
 
   it 'returns a failure code when there is a page error', ->
     { code, stderr } = yield run [fileURL('error')]

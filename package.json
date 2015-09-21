@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "phantomjs": "1.9.7-15",
-    "mocha-phantomjs-core": "< 2.0.0",
+    "mocha-phantomjs-core": "^1.1.0",
     "commander": "^2.8.1"
   },
   "devDependencies": {
