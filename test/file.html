@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Tests Reporter Output to File</title>
@@ -16,11 +17,7 @@
     <script src="lib/mixed.js"></script>
     <script>
       console.log("Extraneous output that is not part of the reporter output")
-      if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-      } else {
-        mocha.run();
-      }
+      mocha.run();
     </script>
   </body>
 </html>

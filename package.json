@@ -1,6 +1,6 @@
 {
   "name": "mocha-phantomjs",
-  "description": "PhantomJS Runners for Mocha",
+  "description": "Run nocha browser tests in phantomjs via the command line",
   "keywords": [
     "phantomjs",
     "mocha",
@@ -9,43 +9,41 @@
     "command line",
     "browser"
   ],
-  "version": "3.6.0",
-  "author": "Ken Collins <ken@metaskills.net> (http://metaskills.net/)",
+  "version": "4.0.0",
+  "author": "Nathan Black <nathan@nathanblack.org> (http://nathanblack.org)",
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/metaskills/mocha-phantomjs/blob/master/MIT-LICENSE"
+      "url": "http://github.com/nathanboktae/mocha-phantomjs/blob/master/MIT-LICENSE"
     }
   ],
   "contributors": [
     "Jonathan Chapman <chafnan@gmail.com> (https://github.com/chafnan)",
-    "Nathan Black <nathan@nathanblack.org> (https://github.com/nathanboktae)"
+    "Ken Collins <ken@metaskills.net> (http://metaskills.net/)"
   ],
   "repository": {
     "type": "git",
-    "url": "http://github.com/metaskills/mocha-phantomjs.git"
+    "url": "http://github.com/nathanboktae/mocha-phantomjs.git"
   },
   "bugs": {
-    "url": "http://github.com/metaskills/mocha-phantomjs/issues"
+    "url": "http://github.com/nathanboktae/mocha-phantomjs/issues"
   },
-  "main": "./lib/mocha-phantomjs.coffee",
+  "main": "./bin/mocha-phantomjs",
   "bin": {
     "mocha-phantomjs": "./bin/mocha-phantomjs"
   },
   "scripts": {
-    "test": "mocha --compilers coffee:coffee-script test/mocha-phantomjs.coffee -t 20000 -R spec"
-  },
-  "peerDependencies": {
-    "phantomjs": "1.9.1 - 1.9.7-15"
+    "test": "mocha --harmony --compilers coffee:coffee-script/register test/mocha-phantomjs.coffee -t 5000"
   },
   "dependencies": {
-    "mocha": "~1.20.1",
-    "commander": "~2.0.0"
+    "phantomjs": "1.9.7-15",
+    "mocha-phantomjs-core": "^1.1.0",
+    "commander": "^2.8.1"
   },
   "devDependencies": {
-    "phantomjs": "1.9.1 - 1.9.7-15",
-    "chai": "1.8.x",
-    "coffee-script": "1.6.x",
-    "requirejs": "2.1.x"
+    "bluebird": "^2.9.25",
+    "chai": "^2.3.0",
+    "co-mocha": "^1.1.0",
+    "coffee-script": "^1.9.2"
   }
 }

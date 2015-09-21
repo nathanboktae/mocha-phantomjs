@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Tests Failing</title>
@@ -23,14 +24,10 @@
       });
     </script>
     <script>
-      var runner;
-      if (window.mochaPhantomJS) {
-        runner = mochaPhantomJS.run(function() {
-          console.log('Run callback fired');
-        });
-      } else {
-        runner = mocha.run();
-      }
+      var runner = mocha.run(function() {
+        console.log('Run callback fired');
+      });
+
       // because reporters also bind to the 'test end' event when reporting their status,
       // we need to call 'runner.fail' to mark the test as failed before the runner
       // gets the test status. Here, we prepend our 'test end' handler to the beginning

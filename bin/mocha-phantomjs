@@ -58,11 +58,12 @@ function resolveHooks(val) {
 }
 
 program
+  .allowUnknownOption()
   .version(JSON.parse(fs.readFileSync(__dirname + '/../package.json', 'utf8')).version)
   .usage('[options] page')
   .option('-R, --reporter <name>',       'specify the reporter to use', 'spec')
   .option('-f, --file <filename>',       'specify the file to dump reporter output')
-  .option('-t, --timeout <timeout>',     'specify the test startup timeout to use', parseInt, 6000)
+  .option('-t, --timeout <timeout>',     'specify the test startup timeout to use', parseInt)
   .option('-g, --grep <pattern>',        'only run tests matching <pattern>')
   .option('-i, --invert',                'invert --grep matches')
   .option('-b, --bail',                  'exit on the first test failure')
@@ -77,6 +78,8 @@ program
   .option('--ignore-resource-errors',    'ignore resource errors');
   
 program.on('--help', function(){
+  console.log('  Any other options are passed to phantomjs (see `phantomjs --help`)');
+  console.log('');
   console.log('  Examples:');
   console.log('');
   console.log('    $ mocha-phantomjs -R dot /test/file.html');
@@ -90,7 +93,7 @@ program.parse(process.argv);
 if (!program.args.length) { program.outputHelp(); process.exit(1); };
 if (program.agent) { settings.userAgent = program.agent; }
 
-var script   = fs.realpathSync(__dirname + '/../lib/mocha-phantomjs.coffee');
+var script   = fs.realpathSync(__dirname + '/../node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js');
 var reporter = program.reporter;
 var page     = function(){
   var arg = program.args[0];
@@ -103,7 +106,7 @@ var page     = function(){
 }();
 var config = JSON.stringify({
   hooks: program.hooks,
-  timeout: program.timeout,
+  timeout: program.timeout || 6000,
   cookies: cookies,
   headers: headers,
   settings: settings,
@@ -148,8 +151,12 @@ function launchFailure(e) {
   process.exit(-2);
 }
 
+var unknown = program.parseOptions(process.argv).unknown.filter(function(u) {
+  return u !== program.args[0]
+})
+
 try {
-  var phantomjs = spawn(phantomPath, [script, page, reporter, config]);
+  var phantomjs = spawn(phantomPath, unknown.concat([script, page, reporter, config]))
   phantomjs.stdout.pipe(process.stdout);
   phantomjs.stderr.pipe(process.stderr);
   phantomjs.on('exit', function(code){

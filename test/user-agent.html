@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>Tests UserAgent</title>
@@ -13,11 +14,7 @@
     </script>
     <script>
       console.log(navigator.userAgent);
-      if (window.mochaPhantomJS) {
-        mochaPhantomJS.run();
-      } else {
-        mocha.run();
-      }
+      mocha.run();
     </script>
   </body>
 </html>
