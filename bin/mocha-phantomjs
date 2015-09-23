@@ -93,7 +93,7 @@ program.parse(process.argv);
 if (!program.args.length) { program.outputHelp(); process.exit(1); };
 if (program.agent) { settings.userAgent = program.agent; }
 
-var script   = fs.realpathSync(__dirname + '/../node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js');
+var script   = require.resolve('mocha-phantomjs-core/mocha-phantomjs-core.js');
 var reporter = program.reporter;
 var page     = function(){
   var arg = program.args[0];
