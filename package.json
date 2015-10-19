@@ -36,9 +36,9 @@
     "test": "mocha --harmony --compilers coffee:coffee-script/register test/mocha-phantomjs.coffee -t 5000"
   },
   "dependencies": {
-    "phantomjs": "1.9.7-15",
+    "commander": "^2.8.1",
     "mocha-phantomjs-core": "^1.1.0",
-    "commander": "^2.8.1"
+    "phantomjs": "^1.9.18"
   },
   "devDependencies": {
     "bluebird": "^2.9.25",
