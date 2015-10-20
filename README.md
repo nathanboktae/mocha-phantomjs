@@ -27,35 +27,35 @@ We distribute [mocha-phantomjs as an npm package](https://npmjs.org/package/moch
 # Usage
 
 ```
- Usage: mocha-phantomjs [options] page
+  Usage: mocha-phantomjs [options] page
 
- Options:
+  Options:
 
-   -h, --help                   output usage information
-   -V, --version                output the version number
-   -R, --reporter <name>        specify the reporter to use
-   -f, --file <filename>        specify the file to dump reporter output
-   -t, --timeout <timeout>      specify the test startup timeout to use
-   -g, --grep <pattern>         only run tests matching <pattern>
-   -i, --invert                 inverts --grep matches
-   -b, --bail                   exit on the first test failure
-   -A, --agent <userAgent>      specify the user agent to use
-   -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
-   -h, --header <name>=<value>  specify custom header
-   -k, --hooks <path>           path to hooks module
-   -s, --setting <key>=<value>  specify specific phantom settings
-   -v, --view <width>x<height>  specify phantom viewport size
-   -C, --no-color               disable color escape codes
-   -p, --path <path>            path to PhantomJS binary
+    -h, --help                   output usage information
+    -V, --version                output the version number
+    -R, --reporter <name>        specify the reporter to use
+    -f, --file <filename>        specify the file to dump reporter output
+    -t, --timeout <timeout>      specify the test startup timeout to use
+    -g, --grep <pattern>         only run tests matching <pattern>
+    -i, --invert                 invert --grep matches
+    -b, --bail                   exit on the first test failure
+    -A, --agent <userAgent>      specify the user agent to use
+    -c, --cookies <Object>       phantomjs cookie object http://git.io/RmPxgA
+    -h, --header <name>=<value>  specify custom header
+    -k, --hooks <path>           path to hooks module
+    -s, --setting <key>=<value>  specify specific phantom settings
+    -v, --view <width>x<height>  specify phantom viewport size
+    -C, --no-color               disable color escape codes
+    -p, --path <path>            path to PhantomJS binary
+    --ignore-resource-errors     ignore resource errors
 
- Any other options are passed to phantomjs (see `phantomjs --help`)
+  Any other options are passed to phantomjs (see `phantomjs --help`)
 
- Examples:
+  Examples:
 
-   $ mocha-phantomjs -R dot /test/file.html
-   $ mocha-phantomjs http://testserver.com/file.html
-   $ mocha-phantomjs -s localToRemoteUrlAccessEnabled=true -s webSecurityEnabled=false http://testserver.com/file.html
-   $ mocha-phantomjs -p ~/bin/phantomjs /test/file.html
+    $ mocha-phantomjs -R dot /test/file.html
+    $ mocha-phantomjs https://testserver.com/file.html --ignore-ssl-errors=true
+    $ mocha-phantomjs -p ~/bin/phantomjs /test/file.html
 ```
 
 Now as an node package, using `mocha-phantomjs` has never been easier. The page argument can be either a local or fully qualified path or a http or file URL. `--reporter` may be a built-in reporter or a path to your own reporter (see below). See [phantomjs WebPage settings](https://github.com/ariya/phantomjs/wiki/API-Reference-WebPage#wiki-webpage-settings) for options that may be supplied to the `--setting` argument.

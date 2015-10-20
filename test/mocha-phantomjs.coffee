@@ -86,6 +86,11 @@ describe 'mocha-phantomjs', ->
     { stdout } = yield run ['-R', 'xunit', fileURL('mixed')]
     stdout.should.match /<testcase classname="Tests Mixed" name="passes 1" time=".*"\/>/
 
+  it 'does not allow phantomjs >= 1.9.8 < 2 due to ariya/phantomjs#12697', ->
+    { stdout, stderr } = yield run ['-R', 'xunit', fileURL('no-tests')]
+    stdout.should.not.contain 'Unsafe JavaScript attempt'
+    stderr.should.not.contain 'Unsafe JavaScript attempt'
+
   describe 'exit code', ->
     it 'returns 0 when all tests pass', ->
       { code } = yield run fileURL('passing')
