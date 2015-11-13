@@ -4,6 +4,7 @@ var program = require('commander'),
       spawn = require('child_process').spawn,
          fs = require('fs'),
        path = require('path'),
+       stream = require('stream'),
      exists = fs.existsSync || path.existsSync,
  fileExists = function (path) {
                 return fs.existsSync(path) && !fs.statSync(path).isDirectory();
@@ -44,7 +45,7 @@ function viewport(val) {
     height: parseFloat(val[1])
   };
 }
-function resolveHooks(val) {
+function resolvePath(val) {
   var absPath = path.resolve(process.cwd(), val);
 
   if (!exists(absPath)) {
@@ -70,11 +71,13 @@ program
   .option('-A, --agent <userAgent>',     'specify the user agent to use')
   .option('-c, --cookies <Object>',      'phantomjs cookie object http://git.io/RmPxgA', cookiesParser) // http://git.io/RmPxgA
   .option('-h, --header <name>=<value>', 'specify custom header', header)
-  .option('-k, --hooks <path>',          'path to hooks module', resolveHooks)
+  .option('-k, --hooks <path>',          'path to hooks module', resolvePath)
   .option('-s, --setting <key>=<value>', 'specify specific phantom settings', setting)
   .option('-v, --view <width>x<height>', 'specify phantom viewport size', viewport)
   .option('-C, --no-color',              'disable color escape codes')
   .option('-p, --path <path>',           'path to PhantomJS binary')
+  .option('-O, --stdoutTransform <path>','path to transform stream', resolvePath)
+  .option('-E, --stderrTransform <path>','path to transform stream', resolvePath)
   .option('--ignore-resource-errors',    'ignore resource errors');
   
 program.on('--help', function(){
@@ -157,8 +160,10 @@ var unknown = program.parseOptions(process.argv).unknown.filter(function(u) {
 
 try {
   var phantomjs = spawn(phantomPath, unknown.concat([script, page, reporter, config]))
-  phantomjs.stdout.pipe(process.stdout);
-  phantomjs.stderr.pipe(process.stderr);
+  var stdoutTransform = program.stdoutTransform ? require(program.stdoutTransform) : stream.PassThrough();
+  var stderrTransform = program.stderrTransform ? require(program.stderrTransform) : stream.PassThrough();
+  phantomjs.stdout.pipe(stdoutTransform).pipe(process.stdout);
+  phantomjs.stderr.pipe(stderrTransform).pipe(process.stderr);
   phantomjs.on('exit', function(code){
     if (code == null) {
       if (phantomjs.signalCode !== null) {
