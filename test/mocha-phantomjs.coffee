@@ -14,7 +14,7 @@ describe 'mocha-phantomjs', ->
     urlString = url.format { protocol: 'file', hostname: '', pathname: fullPath } if process.platform isnt 'win32'
 
   run = (args) ->
-    new Promise (resolve, reject) ->          
+    new Promise (resolve, reject) ->
       stdout = ''
       stderr = ''
       spawnArgs = ["#{process.cwd()}/bin/mocha-phantomjs"].concat(args)
@@ -123,7 +123,7 @@ describe 'mocha-phantomjs', ->
       { code, stderr } = yield run ['-R', 'test/reporters/node-only', fileURL('mixed')]
 
       stderr.should.match /Node modules cannot be required/
-      code.should.not.equal 0      
+      code.should.not.equal 0
 
   describe 'hooks', ->
     it 'should fail gracefully if they do not exist', ->
@@ -131,16 +131,16 @@ describe 'mocha-phantomjs', ->
 
       code.should.not.equal 0
       stderr.should.contain('Error loading hooks').and.contain "nonexistant-file.js"
-    
+
     it 'has a hook for before tests are started', ->
       { code, stdout } = yield run ['-k', 'test/hooks/before-start.js', fileURL('passing')]
 
       stdout.should.contain 'Before start called!'
       code.should.equal 0
-    
+
     it 'has a hook for after the test run finishes', ->
       { code, stdout } = yield run ['-k', 'test/hooks/after-end.js', fileURL('passing')]
-      
+
       stdout.should.contain 'After end called!'
       code.should.equal 0
 
@@ -184,7 +184,7 @@ describe 'mocha-phantomjs', ->
     describe 'no-colors', ->
       it 'by default will output in color', ->
         { stdout } = yield run ['-R', 'dot', fileURL('mixed')]
-        
+
         stdout.should.match /\u001b\[90m\․\u001b\[0m/ # grey
         stdout.should.match /\u001b\[36m\․\u001b\[0m/ # cyan
         stdout.should.match /\u001b\[31m\․\u001b\[0m/ # red

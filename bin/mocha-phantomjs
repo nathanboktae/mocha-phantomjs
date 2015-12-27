@@ -119,11 +119,6 @@ var config = JSON.stringify({
   ignoreResourceErrors: program.ignoreResourceErrors
 });
 
-if (program.reporter === 'xunit' && program.file) {
-  console.error('The xunit reporter does not work with the --file option. Pipe it to a file instead. See #114.')
-  process.exit(-3)
-}
-
 if (reporter) {
   if (fileExists(reporter)) {
     reporter = path.resolve(process.cwd(), reporter);
