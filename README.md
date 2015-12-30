@@ -113,11 +113,7 @@ If you want to generate a screenshot for each test failure you could add the fol
 
 # Supported Reporters
 
-Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.
-
-<div style="text-align:center;">
-  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
-</div>
+Mocha-phantomjs does not scrape the web page under test! No other PhantomJS driver stacks up to our runner support, and while some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice, this costs them one of the best features of Mocha's console reporters, namely, initial test start feedback.
 
 The following is a list of tested reporters. Since moving PhantomJS 1.9.1, most core Mocha reporters should "just work" since we now support stdout properly. Reporters with node dependencies will not work, like `html-cov`. If you have an issue with a reporter, [open a github issue](https://github.com/nathanboktae/mocha-phantomjs/issues) and let me know.
 
