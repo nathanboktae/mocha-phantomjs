@@ -113,41 +113,16 @@ If you want to generate a screenshot for each test failure you could add the fol
 
 # Supported Reporters
 
-Mocha-phantomjs does not scrap the web page under test! No other PhantomJS driver stacks up to our runner support. Some have used a debounce method to keep duplicate messages in the spec reporter from showing up twice. Loosing one of Mocha's console reporters neatest features, initial test start feedback. The animation below is an example of how our runner script fully compiles with expected Mocha behavior.
-
-<div style="text-align:center;">
-  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/slow.gif" alt="Slow Tests Example">
-</div>
-
-The following is a list of tested reporters. Since moving PhantomJS 1.9.1, most core Mocha reporters should "just work" since we now support stdout properly. Reporters with node dependencies will not work, like `html-cov`. If you have an issue with a reporter, [open a github issue](https://github.com/nathanboktae/mocha-phantomjs/issues) and let me know.
-
-### Spec Reporter (default)
-
-The default reporter. You can force it using `spec` for the reporter argument.
-
-<div style="text-align:center;">
-  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/reporter_spec.gif" alt="Spec Reporter" width="616">
-</div>
-
-### Dot Matrix Reporter
-
-Use `dot` for the reporter argument.
-
-<div style="text-align:center;">
-  <img src="https://raw.github.com/nathanboktae/mocha-phantomjs/master/public/images/reporter_dot.gif" alt="Dot Matrix Reporter" width="616">
-</div>
-
-The PhantomJS process has no way of knowing anything about your console window's width. So we default the width to 75 columns. But if you pass down the `COLUMNS` environment variable, it will pick that up and adjust to your current terminal width. For example, using the `$COLUMNS` variable like so.
-
-```
-env COLUMNS=$COLUMNS phantomjs mocha-phantomjs.coffee URL dot
-```
+`mocha-phantomjs` works by piping `Mocha.process.stdout` to PhantomJS's stdout. Any reporter that can work in the browser works with mocha-phantomjs.
 
 [Bundled](http://mochajs.org/#reporters) and tested reporters include:
 
 ````
+spec (default)
+dot
 tap
 min
+nyan
 list
 doc
 teamcity
@@ -158,6 +133,12 @@ progress
 landing
 markdown
 ````
+
+When using the `dot` reporter, the PhantomJS process has no way of knowing anything about your console window's width. So we default the width to 75 columns. However, if you set the `COLUMNS` environment variable, it will pick that up and adjust to your current terminal width. For example, using the `$COLUMNS` variable like so.
+
+```
+env COLUMNS=$COLUMNS phantomjs mocha-phantomjs.coffee URL dot
+```
 
 ### Third Party Reporters
 
