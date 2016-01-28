@@ -76,7 +76,7 @@ program
   .option('-C, --no-color',              'disable color escape codes')
   .option('-p, --path <path>',           'path to PhantomJS binary')
   .option('--ignore-resource-errors',    'ignore resource errors');
-  
+
 program.on('--help', function(){
   console.log('  Any other options are passed to phantomjs (see `phantomjs --help`)');
   console.log('');
@@ -135,7 +135,7 @@ if (program.path) {
     process.exit(-2);
   }
 } else {
-  phantomPath = require('phantomjs').path || '/usr/local/bin/phantomjs';
+  phantomPath = require('phantomjs-prebuilt').path || '/usr/local/bin/phantomjs';
 }
 
 function launchFailure(e) {
