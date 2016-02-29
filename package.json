@@ -1,6 +1,6 @@
 {
   "name": "mocha-phantomjs",
-  "description": "Run nocha browser tests in phantomjs via the command line",
+  "description": "Run mocha browser tests in phantomjs via the command line",
   "keywords": [
     "phantomjs",
     "mocha",
