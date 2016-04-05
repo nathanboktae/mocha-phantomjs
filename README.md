@@ -4,7 +4,7 @@
 
 Since 4.0, the phantomjs code now is in [mocha-phantomjs-core](https://github.com/nathanboktae/mocha-phantomjs-core). If you need full control over which phantomjs version to use and where to get it, or want to use it more programatically like a build system plugin, please use that package directly. This project is a node.js CLI around it.
 
-[![Build Status](https://secure.travis-ci.org/nathanboktae/mocha-phantomjs.png)](http://travis-ci.org/nathanboktae/mocha-phantomjs)
+[![Build Status](https://travis-ci.org/nathanboktae/mocha-phantomjs.svg?branch=master)](https://travis-ci.org/nathanboktae/mocha-phantomjs)
 
 # Key Features
 
