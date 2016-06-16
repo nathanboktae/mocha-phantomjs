@@ -27,7 +27,7 @@ describe 'mocha-phantomjs', ->
 
   it 'returns a failure code and shows usage when no args are given', ->
     { code, stdout } = yield run []
-    code.should.equal 1
+    code.should.equal 9
     stdout.should.match /Usage: mocha-phantomjs/
 
   it 'returns a failure code and notifies of bad url when given one', ->
