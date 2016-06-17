@@ -162,7 +162,7 @@ try {
       }
       code = 1;
     } else if (code === 127) {
-      console.log("Perhaps phantomjs is not installed ?");
+      console.log("Perhaps phantomjs is not installed?");
     }
 
     process.exitCode = code;
