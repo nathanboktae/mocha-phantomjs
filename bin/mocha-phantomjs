@@ -90,7 +90,7 @@ program.on('--help', function(){
 
 program.parse(process.argv);
 
-if (!program.args.length) { program.outputHelp(); process.exitCode = 9; return; };
+if (!program.args.length) { program.outputHelp(); process.exitCode = 1; return; };
 if (program.agent) { settings.userAgent = program.agent; }
 
 var script   = require.resolve('mocha-phantomjs-core/mocha-phantomjs-core.js');
@@ -132,7 +132,7 @@ if (program.path) {
   phantomPath = path.resolve(program.path);
   if (!exists(phantomPath)) {
     console.error("PhantomJS does not exist at '" + program.path + "'");
-    process.exitCode = 127;
+    process.exitCode = -2;
     return;
   }
 } else {
@@ -144,7 +144,7 @@ function launchFailure(e) {
   if (!program.path) {
     console.error('You can specify an explicit path to phantomjs via the `-p` option.');
   }
-  process.exitCode = 1;
+  process.exitCode = -2;
 }
 
 var unknown = program.parseOptions(process.argv).unknown.filter(function(u) {
