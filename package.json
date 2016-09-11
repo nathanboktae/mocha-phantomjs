@@ -10,6 +10,9 @@
     "browser"
   ],
   "version": "4.1.0",
+  "engines": {
+    "node" : ">= 0.11.8"
+  },
   "author": "Nathan Black <nathan@nathanblack.org> (http://nathanblack.org)",
   "licenses": [
     {
