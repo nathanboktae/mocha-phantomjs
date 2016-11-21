@@ -2,7 +2,7 @@
 
 [Mocha](http://mochajs.org/) is a feature-rich JavaScript test framework running on node and the browser. Along with the [Chai](http://chaijs.com) assertion library they make an impressive combo. [PhantomJS](http://phantomjs.org) is a headless WebKit with a JavaScript API.
 
-Since 4.0, the phantomjs code now is in [mocha-phantomjs-core](https://github.com/nathanboktae/mocha-phantomjs-core). If you need full control over which phantomjs version to use and where to get it, or want to use it more programatically like a build system plugin, please use that package directly. This project is a node.js CLI around it.
+Since 4.0, the phantomjs code now is in [mocha-phantomjs-core](https://github.com/nathanboktae/mocha-phantomjs-core). If you need full control over which phantomjs version to use and where to get it, including *PhantomJS 2.0* and SlimerJS, or want to use it more programatically like a build system plugin, please use that package directly. This project is a node.js CLI around it.
 
 [![Build Status](https://travis-ci.org/nathanboktae/mocha-phantomjs.svg?branch=master)](https://travis-ci.org/nathanboktae/mocha-phantomjs)
 
