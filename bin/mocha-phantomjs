@@ -136,7 +136,7 @@ if (program.path) {
     return;
   }
 } else {
-  phantomPath = require('phantomjs').path || '/usr/local/bin/phantomjs';
+  phantomPath = require('phantomjs-prebuilt').path || '/usr/local/bin/phantomjs';
 }
 
 function launchFailure(e) {
