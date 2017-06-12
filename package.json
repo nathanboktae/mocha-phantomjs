@@ -41,7 +41,7 @@
   "dependencies": {
     "phantomjs": "1.9.7-15",
     "mocha-phantomjs-core": "^1.1.0",
-    "commander": "^2.8.1"
+    "commander": "^2.9.0"
   },
   "devDependencies": {
     "bluebird": "^2.9.25",
